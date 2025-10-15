@@ -29,11 +29,13 @@ import { SedeInterface } from './SEDES/sede-interface/sede-interface';
 import { ClienteInterface } from './CLIENTE/cliente-interface/cliente-interface';
 import { Usuarios } from './USUARIOS/usuario-interface/usuario';
 import { TurnoInterface } from './TURNO/turnos-interface/turnos';
+import { CargoInterface } from './USUARIOS/cargo-interface/cargo-interface';
 
 import { FormCrearCliente } from './CLIENTE/form-crear-cliente/form-crear-cliente';
 import { FormCrearSede } from './SEDES/form-crear-sede/form-crear-sede';
 import { FormCrearUsuario } from './USUARIOS/form-crear-usuario/form-crear-usuario';
 import { FormCrearTurno } from './TURNO/form-crear-turnos/form-crear-turnos';
+import { FormCrearCargo } from './USUARIOS/form-crear-cargo/form-crear-cargo';
 
 import { SidenavMenu } from './GENERAL_COMPONENTS/sidenav-menu/sidenav-menu';
 import { Header } from './GENERAL_COMPONENTS/header/header';
@@ -52,7 +54,9 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     Usuarios,
     FormCrearUsuario,
     FormCrearTurno,
-    TurnoInterface
+    TurnoInterface,
+    CargoInterface,
+    FormCrearCargo
   ],
   imports: [
     BrowserModule,

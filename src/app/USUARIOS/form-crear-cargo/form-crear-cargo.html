@@ -1,0 +1,16 @@
+<form [formGroup]="cargoForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Crear Nuevo Cliente</h1>
+  <div mat-dialog-content>
+    <p>Ingrese los datos del nuevo cliente.</p>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre del nuevo Cargo</mat-label>
+      <input matInput formControlName="nombre_cargo" required>
+    </mat-form-field>
+    
+  </div>
+  <div mat-dialog-actions align="end">
+    <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="!cargoForm.valid">Crear</button>
+  </div>
+
+</form>
