@@ -1,0 +1,100 @@
+// Asegúrate de que tus variables de color estén definidas en un archivo global (styles.scss)
+// :root {
+//   --primary-color: #673ab7;
+//   --active-bg-color: rgba(103, 58, 183, 0.1);
+//   --text-secondary-color: rgba(0, 0, 0, 0.7);
+// }
+
+.sidenav-header {
+  padding: 24px 16px; // Espaciado superior e inferior
+  text-align: center; // Centra el logo en el contenedor
+}
+
+.company-logo {
+  max-width: 180px; // Ajusta el tamaño máximo del logo
+  height: auto;     // Mantiene la proporción de la imagen
+}
+
+.sidenav-menu {
+  padding: 8px 0 !important;
+
+  // Estilo general para todos los items de la lista
+  .mat-list-item {
+    margin: 0 12px;
+    border-radius: 8px;
+    color: var(--text-secondary-color);
+    font-weight: 500;
+
+    .mat-icon {
+      color: var(--text-secondary-color);
+    }
+  }
+
+  // Estilo para el item activo (cuando la ruta coincide)
+  .mat-list-item.active {
+    background-color: var(--active-bg-color);
+    color: var(--primary-color);
+
+    .mat-icon {
+      color: var(--primary-color);
+    }
+  }
+}
+
+// Contenedor para un grupo desplegable
+.menu-group {
+  .mat-list-item {
+    // Asegura que los items dentro del grupo no tengan margen extra
+    margin-bottom: 0;
+  }
+
+  // El ícono de la flecha
+  .expansion-indicator {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+  }
+
+  // Submenú oculto
+  .submenu {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease-out;
+    padding-left: 16px;
+
+    // Estilo de los links del submenú
+    a {
+      font-size: 0.9em;
+      // Un color ligeramente más suave para denotar jerarquía
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    a.mat-list-item {
+      font-size: 0.9em;
+      color: rgba(0, 0, 0, 0.6);
+      height: 40px !important; // Altura consistente
+      
+      // La clave: empuja el texto para alinearlo con el texto del padre.
+      // Esto compensa el espacio que ocupa el ícono en el nivel superior.
+      padding-left: 56px !important; 
+    }
+
+  }
+
+  // Estilos cuando el grupo está expandido
+  &.expanded {
+    // El item principal se mantiene con estilo de "activo" mientras está abierto
+    > .mat-list-item {
+      background-color: var(--active-bg-color);
+      color: var(--primary-color);
+
+      .mat-icon {
+        color: var(--primary-color);
+      }
+    }
+
+    .submenu {
+      max-height: 200px; // Altura para mostrar los items
+      transition: max-height 0.4s ease-in;
+    }
+  }
+}

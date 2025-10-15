@@ -1,0 +1,58 @@
+<div class="sidenav-header">
+  <img src="../../../assets/logo.png" alt="Coservipp Logo" class="company-logo">
+</div>
+
+<mat-nav-list class="sidenav-menu">
+  <a mat-list-item routerLink="/home" routerLinkActive="active">
+    <mat-icon matListItemIcon>home</mat-icon>
+    <span matListItemTitle>Home</span>
+  </a>
+
+  <div class="menu-group" [ngClass]="{'expanded': menuState['usuarios']}">
+    <a mat-list-item (click)="toggleMenu('usuarios')">
+      <mat-icon matListItemIcon>group</mat-icon>
+      <span matListItemTitle>USUARIOS</span>
+      <mat-icon class="expansion-indicator">
+        {{ menuState['usuarios'] ? 'expand_less' : 'expand_more' }}
+      </mat-icon>
+    </a>
+    <div class="submenu">
+      <a mat-list-item routerLink="/usuarios" routerLinkActive="active">Usuarios</a>
+      <a mat-list-item routerLink="/cargos" routerLinkActive="active">Cargo</a>
+    </div>
+  </div>
+
+  <a mat-list-item routerLink="/clientes" routerLinkActive="active">
+    <mat-icon matListItemIcon>business</mat-icon>
+    <span matListItemTitle>CLIENTES</span>
+  </a>
+
+  <a mat-list-item routerLink="/sedes" routerLinkActive="active">
+    <mat-icon matListItemIcon>location_on</mat-icon>
+    <span matListItemTitle>SEDES</span>
+  </a>
+
+  <a mat-list-item routerLink="/turnos" routerLinkActive="active">
+    <mat-icon matListItemIcon>calendar_today</mat-icon>
+    <span matListItemTitle>TURNOS</span>
+  </a>
+
+  <div class="menu-group" [ngClass]="{'expanded': menuState['puntos']}">
+    <a mat-list-item (click)="toggleMenu('puntos')">
+      <mat-icon matListItemIcon>verified_user</mat-icon>
+      <span matListItemTitle>PUNTOS DE MARCACION</span>
+      <mat-icon class="expansion-indicator">
+        {{ menuState['puntos'] ? 'expand_less' : 'expand_more' }}
+      </mat-icon>
+    </a>
+    <div class="submenu">
+      <a mat-list-item routerLink="/puntos-marcacion" routerLinkActive="active">Puntos de marcación</a>
+      <a mat-list-item routerLink="/marcaciones-qr" routerLinkActive="active">Marcaciones QR</a>
+    </div>
+  </div>
+
+  <a mat-list-item routerLink="/reportes" routerLinkActive="active">
+    <mat-icon matListItemIcon>bar_chart</mat-icon>
+    <span matListItemTitle>REPORTES</span>
+  </a>
+</mat-nav-list>

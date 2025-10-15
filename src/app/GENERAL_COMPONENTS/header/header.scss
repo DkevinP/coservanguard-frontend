@@ -1,0 +1,17 @@
+.app-header {
+  // El header usa el mismo fondo que el contenido para que se vea integrado
+  background-color: #1a1c23;
+  border-bottom: 1px solid #44474e;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-avatar {
+  background-color: #2E3A4B; // Azul oscuro
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 40px; // Centra el ícono
+}

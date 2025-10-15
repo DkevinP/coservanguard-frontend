@@ -1,0 +1,25 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Cliente {
+  id_cliente: number; 
+  nombre: string;
+  nit: number;
+  telefono: number;
+  email: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ClienteService {
+
+  private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+
+  constructor(private http: HttpClient) { }
+
+  getClientes(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(this.apiUrl);
+  }
+}

@@ -1,0 +1,38 @@
+<div class="app-content">
+  <div class="content-header">
+    <h2>Turno</h2>
+    <button mat-flat-button color="primary" (click)="openCreateTurno()">CREAR TURNO</button>
+  </div>
+
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput (keyup)="filtrar($event)" placeholder="Buscar turno">
+  </mat-form-field>
+<!--Se añaden los parametros sort que permiten ordenar los datos de la tabla de forma ascendente o descendente-->
+ <table mat-table [dataSource]="turnosDataSource" class="user-table" matSort (matSortChange)="orderByAscOrDesc($event)">
+      <ng-container matColumnDef="id_cc">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar alfabeticamente"> Nombre </th>
+        <td mat-cell *matCellDef="let turno"> {{turno.id_cc}} </td>
+      </ng-container>
+      <ng-container matColumnDef="id_puesto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por numero"> Apellido </th>
+        <td mat-cell *matCellDef="let turno"> {{turno.id_puesto}} </td>
+      </ng-container>
+      <ng-container matColumnDef="hora_inicio">
+        <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+        <td mat-cell *matCellDef="let turno"> {{turno.hora_inicio}} </td>
+      </ng-container>
+      <ng-container matColumnDef="hora_fin">
+        <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+        <td mat-cell *matCellDef="let turno"> {{turno.hora_fin}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!--Añade un boton para separar la tabla por paginas-->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+     </mat-paginator>
+</div>

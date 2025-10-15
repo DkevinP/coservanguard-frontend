@@ -1,0 +1,27 @@
+<form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Crear Nuevo Cliente</h1>
+  <div mat-dialog-content>
+    <p>Ingrese los datos del nuevo cliente.</p>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>NIT</mat-label>
+      <input matInput formControlName="nit" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="telefono" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" required>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="!clienteForm.valid">Crear</button>
+  </div>
+
+</form>
