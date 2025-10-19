@@ -11,7 +11,7 @@
     <mat-form-field appearance="outline">
       <mat-label>SEDE</mat-label>
       <mat-select formControlName="id_sede" required>
-        <mat-option *ngFor="let sede of sedes" [value]="sede.id_sede">
+        <mat-option *ngFor="let sede of sedes" [value]="sede.id">
           {{ sede.sede }}
         </mat-option>
       </mat-select>

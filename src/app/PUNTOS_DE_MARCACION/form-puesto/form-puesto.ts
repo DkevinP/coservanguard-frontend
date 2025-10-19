@@ -32,6 +32,15 @@ export class FormCrearPuesto {
     this.sedeService.getSedeClientes().subscribe({
       next: (data) => {
         this.sedes = data;
+
+        // 👇 === AÑADE ESTAS LÍNEAS PARA DIAGNOSTICAR === 👇
+        if (data && data.length > 0) {
+          console.log('Datos del primer cliente:', data[0]);
+          console.log('Tipo de dato de id_cliente:', typeof data[0].id);
+        }
+        // ===================================================
+
+
       },
       error: (error) => {
         console.error('Error al cargar la lista de sedes:', error);
@@ -47,7 +56,7 @@ export class FormCrearPuesto {
     // Verificamos si el formulario es válido
     if (this.puestoForm.valid) {
       const nuevapuesto = this.puestoForm.value;
-      const apiUrl = 'http://localhost:8080/api/puesto-sede/crear-puesto';
+      const apiUrl = 'http://localhost:8080/api/puesto/crear-puesto';
 
       // Hacemos la petición POST al backend
       this.http.post(apiUrl, nuevapuesto).subscribe({

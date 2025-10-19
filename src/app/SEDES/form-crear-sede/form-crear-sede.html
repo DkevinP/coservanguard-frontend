@@ -15,7 +15,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Cliente</mat-label>
       <mat-select formControlName="id_cliente" required>
-        <mat-option *ngFor="let cliente of clientes" [value]="cliente.id_cliente">
+        <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">
           {{ cliente.nombre }}
         </mat-option>
       </mat-select>
