@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FormCrearSede } from '../form-crear-sede/form-crear-sede';
+import { FormCrearPuesto } from '../form-puesto/form-puesto';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { HttpClient } from '@angular/common/http';
@@ -9,18 +9,18 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
-  selector: 'app-sede-interface',
+  selector: 'app-puestos',
   standalone: false,
-  templateUrl: './sede-interface.html',
-  styleUrl: './sede-interface.scss'
+  templateUrl: './puesto-interface.html',
+  styleUrl: './puesto-interface.scss'
 })
-export class SedeInterface implements OnInit{
 
-  public sedes: any;
-  public sedesDataSource: any;
-  displayedColumns: string[] = ['sede', 'direccion', 'id_cliente'];
+export class PuestoInterface implements OnInit{
+  public puestos: any;
+  public puestosDataSource: any;
+  displayedColumns: string[] = ['puesto', 'id_sede'];
 
- /**
+  /**
    * Decorador que permite acceder a un componente del DOM
    */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -32,14 +32,14 @@ export class SedeInterface implements OnInit{
     private _liveAnnouncer: LiveAnnouncer
   ) {}
 
-  //creacion del dataset
+  //Agregar datos a la tabla
   ngOnInit(): void {
-    this.http.get("http://localhost:8080/api/sede-cliente/list-sede").subscribe({
+    this.http.get("http://localhost:8080/api/puesto/list-puesto").subscribe({
       next: data =>{
-        this.sedes = data;
-        this.sedesDataSource = new MatTableDataSource(this.sedes);
-        this.sedesDataSource.paginator = this.paginator;
-        this.sedesDataSource.sort = this.sort;
+        this.puestos = data;
+        this.puestosDataSource = new MatTableDataSource(this.puestos);
+        this.puestosDataSource.paginator = this.paginator;
+        this.puestosDataSource.sort = this.sort;
       },
       error: err => {
         console.log(err);
@@ -48,10 +48,10 @@ export class SedeInterface implements OnInit{
     });
   }
   
-  //registro de nueva sede
-  openCreateSede(): void {
+  //Llamar formulario y crear nuevo registro
+  openCreatepuesto(): void {
     
-    const dialogRef = this.dialog.open(FormCrearSede, {
+    const dialogRef = this.dialog.open(FormCrearPuesto, {
       width: '400px'
     });
 
@@ -67,11 +67,14 @@ export class SedeInterface implements OnInit{
 
   //Acciones de la tabla
 
-  filtrar(event: Event) {
-    const filtro = (event.target as HTMLInputElement).value;
-    this.sedesDataSource.filter = filtro.trim().toLowerCase();
+  ngAfterViewInit() {
+    this.puestosDataSource.paginator = this.paginator;
   }
 
+  filtrar(event: Event) {
+    const filtro = (event.target as HTMLInputElement).value;
+    this.puestosDataSource.filter = filtro.trim().toLowerCase();
+  }
 
   orderByAscOrDesc(sortState: Sort) {
     if (sortState.direction) {

@@ -1,5 +1,5 @@
 <div class="sidenav-header">
-  <img src="../../../assets/logo.png" alt="Coservipp Logo" class="company-logo">
+  <img src="../../../assets/logo_nuevo.png" alt="Coservipp Logo" class="company-logo">
 </div>
 
 <mat-nav-list class="sidenav-menu">
@@ -7,7 +7,7 @@
     <mat-icon matListItemIcon>home</mat-icon>
     <span matListItemTitle>Home</span>
   </a>
-
+ <!--Lista deslegable para usuarios-->
   <div class="menu-group" [ngClass]="{'expanded': menuState['usuarios']}">
     <a mat-list-item (click)="toggleMenu('usuarios')">
       <mat-icon matListItemIcon>group</mat-icon>
@@ -36,7 +36,7 @@
     <mat-icon matListItemIcon>calendar_today</mat-icon>
     <span matListItemTitle>TURNOS</span>
   </a>
-
+  <!--Lista deslegable para puntos de marcacion-->
   <div class="menu-group" [ngClass]="{'expanded': menuState['puntos']}">
     <a mat-list-item (click)="toggleMenu('puntos')">
       <mat-icon matListItemIcon>verified_user</mat-icon>
@@ -46,8 +46,7 @@
       </mat-icon>
     </a>
     <div class="submenu">
-      <a mat-list-item routerLink="/puntos-marcacion" routerLinkActive="active">Puntos de marcación</a>
-      <a mat-list-item routerLink="/marcaciones-qr" routerLinkActive="active">Marcaciones QR</a>
+      <a mat-list-item routerLink="/puestos" routerLinkActive="active">PUESTOS</a>
     </div>
   </div>
 

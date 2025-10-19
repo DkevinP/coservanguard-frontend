@@ -13,7 +13,7 @@ export interface Puesto {
 })
 export class PuestoService {
 
-    private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+    private apiUrl = 'http://localhost:8080/api/puesto/list-puesto'; 
 
   constructor(private http: HttpClient) { }
 

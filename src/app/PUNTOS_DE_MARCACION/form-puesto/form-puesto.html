@@ -1,0 +1,24 @@
+<form [formGroup]="puestoForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Crear Puesto</h1> 
+  <div mat-dialog-content>
+    <p>Por favor, ingrese los datos del nuevo puesto.</p>
+    <mat-form-field appearance="outline">
+      <mat-label>PUESTO</mat-label>
+      <input matInput formControlName="puesto" required>
+    </mat-form-field>
+
+    <!--Lista desplegable de clientes-->
+    <mat-form-field appearance="outline">
+      <mat-label>SEDE</mat-label>
+      <mat-select formControlName="id_sede" required>
+        <mat-option *ngFor="let sede of sedes" [value]="sede.id_sede">
+          {{ sede.sede }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </div>
+  <div mat-dialog-actions align="end">
+   <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="!puestoForm.valid">Crear</button>
+  </div>
+</form>

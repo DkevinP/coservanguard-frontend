@@ -14,7 +14,7 @@ export interface SedeCliente {
 })
 export class SedeClienteService {
 
-    private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+    private apiUrl = 'http://localhost:8080/api/sede-cliente/list-sede'; 
 
   constructor(private http: HttpClient) { }
 

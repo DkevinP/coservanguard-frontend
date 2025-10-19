@@ -16,7 +16,7 @@ export interface TurnoCliente {
 })
 export class TurnoClienteService {
 
-    private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+    private apiUrl = 'http://localhost:8080/api/turno/list-turnos'; 
 
   constructor(private http: HttpClient) { }
 

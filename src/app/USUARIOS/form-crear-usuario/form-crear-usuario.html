@@ -23,7 +23,7 @@
 
     <!--Lista desplegable de cargos-->
     <mat-form-field appearance="outline">
-      <mat-label>Cliente</mat-label>
+      <mat-label>Cargo</mat-label>
       <mat-select formControlName="id_cargo" required>
         <mat-option *ngFor="let cargo of cargos" [value]="cargo.id_cargo">
           {{ cargo.nombre_cargo }}

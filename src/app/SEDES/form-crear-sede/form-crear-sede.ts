@@ -33,6 +33,13 @@ export class FormCrearSede {
     this.clienteService.getClientes().subscribe({
       next: (data) => {
         this.clientes = data;
+
+        // 👇 === AÑADE ESTAS LÍNEAS PARA DIAGNOSTICAR === 👇
+        if (data && data.length > 0) {
+          console.log('Datos del primer cliente:', data[0]);
+          console.log('Tipo de dato de id_cliente:', typeof data[0].id_cliente);
+        }
+        // ===================================================
       },
       error: (error) => {
         console.error('Error al cargar la lista de clientes:', error);

@@ -1,49 +1,55 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app.routes';
-import { App } from './app';
-import { MatButtonModule} from '@angular/material/button';
-import { MatIconModule} from '@angular/material/icon';
-import { MatSidenavModule} from '@angular/material/sidenav';
-import { MatListModule} from '@angular/material/list';
-import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatInputModule} from '@angular/material/input';
-import { MatTableModule} from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { HttpClientModule } from '@angular/common/http';
-import { MatPaginatorModule} from '@angular/material/paginator';
-import { MatSortModule} from '@angular/material/sort';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { provideRouter } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
-//Imports especiales para fecha y hora
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+// Reemplaza todo tu archivo app.module.ts (o app.config.ts) con esto:
 
-import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+
+// --- Módulos de Angular Material ---
+import { MatButtonModule} from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatIconModule} from '@angular/material/icon';
+import { MatInputModule} from '@angular/material/input';
+import { MatListModule} from '@angular/material/list';
+import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule} from '@angular/material/sidenav';
+import { MatSortModule} from '@angular/material/sort';
+import { MatTableModule} from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDatepickerModule } from '@angular/material/datepicker'; // <-- Módulo para fechas
+import { MatNativeDateModule } from '@angular/material/core';      // <-- Módulo para fechas
+
+// --- Tus Componentes ---
+import { AppRoutingModule } from './app.routes'; // Asumo que se llama app.routes.ts
+import { App } from './app';
 
 import { SedeInterface } from './SEDES/sede-interface/sede-interface';
-import { ClienteInterface } from './CLIENTE/cliente-interface/cliente-interface';
-import { Usuarios } from './USUARIOS/usuario-interface/usuario';
-import { TurnoInterface } from './TURNO/turnos-interface/turnos';
-import { CargoInterface } from './USUARIOS/cargo-interface/cargo-interface';
-
-import { FormCrearCliente } from './CLIENTE/form-crear-cliente/form-crear-cliente';
 import { FormCrearSede } from './SEDES/form-crear-sede/form-crear-sede';
+
+import { ClienteInterface } from './CLIENTE/cliente-interface/cliente-interface';
+import { FormCrearCliente } from './CLIENTE/form-crear-cliente/form-crear-cliente';
+
+import { Usuarios } from './USUARIOS/usuario-interface/usuario';
 import { FormCrearUsuario } from './USUARIOS/form-crear-usuario/form-crear-usuario';
-import { FormCrearTurno } from './TURNO/form-crear-turnos/form-crear-turnos';
+import { CargoInterface } from './USUARIOS/cargo-interface/cargo-interface';
 import { FormCrearCargo } from './USUARIOS/form-crear-cargo/form-crear-cargo';
+
+import { TurnoInterface } from './TURNO/turnos-interface/turnos';
+import { FormCrearTurno } from './TURNO/form-crear-turnos/form-crear-turnos';
+
+import { PuestoInterface } from './PUNTOS_DE_MARCACION/puesto-interface/puesto-interface';
+import { FormCrearPuesto } from './PUNTOS_DE_MARCACION/form-puesto/form-puesto';
 
 import { SidenavMenu } from './GENERAL_COMPONENTS/sidenav-menu/sidenav-menu';
 import { Header } from './GENERAL_COMPONENTS/header/header';
 
 
-
 @NgModule({
   declarations: [
+    // Aquí van TODOS tus componentes
     App,
     SedeInterface,
     ClienteInterface,
@@ -56,33 +62,36 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     FormCrearTurno,
     TurnoInterface,
     CargoInterface,
-    FormCrearCargo
+    FormCrearCargo,
+    PuestoInterface,
+    FormCrearPuesto
   ],
   imports: [
+    // Aquí van TODOS los módulos
     BrowserModule,
-    MatToolbarModule,
+    BrowserAnimationsModule, 
+    HttpClientModule,        
+    ReactiveFormsModule,     
     AppRoutingModule,
+
+    // Módulos de Angular Material
     MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
     MatDialogModule,
-    HttpClientModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
     MatPaginatorModule,
-    MatSortModule,
-    ReactiveFormsModule,
     MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    CommonModule
-    
-],
+    MatSidenavModule,
+    MatSortModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatDatepickerModule, // <-- Módulo de fechas
+    MatNativeDateModule  // <-- Módulo de fechas
+  ],
   providers: [
-    provideAnimationsAsync(),
-    provideHttpClient()
+    // El array de providers debe estar VACÍO
   ],
   bootstrap: [App]
 })

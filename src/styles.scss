@@ -1,34 +1,75 @@
-
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// 1. TODAS LAS REGLAS @use VAN PRIMERO
 @use '@angular/material' as mat;
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
+// (Asegúrate de que la ruta sea correcta)
+@use './custom-theme-color' as custom-theme; 
+
+// 2. INCLUYE EL CORE
+@include mat.core();
+
+// 3. APLICA EL TEMA DIRECTAMENTE (Método M3+ TEMA CLARO)
 html {
+  // Ya NO usamos 'dark: true', esto crea un tema claro por defecto.
   @include mat.theme((
     color: (
-      primary: mat.$cyan-palette,
-      secundary: mat.$red-palette,
-      tertiary: mat.$cyan-palette,
+      primary: custom-theme.$primary-palette,   // Rojo
+      secondary: custom-theme.$tertiary-palette, // Azul
+      tertiary: custom-theme.$tertiary-palette, // Azul
     ),
-    typography: Roboto,
+    typography: (
+      'plain-family': 'Inter, sans-serif',
+      'brand-family': 'Inter, sans-serif',
+      'bold-weight': 700,
+      'medium-weight': 500,
+      'regular-weight': 400
+    ),
     density: 0,
   ));
 }
 
+// 4. APLICA TUS COLORES DE DISEÑO (Blanco, Azul, Rojo)
+html {
+  // --- FONDO BLANCO / GRIS CLARO ---
+  // Usamos un gris muy claro para el fondo y blanco para las superficies.
+  --mdc-theme-background: #f9f9f9; 
+  --mdc-theme-surface: #ffffff; // Fondo de diálogos, cards, filas de tabla
+  --mat-sidenav-container-background-color: #f9f9f9;
 
+  // --- AZUL OSCURO (#2E3A4B) ---
+  // Lo usamos para el menú lateral y la cabecera de la tabla
+  --mdc-drawer-container-background-color: #2E3A4B;
+  --mat-table-header-container-color: #2E3A4B;
 
+  // --- AJUSTES DE TEXTO PARA EL MENÚ AZUL ---
+  // El texto y los íconos dentro del menú lateral deben ser blancos
+  --mat-list-item-label-text-color: #ffffff; 
+  --mat-list-item-leading-icon-color: #ffffff; 
+  --mat-list-item-hover-state-layer-color: rgba(255, 255, 255, 0.08);
+
+  // El ítem seleccionado usará el color Rojo (Primario)
+  --mat-list-item-selected-state-layer-color: rgba(200, 56, 50, 0.2); 
+  --mat-list-item-selected-label-text-color: #C83832; 
+  --mat-list-item-selected-leading-icon-color: #C83832;
+
+  // --- AJUSTES DE TEXTO PARA LA CABECERA DE TABLA AZUL ---
+  --mat-table-header-label-text-color: #ffffff;
+
+  // --- ROJO CORPORATIVO ---
+  // El color primario ya se aplica a botones y elementos de foco.
+  // Hacemos que los botones de "Cancelar" (warn) también usen rojo.
+  --mdc-button-label-text-color-warn: #C83832;
+  --mdc-text-button-label-text-color-warn: #C83832;
+  --mdc-text-button-hover-state-layer-color-warn: rgba(200, 56, 50, 0.08);
+}
+
+// 5. ESTILOS GLOBALES DE LA APP
 html, body { 
   height: 100%; 
 }
 
 body {
   margin: 0; 
-  font-family: 'Inter', sans-serif; 
-  background-color: #1a1c23;
+  font-family: 'Inter, sans-serif'; 
 }
 
 .app-container {
@@ -37,12 +78,87 @@ body {
 }
 
 .app-sidenav {
-  width: 260px;
-  background-color: #2c2f3b;
-  border-right: none;
+  background-color: #2E3A4B !important; /* Tu Azul Oscuro */
+  box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.15) !important; /* Sombra de separación */
+  border-right: none !important;
+}
+
+/* 2. Fuerza el color de texto e íconos a blanco (para que contraste con el azul) */
+.app-sidenav .mat-icon,
+.app-sidenav .mat-list-item-title {
+  color: #ffffff !important;
+}
+
+.company-logo {
+  border: 3px solid #C83832; /* Borde rojo "medianamente grueso" */
+  border-radius: 10px;       /* Opcional: Redondea las esquinas del borde */
+  padding: 5px;              /* Opcional: Espacio entre el logo y el borde */
+  box-sizing: border-box;    /* Asegura que el borde/padding no rompa el diseño */
+}
+
+/* 2. Texto del menú (inactivo) en blanco brillante */
+/* Apuntamos al atributo [matListItemTitle] de tu HTML */
+.app-sidenav a:not(.active) [matListItemTitle] {
+  color: #ffffff !important; /* Blanco brillante */
+}
+
+/* 3. Íconos inactivos en blanco (para asegurar) */
+.app-sidenav a:not(.active) .mat-icon {
+  color: #ffffff !important;
+}
+
+.app-sidenav a.active {
+  background-color: rgba(200, 56, 50, 0.2) !important; 
+  
+  .mat-icon,
+  [matListItemTitle] { /* Usamos el selector de atributo */
+    color: #C83832 !important; /* Tu Rojo Corporativo */
+  }
+}
+
+/* 4. Estilo para el ítem al pasar el mouse (hover) */
+.app-sidenav a.mat-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important; /* Blanco tenue */
 }
 
 .mat-sidenav-content {
   flex: 1; 
   overflow: auto;
+}
+
+// --- Sobreescrituras para la armonía ---
+
+// Cabecera de la tabla (para asegurar el color de texto)
+.mat-header-cell {
+  color: var(--mat-table-header-label-text-color) !important; 
+}
+
+// Filas de la tabla (fondo blanco y borde sutil)
+.mat-row, .mat-footer-row {
+  background-color: var(--mdc-theme-surface); 
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+.mat-row:hover {
+  background-color: #f5f5f5; // Gris claro al pasar el mouse
+}
+
+// Barra de búsqueda y inputs del formulario
+.mat-mdc-form-field {
+  // Fondo del input
+  .mat-mdc-form-field-flex {
+    background-color: #ffffff; 
+  }
+  // Color del borde de los inputs (outline)
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(0, 0, 0, 0.2); 
+  }
+  &:hover {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(0, 0, 0, 0.5); // Borde más oscuro al pasar el mouse
+    }
+  }
 }

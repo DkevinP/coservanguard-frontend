@@ -12,7 +12,7 @@ export interface Cargo {
 })
 export class CargoService {
 
-    private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+    private apiUrl = 'http://localhost:8080/api/cargo/list-cargo'; 
 
   constructor(private http: HttpClient) { }
 

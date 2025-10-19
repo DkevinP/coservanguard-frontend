@@ -13,7 +13,7 @@ export interface Asignacion {
 })
 export class AsignacionService {
 
-    private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+    private apiUrl = 'http://localhost:8080/api/asignacion/list-asignacion'; 
 
   constructor(private http: HttpClient) { }
 
