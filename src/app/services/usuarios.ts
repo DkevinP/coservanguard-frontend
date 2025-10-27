@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Usuario {
-  id_cc: string; 
+  id: string; 
   nombre: number;
   apellido : number;
   telefono: Date;
@@ -16,7 +16,7 @@ export interface Usuario {
 })
 export class UsuarioService {
 
-    private apiUrl = 'http://localhost:8080/api/usuarios/list-usuarios'; 
+    private apiUrl = 'http://localhost:8080/api/usuario/list-usuario'; 
 
   constructor(private http: HttpClient) { }
 

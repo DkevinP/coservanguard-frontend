@@ -73,7 +73,7 @@ onSubmit(): void {
     const horaFin = this.getCombinedEndDate();
 
     const turnoParaEnviar = {
-      id_cc: this.turnoForm.value.id_cc,
+      id_cc: this.turnoForm.value.id,
       id_puesto: this.turnoForm.value.id_puesto,
       hora_inicio: horaInicio, // Usamos el valor combinado
       hora_fin: horaFin        // Usamos el valor combinado

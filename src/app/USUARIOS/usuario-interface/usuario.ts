@@ -18,7 +18,7 @@ export class Usuarios implements OnInit{
 
   public usuarios: any;
   public usuariosDataSource: any;
-  displayedColumns: string[] = ['nombre', 'apellido', 'telefono','id_cargo'];
+  displayedColumns: string[] = ['nombre', 'apellido', 'cedula', 'correo', 'telefono','id_cargo'];
 
  /**
    * Decorador que permite acceder a un componente del DOM
@@ -34,7 +34,7 @@ export class Usuarios implements OnInit{
 
   //creacion del dataset
   ngOnInit(): void {
-    this.http.get("http://localhost:8080/api/usuario-cliente/list-usuario").subscribe({
+    this.http.get("http://localhost:8080/api/usuario/list-usuario").subscribe({
       next: data =>{
         this.usuarios = data;
         this.usuariosDataSource = new MatTableDataSource(this.usuarios);
@@ -72,9 +72,6 @@ export class Usuarios implements OnInit{
     this.usuariosDataSource.filter = filtro.trim().toLowerCase();
   }
 
-  ngAfterViewInit() {
-    this.usuariosDataSource.paginator = this.paginator;
-  }
 
   orderByAscOrDesc(sortState: Sort) {
     if (sortState.direction) {

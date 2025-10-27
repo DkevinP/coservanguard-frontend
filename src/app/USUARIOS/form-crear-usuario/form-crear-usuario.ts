@@ -26,10 +26,11 @@ export class FormCrearUsuario {
     this.usuarioForm = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
+      cedula: ['', Validators.required],
       contrasena: ['', Validators.required],
       telefono: ['', Validators.required],
-      recuperacion: ['', Validators.required],
-      id_cargo: ['', Validators.required],
+      correo: ['', Validators.required],
+      id_cargo: [null, Validators.required],
     });
   }
 
@@ -52,7 +53,7 @@ export class FormCrearUsuario {
     // Verificamos si el formulario es válido
     if (this.usuarioForm.valid) {
       const nuevausuario = this.usuarioForm.value;
-      const apiUrl = 'http://localhost:8080/api/usuario-usuario/crear-usuario';
+      const apiUrl = 'http://localhost:8080/api/usuario/crear-usuario';
 
       // Hacemos la petición POST al backend
       this.http.post(apiUrl, nuevausuario).subscribe({

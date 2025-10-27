@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Código QR: Puesto {{ data.id_puesto }}</h1>
+
+<div mat-dialog-content class="qr-container">
+  
+  <img [src]="'data:image/png;base64,' + data.qr" alt="Código QR">
+
+  <div class="qr-info">
+    <p><strong>Información del Puesto:</strong></p>
+    <ul>
+      <li><strong>ID Puesto:</strong> {{ data.id_puesto }}</li>
+      <li><strong>Latitud:</strong> {{ data.latitude }}</li>
+      <li><strong>Longitud:</strong> {{ data.longitude }}</li>
+      </ul>
+  </div>
+
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cerrar</button>
+  <button mat-flat-button color="primary" (click)="downloadQr()" [disabled]="!data.qr">
+    <mat-icon>download</mat-icon>
+    Descargar
+  </button>
+</div>

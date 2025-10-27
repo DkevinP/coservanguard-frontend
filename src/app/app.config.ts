@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 // --- Módulos de Angular Material ---
 import { MatButtonModule} from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -40,6 +41,9 @@ import { FormCrearCargo } from './USUARIOS/form-crear-cargo/form-crear-cargo';
 import { TurnoInterface } from './TURNO/turnos-interface/turnos';
 import { FormCrearTurno } from './TURNO/form-crear-turnos/form-crear-turnos';
 
+import { FormCrearCodigoQr } from './PUNTOS_DE_MARCACION/form-codigo-qr/form-codigo-qr';
+import { CodigoQrInterface } from './PUNTOS_DE_MARCACION/codigo-qr-interface/codigo-qr-interface';
+import { CodigoQr } from './PUNTOS_DE_MARCACION/codigo-qr/codigo-qr';
 import { PuestoInterface } from './PUNTOS_DE_MARCACION/puesto-interface/puesto-interface';
 import { FormCrearPuesto } from './PUNTOS_DE_MARCACION/form-puesto/form-puesto';
 
@@ -64,7 +68,10 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     CargoInterface,
     FormCrearCargo,
     PuestoInterface,
-    FormCrearPuesto
+    FormCrearPuesto,
+    FormCrearCodigoQr,
+    CodigoQrInterface,
+    CodigoQr
   ],
   imports: [
     // Aquí van TODOS los módulos

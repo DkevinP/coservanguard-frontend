@@ -11,14 +11,24 @@
   <div class="menu-group" [ngClass]="{'expanded': menuState['usuarios']}">
     <a mat-list-item (click)="toggleMenu('usuarios')">
       <mat-icon matListItemIcon>group</mat-icon>
-      <span matListItemTitle>USUARIOS</span>
-      <mat-icon class="expansion-indicator">
-        {{ menuState['usuarios'] ? 'expand_less' : 'expand_more' }}
-      </mat-icon>
+      <span matListItemTitle>USUARIOS
+
+        <mat-icon class="expansion-indicator">
+          {{ menuState['usuarios'] ? 'expand_less' : 'expand_more' }}
+        </mat-icon>
+
+      </span>
+
     </a>
     <div class="submenu">
-      <a mat-list-item routerLink="/usuarios" routerLinkActive="active">Usuarios</a>
-      <a mat-list-item routerLink="/cargos" routerLinkActive="active">Cargo</a>
+      <a mat-list-item routerLink="/usuarios" routerLinkActive="active">
+        <mat-icon matListItemIcon>people_outline</mat-icon>
+        <span matListItemTitle>Usuarios</span>
+      </a>
+      <a mat-list-item routerLink="/cargos" routerLinkActive="active">
+        <mat-icon matListItemIcon>work_outline</mat-icon>
+        <span matListItemTitle>Cargo</span>
+      </a>
     </div>
   </div>
 
@@ -40,13 +50,24 @@
   <div class="menu-group" [ngClass]="{'expanded': menuState['puntos']}">
     <a mat-list-item (click)="toggleMenu('puntos')">
       <mat-icon matListItemIcon>verified_user</mat-icon>
-      <span matListItemTitle>PUNTOS DE MARCACION</span>
-      <mat-icon class="expansion-indicator">
-        {{ menuState['puntos'] ? 'expand_less' : 'expand_more' }}
-      </mat-icon>
+      <span matListItemTitle>PUNTOS DE MARCACION
+        <mat-icon class="expansion-indicator">
+          {{ menuState['puntos'] ? 'expand_less' : 'expand_more' }}
+        </mat-icon>
+
+      </span>
+
     </a>
     <div class="submenu">
-      <a mat-list-item routerLink="/puestos" routerLinkActive="active">PUESTOS</a>
+      <a mat-list-item routerLink="/puestos" routerLinkActive="active">
+        <mat-icon matListItemIcon>add_location</mat-icon>
+        <span matListItemTitle>PUESTOS</span>
+      </a>
+
+      <a mat-list-item routerLink="/codigoQr" routerLinkActive="active">
+        <mat-icon matListItemIcon>qr_code</mat-icon>
+        <span matListItemTitle>CODIGO QR</span>
+      </a>      
     </div>
   </div>
 

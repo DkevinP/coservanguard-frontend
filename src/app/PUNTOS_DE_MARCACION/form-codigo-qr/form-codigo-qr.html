@@ -1,0 +1,21 @@
+<form [formGroup]="codigoQrForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Crear codigoQr</h1> 
+  <div mat-dialog-content>
+    <p>Por favor, ingrese los datos del nuevo codigo QR.</p>
+
+
+    <!--Lista desplegable de puestos-->
+    <mat-form-field appearance="outline">
+      <mat-label>Puesto</mat-label>
+      <mat-select formControlName="id_puesto" required>
+        <mat-option *ngFor="let puesto of puestos" [value]="puesto.id">
+          {{ puesto.puesto }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </div>
+  <div mat-dialog-actions align="end">
+   <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="!codigoQrForm.valid">Crear</button>
+  </div>
+</form>

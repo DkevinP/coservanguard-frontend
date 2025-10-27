@@ -1,0 +1,36 @@
+<div class="app-content">
+  <div class="content-header">
+    <h2>CODIGO QR</h2>
+    <button mat-flat-button color="primary" (click)="openCreatecodigoQr()">CREAR codigoQr</button>
+  </div>
+
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput (keyup)="filtrar($event)" placeholder="Buscar codigoQr">
+  </mat-form-field>
+<!--Se añaden los parametros sort que permiten ordenar los datos de la tabla de forma ascendente o descendente-->
+ <table mat-table [dataSource]="codigoQrsDataSource" class="user-table" matSort (matSortChange)="orderByAscOrDesc($event)">
+      <ng-container matColumnDef="id_puesto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar alfabeticamente"> PUESTO </th>
+        <td mat-cell *matCellDef="let codigoQr"> {{codigoQr.id_puesto}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ver_qr">
+        <th mat-header-cell *matHeaderCellDef> Ver QR </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="primary" (click)="openQrDialog(row)">
+            <mat-icon>qr_code_scanner</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!--Añade un boton para separar la tabla por paginas-->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+     </mat-paginator>
+</div>

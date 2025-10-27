@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface CodigoQR {
-  id_codigo: number; 
+  id: number; 
   qr: string;
   latitude: number;
   longitude: number;
@@ -15,7 +15,7 @@ export interface CodigoQR {
 })
 export class CodigoQrService {
 
-    private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+    private apiUrl = 'http://localhost:8080/api/codigoqr/crear-codigoqr'; 
 
   constructor(private http: HttpClient) { }
 

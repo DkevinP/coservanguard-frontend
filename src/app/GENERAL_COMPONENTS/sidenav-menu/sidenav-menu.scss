@@ -1,100 +1,106 @@
-// Asegúrate de que tus variables de color estén definidas en un archivo global (styles.scss)
-// :root {
-//   --primary-color: #673ab7;
-//   --active-bg-color: rgba(103, 58, 183, 0.1);
-//   --text-secondary-color: rgba(0, 0, 0, 0.7);
-// }
-
-.sidenav-header {
-  padding: 24px 16px; // Espaciado superior e inferior
-  text-align: center; // Centra el logo en el contenedor
-}
-
-.company-logo {
-  max-width: 180px; // Ajusta el tamaño máximo del logo
-  height: auto;     // Mantiene la proporción de la imagen
-}
-
-.sidenav-menu {
-  padding: 8px 0 !important;
-
-  // Estilo general para todos los items de la lista
-  .mat-list-item {
-    margin: 0 12px;
-    border-radius: 8px;
-    color: var(--text-secondary-color);
-    font-weight: 500;
-
-    .mat-icon {
-      color: var(--text-secondary-color);
-    }
+/* 1. ESTILOS DEL :HOST (El componente en sí) */
+:host {
+  .sidenav-header {
+    padding: 24px 16px;
+    text-align: center;
+    box-sizing: border-box;
   }
 
-  // Estilo para el item activo (cuando la ruta coincide)
-  .mat-list-item.active {
-    background-color: var(--active-bg-color);
-    color: var(--primary-color);
-
-    .mat-icon {
-      color: var(--primary-color);
-    }
+  .company-logo {
+    max-width: 180px;
+    height: auto;    
+    background-color: #ffffff; 
+    border: 3px solid #C83832;
+    border-radius: 10px;       
+    box-sizing: border-box;
+    padding: 10px; 
   }
 }
 
-// Contenedor para un grupo desplegable
-.menu-group {
-  .mat-list-item {
-    // Asegura que los items dentro del grupo no tengan margen extra
-    margin-bottom: 0;
-  }
+/* 2. ESTILOS DE LAYOUT PARA COMPONENTES HIJOS (::ng-deep) */
 
-  // El ícono de la flecha
-  .expansion-indicator {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-  }
+/* --- Botón desplegable y flecha --- */
+:host ::ng-deep .menu-group > a.mat-list-item {
+  display: flex !important;
+  align-items: center !important;
+  width: 100%;
+}
+:host ::ng-deep .menu-group > a.mat-list-item [matListItemTitle] {
+  flex: 1 1 auto; 
+}
+:host ::ng-deep .expansion-indicator {
+  margin-left: auto; 
+  flex-shrink: 0;   
+  transition: transform 0.3s ease-in-out;
+}
+:host ::ng-deep .menu-group.expanded .expansion-indicator {
+  transform: rotate(180deg);
+}
+/* ----------------------------------------------- */
 
-  // Submenú oculto
-  .submenu {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.4s ease-out;
-    padding-left: 16px;
 
-    // Estilo de los links del submenú
-    a {
-      font-size: 0.9em;
-      // Un color ligeramente más suave para denotar jerarquía
-      color: rgba(0, 0, 0, 0.6);
-    }
+/* 3. ESTILOS DE COLOR UNIFICADOS (::ng-deep) */
 
-    a.mat-list-item {
-      font-size: 0.9em;
-      color: rgba(0, 0, 0, 0.6);
-      height: 40px !important; // Altura consistente
-      
-      // La clave: empuja el texto para alinearlo con el texto del padre.
-      // Esto compensa el espacio que ocupa el ícono en el nivel superior.
-      padding-left: 56px !important; 
-    }
+/* --- A. ESTADO POR DEFECTO (Inactivo) --- */
+/* ¡LA CORRECCIÓN MÁS FUERTE! */
+/* Apuntamos directamente a las clases internas de Material */
 
-  }
+:host ::ng-deep a.mat-list-item:not(.active) .mdc-list-item__primary-text, /* El texto del span */
+:host ::ng-deep a.mat-list-item:not(.active) .mdc-list-item__start /* El ícono */ {
+  color: #ffffff !important; /* Blanco brillante */
+}
 
-  // Estilos cuando el grupo está expandido
-  &.expanded {
-    // El item principal se mantiene con estilo de "activo" mientras está abierto
-    > .mat-list-item {
-      background-color: var(--active-bg-color);
-      color: var(--primary-color);
+/* Regla de respaldo para la flecha (que también es un mat-icon) */
+:host ::ng-deep a.mat-list-item:not(.active) .expansion-indicator {
+  color: #ffffff !important;
+}
 
-      .mat-icon {
-        color: var(--primary-color);
-      }
-    }
 
-    .submenu {
-      max-height: 200px; // Altura para mostrar los items
-      transition: max-height 0.4s ease-in;
-    }
+/* --- B. ESTADO ACTIVO (Rojo) --- */
+:host ::ng-deep a.mat-list-item.active {
+  background-color: rgba(200, 56, 50, 0.2) !important;
+  
+  /* Apuntamos a las clases internas */
+  .mdc-list-item__primary-text,
+  .mdc-list-item__start {
+    color: #C83832 !important; /* Rojo */
   }
 }
+
+/* --- C. ESTADO HOVER (Cuando no está activo) --- */
+:host ::ng-deep a.mat-list-item:not(.active):hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  
+  /* El color de texto y el ícono se mantienen blancos */
+  .mdc-list-item__primary-text,
+  .mdc-list-item__start {
+    color: #ffffff !important;
+  }
+}
+
+
+/* 4. ESTILOS DE SUBMENÚ (Layout) */
+
+/* Oculta/muestra el submenú */
+:host ::ng-deep .submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+:host ::ng-deep .menu-group.expanded .submenu {
+  max-height: 500px; 
+  padding-left: 50px !important; 
+}
+
+/* Centra los sub-botones */
+:host ::ng-deep .submenu a.mat-list-item {
+  padding-left: 0 !important; 
+  justify-content: center !important;
+}
+
+/* Espacio del ícono en sub-botón */
+:host ::ng-deep .submenu a.mat-list-item .mat-icon {
+  margin-right: 16px; 
+}
+
+/* El estado activo y hover del submenú ya están cubiertos */

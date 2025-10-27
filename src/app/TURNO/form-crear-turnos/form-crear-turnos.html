@@ -6,7 +6,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Seleccione el cliente</mat-label>
       <mat-select formControlName="id_cliente" required>
-        <mat-option *ngFor="let usuarios of usuarios" [value]="usuarios.id_cc">
+        <mat-option *ngFor="let usuarios of usuarios" [value]="usuarios.id">
           {{ usuarios.nombre }} {{ usuarios.apellido }}
         </mat-option>
       </mat-select>
@@ -15,7 +15,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Seleccione el puesto</mat-label>
       <mat-select formControlName="id_cliente" required>
-        <mat-option *ngFor="let puesto of puestos" [value]="puesto.id_puesto">
+        <mat-option *ngFor="let puesto of puestos" [value]="puesto.id">
           {{ puesto.puesto }}
         </mat-option>
       </mat-select>

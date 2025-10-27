@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Cargo {
-  id_cargo: number; 
+  id: number; 
   nombre_cargo: string;
 }
 
