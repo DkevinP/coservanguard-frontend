@@ -15,7 +15,7 @@ export interface CodigoQR {
 })
 export class CodigoQrService {
 
-    private apiUrl = 'http://localhost:8080/api/codigoqr/crear-codigoqr'; 
+    private apiUrl = 'http://localhost:8080/api/codigoqr/listar-codigo'; 
 
   constructor(private http: HttpClient) { }
 

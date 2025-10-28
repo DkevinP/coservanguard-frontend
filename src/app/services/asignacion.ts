@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Asignacion {
-  id_asignacion: number; 
-  id_cc: number;
+  id: number; 
+  id_user: string;
   id_puesto: number;
 }
 

@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 
 export interface Usuario {
   id: string; 
-  nombre: number;
-  apellido : number;
-  telefono: Date;
+  nombre: String;
+  apellido : String;
+  telefono: String;
   id_cargo: Date;
 
 }

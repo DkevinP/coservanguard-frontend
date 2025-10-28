@@ -46,6 +46,9 @@ import { CodigoQrInterface } from './PUNTOS_DE_MARCACION/codigo-qr-interface/cod
 import { CodigoQr } from './PUNTOS_DE_MARCACION/codigo-qr/codigo-qr';
 import { PuestoInterface } from './PUNTOS_DE_MARCACION/puesto-interface/puesto-interface';
 import { FormCrearPuesto } from './PUNTOS_DE_MARCACION/form-puesto/form-puesto';
+import { asignacionInterface } from './PUNTOS_DE_MARCACION/asignacion-interface/asignacion-interface';
+import { FormCrearAsignacion } from './PUNTOS_DE_MARCACION/form-asignacion/form-asignacion';
+import { marcacionQrRealizadaInterface } from './PUNTOS_DE_MARCACION/marcaciones-qr-realizadas/marcaciones-qr-realizadas';
 
 import { SidenavMenu } from './GENERAL_COMPONENTS/sidenav-menu/sidenav-menu';
 import { Header } from './GENERAL_COMPONENTS/header/header';
@@ -71,7 +74,10 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     FormCrearPuesto,
     FormCrearCodigoQr,
     CodigoQrInterface,
-    CodigoQr
+    CodigoQr,
+    asignacionInterface,
+    FormCrearAsignacion,
+    marcacionQrRealizadaInterface
   ],
   imports: [
     // Aquí van TODOS los módulos

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MarcacionesQrRealizadas } from './marcaciones-qr-realizadas';
+import { marcacionQrRealizadaInterface } from './marcaciones-qr-realizadas';
 
 describe('MarcacionesQrRealizadas', () => {
-  let component: MarcacionesQrRealizadas;
-  let fixture: ComponentFixture<MarcacionesQrRealizadas>;
+  let component: marcacionQrRealizadaInterface;
+  let fixture: ComponentFixture<marcacionQrRealizadaInterface>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MarcacionesQrRealizadas]
+      imports: [marcacionQrRealizadaInterface]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MarcacionesQrRealizadas);
+    fixture = TestBed.createComponent(marcacionQrRealizadaInterface);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

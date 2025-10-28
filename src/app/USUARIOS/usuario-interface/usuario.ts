@@ -8,6 +8,9 @@ import { MatTableDataSource } from '@angular/material/table';
 //ayuda al uso de lectores de pantalla
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
+import { forkJoin } from 'rxjs';
+import { CargoService, Cargo } from '../../services/cargo';
+
 @Component({
   selector: 'app-usuario-interface',
   standalone: false,
@@ -29,22 +32,52 @@ export class Usuarios implements OnInit{
   constructor(
     private http: HttpClient, 
     public dialog: MatDialog,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private cargoService: CargoService
   ) {}
 
   //creacion del dataset
-  ngOnInit(): void {
-    this.http.get("http://localhost:8080/api/usuario/list-usuario").subscribe({
-      next: data =>{
-        this.usuarios = data;
+ngOnInit(): void {
+
+    const usuarios$ = this.http.get<any[]>("http://localhost:8080/api/usuario/list-usuario");
+    const cargos$ = this.cargoService.getCargo(); 
+    forkJoin({
+      usuarios: usuarios$,
+      cargos: cargos$
+    }).subscribe({
+      next: (data) => {
+       
+        const cargosMap = new Map<number, string>();
+  
+        data.cargos.forEach((cargo: Cargo) => {
+          cargosMap.set(cargo.id, cargo.nombre_cargo); 
+        });
+
+
+        this.usuarios = data.usuarios.map(usuario => {
+          return {
+            ...usuario,
+            cargoNombre: cargosMap.get(usuario.id_cargo) || 'Cargo no asignado'
+          };
+        });
+
+
         this.usuariosDataSource = new MatTableDataSource(this.usuarios);
         this.usuariosDataSource.paginator = this.paginator;
         this.usuariosDataSource.sort = this.sort;
+
+
+        this.usuariosDataSource.sortingDataAccessor = (item: any, property: string) => {
+          switch(property) {
+
+            case 'id_cargo': return item.cargoNombre;
+            default: return item[property];
+          }
+        };
       },
       error: err => {
-        console.log(err);
+        console.error('Error al cargar datos combinados:', err);
       }
-      
     });
   }
   

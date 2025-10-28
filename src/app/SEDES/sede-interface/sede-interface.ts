@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 //ayuda al uso de lectores de pantalla
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { forkJoin } from 'rxjs';
+import { ClienteService, Cliente } from '../../services/cliente';
 
 @Component({
   selector: 'app-sede-interface',
@@ -29,22 +31,52 @@ export class SedeInterface implements OnInit{
   constructor(
     private http: HttpClient, 
     public dialog: MatDialog,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private clienteService: ClienteService
   ) {}
 
-  //creacion del dataset
-  ngOnInit(): void {
-    this.http.get("http://localhost:8080/api/sede-cliente/list-sede").subscribe({
-      next: data =>{
-        this.sedes = data;
+
+ngOnInit(): void {
+
+    const sedes$ = this.http.get<any[]>("http://localhost:8080/api/sede-cliente/list-sede");
+    const clientes$ = this.clienteService.getClientes();
+
+    forkJoin({
+      sedes: sedes$,
+      clientes: clientes$
+    }).subscribe({
+      next: (data) => {
+
+        const clientesMap = new Map<number, string>();
+        data.clientes.forEach((cliente: Cliente) => {
+          clientesMap.set(cliente.id, cliente.nombre);
+        });
+
+        // 4. Transformamos los datos de las sedes para añadir el nombre del cliente
+        this.sedes = data.sedes.map(sede => {
+          return {
+            ...sede, 
+            clienteNombre: clientesMap.get(sede.id_cliente) || 'Cliente no encontrado'
+          };
+        });
+
+
         this.sedesDataSource = new MatTableDataSource(this.sedes);
         this.sedesDataSource.paginator = this.paginator;
         this.sedesDataSource.sort = this.sort;
+
+        // 6. (IMPORTANTE) Le decimos a la tabla cómo ordenar por esa columna
+        this.sedesDataSource.sortingDataAccessor = (item: any, property: string) => {
+          switch(property) {
+            // Cuando el usuario ordene por 'id_cliente', usamos el 'clienteNombre'
+            case 'id_cliente': return item.clienteNombre;
+            default: return item[property];
+          }
+        };
       },
       error: err => {
-        console.log(err);
+        console.error('Error al cargar datos combinados:', err);
       }
-      
     });
   }
   

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Código QR: Puesto {{ data.id_puesto }}</h1>
+<h1 mat-dialog-title>Código QR: {{ data.puestoNombre || 'Puesto Desconocido' }}</h1>
 
 <div mat-dialog-content class="qr-container">
   
@@ -7,7 +7,7 @@
   <div class="qr-info">
     <p><strong>Información del Puesto:</strong></p>
     <ul>
-      <li><strong>ID Puesto:</strong> {{ data.id_puesto }}</li>
+      <li><strong>Puesto:</strong> {{ data.puestoNombre || 'N/A' }}</li> 
       <li><strong>Latitud:</strong> {{ data.latitude }}</li>
       <li><strong>Longitud:</strong> {{ data.longitude }}</li>
       </ul>

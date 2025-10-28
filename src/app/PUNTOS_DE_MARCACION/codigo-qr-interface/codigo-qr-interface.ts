@@ -5,9 +5,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
-//ayuda al uso de lectores de pantalla
+
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CodigoQr } from '../codigo-qr/codigo-qr';
+
+import { forkJoin } from 'rxjs';
+import { PuestoService, Puesto } from '../../services/puesto';
 
 @Component({
   selector: 'app-codigoQrs',
@@ -18,8 +21,8 @@ import { CodigoQr } from '../codigo-qr/codigo-qr';
 
 export class CodigoQrInterface implements OnInit{
   public codigoQrs: any;
-  public codigoQrsDataSource: any;
-  displayedColumns: string[] = ['id_puesto', 'ver_qr'];
+  public codigoQrDataSource: any;
+  displayedColumns: string[] = ['puestoNombre', 'ver_qr'];
 
   /**
    * Decorador que permite acceder a un componente del DOM
@@ -30,24 +33,55 @@ export class CodigoQrInterface implements OnInit{
   constructor(
     private http: HttpClient, 
     public dialog: MatDialog,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private puestoService: PuestoService
   ) {}
 
   //Agregar datos a la tabla
-  ngOnInit(): void {
-    this.http.get("http://localhost:8080/api/codigoqr/listar-codigo").subscribe({
-      next: data =>{
-        this.codigoQrs = data;
-        this.codigoQrsDataSource = new MatTableDataSource(this.codigoQrs);
-        this.codigoQrsDataSource.paginator = this.paginator;
-        this.codigoQrsDataSource.sort = this.sort;
+ngOnInit(): void {
+    // 1. Preparamos ambas peticiones
+    const codigoQrs$ = this.http.get<any[]>("http://localhost:8080/api/codigoqr/listar-codigo-img");
+    const puestos$ = this.puestoService.getPuesto();
+
+    // 2. Usamos forkJoin
+    forkJoin({
+      codigoQrs: codigoQrs$,
+      puestos: puestos$
+    }).subscribe({
+      next: (data) => {
+        // 3. Creamos un Mapa para buscar puestos por ID
+        const puestosMap = new Map<number, string>();
+        data.puestos.forEach((puesto: Puesto) => {
+          puestosMap.set(puesto.id, puesto.puesto);
+        });
+
+        // 4. Transformamos los datos de los QRs
+        this.codigoQrs = data.codigoQrs.map(codigoQr => {
+          return {
+            ...codigoQr, // Datos originales del QR
+            puestoNombre: puestosMap.get(codigoQr.id_puesto) || 'Puesto no encontrado'
+          };
+        });
+
+        // 5. Creamos la fuente de datos
+        this.codigoQrDataSource = new MatTableDataSource(this.codigoQrs);
+        this.codigoQrDataSource.paginator = this.paginator;
+        this.codigoQrDataSource.sort = this.sort;
+
+        // 6. (IMPORTANTE) Añadimos el accesor de ordenamiento
+        this.codigoQrDataSource.sortingDataAccessor = (item: any, property: string) => {
+          switch(property) {
+            case 'id_puesto': return item.puestoNombre; // Ordena por nombre
+            default: return item[property];
+          }
+        };
       },
       error: err => {
-        console.log(err);
+        console.error('Error al cargar datos combinados:', err);
       }
-      
     });
   }
+  
   
   //Llamar formulario y crear nuevo registro
   openCreatecodigoQr(): void {
@@ -67,14 +101,14 @@ export class CodigoQrInterface implements OnInit{
   }
 
   openQrDialog(codigoQr: any): void {
-    const dialogRef = this.dialog.open(CodigoQr, { // Llama al componente CodigoQr
+    const dialogRef = this.dialog.open(CodigoQr, { 
       width: '400px',
-      data: codigoQr // Pasa el objeto completo (qr, latitude, etc.) al diálogo
+      data: codigoQr 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('El diálogo de QR fue cerrado');
-      // No es necesario recargar la tabla aquí, solo estamos viendo
+      
     });
   }
 
@@ -82,7 +116,7 @@ export class CodigoQrInterface implements OnInit{
 
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
-    this.codigoQrsDataSource.filter = filtro.trim().toLowerCase();
+    this.codigoQrDataSource.filter = filtro.trim().toLowerCase();
   }
 
   orderByAscOrDesc(sortState: Sort) {

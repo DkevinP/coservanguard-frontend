@@ -42,10 +42,27 @@
     <span matListItemTitle>SEDES</span>
   </a>
 
-  <a mat-list-item routerLink="/turnos" routerLinkActive="active">
-    <mat-icon matListItemIcon>calendar_today</mat-icon>
-    <span matListItemTitle>TURNOS</span>
-  </a>
+  <!--Lista deslegable para TURNOS-->
+  <div class="menu-group" [ngClass]="{'expanded': menuState['turnos']}">
+    <a mat-list-item (click)="toggleMenu('turnos')">
+      <mat-icon matListItemIcon>schedule</mat-icon>
+      <span matListItemTitle>TURNOS
+        <mat-icon class="expansion-indicator">
+          {{ menuState['turnos'] ? 'expand_less' : 'expand_more' }}
+        </mat-icon>
+
+      </span>
+
+    </a>
+    <div class="submenu">
+      <a mat-list-item routerLink="/turnos" routerLinkActive="active">
+        <mat-icon matListItemIcon>calendar_month</mat-icon>
+        <span matListItemTitle>TURNOS</span>
+      </a>
+  
+    </div>
+  </div>
+
   <!--Lista deslegable para puntos de marcacion-->
   <div class="menu-group" [ngClass]="{'expanded': menuState['puntos']}">
     <a mat-list-item (click)="toggleMenu('puntos')">
@@ -67,7 +84,19 @@
       <a mat-list-item routerLink="/codigoQr" routerLinkActive="active">
         <mat-icon matListItemIcon>qr_code</mat-icon>
         <span matListItemTitle>CODIGO QR</span>
-      </a>      
+      </a>     
+      
+      <a mat-list-item routerLink="/asignacion" routerLinkActive="active">
+        <mat-icon matListItemIcon>assignment_ind</mat-icon>
+        <span matListItemTitle>ASIGNACION</span>
+      </a>  
+      
+      <a mat-list-item routerLink="/marcacionQrRealizadas" routerLinkActive="active">
+        <mat-icon matListItemIcon>assignment_turned_in</mat-icon>
+        <span matListItemTitle>MARCACIONES REALIZADAS</span>
+      </a>        
+        
+
     </div>
   </div>
 

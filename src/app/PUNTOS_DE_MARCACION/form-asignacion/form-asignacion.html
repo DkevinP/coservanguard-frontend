@@ -1,0 +1,31 @@
+<form [formGroup]="asignacionForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Crear Nueva Asignacion</h1> 
+  <div mat-dialog-content>
+    <p>Por favor, ingrese los datos para la nueva asignación.</p>
+    <!--Lista desplegable de usuarios-->
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccione el usuario</mat-label>
+      <mat-select formControlName="id_user" required>
+        <mat-option *ngFor="let usuarios of usuarios" [value]="usuarios.id">
+          {{ usuarios.nombre }} {{ usuarios.apellido }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccione el puesto</mat-label>
+      <mat-select formControlName="id_puesto" required>
+        <mat-option *ngFor="let puesto of puestos" [value]="puesto.id">
+          {{ puesto.puesto }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>    
+
+
+
+    </div>
+  <div mat-dialog-actions align="end">
+   <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="!asignacionForm.valid">Crear</button>
+  </div>
+</form>
