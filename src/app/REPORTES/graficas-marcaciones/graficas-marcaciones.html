@@ -1,0 +1,50 @@
+<div class="app-content">
+  <div class="content-header">
+    <h2>GRÁFICAS DE MARCACIONES QR</h2>
+    </div>
+
+  <form [formGroup]="filterForm" class="filter-controls">
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccione Cliente</mat-label>
+      <mat-select formControlName="clienteId">
+        <mat-option [value]="null">-- Todos --</mat-option> <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">
+          {{ cliente.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccione Sede</mat-label>
+      <mat-select formControlName="sedeId">
+         <mat-option [value]="null">-- Todas las Sedes (del Cliente) --</mat-option>
+        <mat-option *ngFor="let sede of filteredSedes" [value]="sede.id">
+          {{ sede.sede }}
+        </mat-option>
+      </mat-select>
+      <mat-hint *ngIf="filterForm.get('sedeId')?.disabled">Seleccione un cliente primero</mat-hint>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="downloadChart()" [disabled]="!chartData.datasets.length || isLoading">
+      <mat-icon>download</mat-icon>
+      Descargar Gráfico
+    </button>
+  </form>
+
+  <hr>
+
+  <div class="chart-container">
+    <div *ngIf="isLoading" class="loading-indicator">
+      Cargando datos... </div>
+
+    <div *ngIf="!isLoading && (!chartData.labels || chartData.labels.length === 0)">
+       <p>Seleccione un cliente para ver el gráfico. No hay datos para mostrar con los filtros actuales.</p>
+    </div>
+
+<canvas *ngIf="!isLoading && chartData.labels && chartData.labels.length > 0"
+            baseChart  [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+    </canvas>
+  </div>
+
+</div>

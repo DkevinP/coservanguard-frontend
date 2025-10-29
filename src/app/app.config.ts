@@ -20,8 +20,9 @@ import { MatSidenavModule} from '@angular/material/sidenav';
 import { MatSortModule} from '@angular/material/sort';
 import { MatTableModule} from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatDatepickerModule } from '@angular/material/datepicker'; // <-- Módulo para fechas
-import { MatNativeDateModule } from '@angular/material/core';      // <-- Módulo para fechas
+import { MatDatepickerModule } from '@angular/material/datepicker'; 
+import { MatNativeDateModule } from '@angular/material/core';      
+
 
 // --- Tus Componentes ---
 import { AppRoutingModule } from './app.routes'; // Asumo que se llama app.routes.ts
@@ -50,6 +51,9 @@ import { asignacionInterface } from './PUNTOS_DE_MARCACION/asignacion-interface/
 import { FormCrearAsignacion } from './PUNTOS_DE_MARCACION/form-asignacion/form-asignacion';
 import { marcacionQrRealizadaInterface } from './PUNTOS_DE_MARCACION/marcaciones-qr-realizadas/marcaciones-qr-realizadas';
 
+import { GraficasMarcaciones } from './REPORTES/graficas-marcaciones/graficas-marcaciones';
+import { BaseChartDirective } from 'ng2-charts';
+
 import { SidenavMenu } from './GENERAL_COMPONENTS/sidenav-menu/sidenav-menu';
 import { Header } from './GENERAL_COMPONENTS/header/header';
 
@@ -77,7 +81,8 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     CodigoQr,
     asignacionInterface,
     FormCrearAsignacion,
-    marcacionQrRealizadaInterface
+    marcacionQrRealizadaInterface,
+    GraficasMarcaciones
   ],
   imports: [
     // Aquí van TODOS los módulos
@@ -100,8 +105,9 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
-    MatDatepickerModule, // <-- Módulo de fechas
-    MatNativeDateModule  // <-- Módulo de fechas
+    MatDatepickerModule, 
+    MatNativeDateModule,
+    BaseChartDirective  
   ],
   providers: [
     // El array de providers debe estar VACÍO

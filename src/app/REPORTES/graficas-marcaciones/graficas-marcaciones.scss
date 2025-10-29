@@ -1,0 +1,20 @@
+.filter-controls {
+  display: flex;
+  gap: 16px; /* Espacio entre los controles */
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap; /* Para pantallas pequeñas */
+}
+
+.chart-container {
+  position: relative;
+  min-height: 400px; /* Dale una altura mínima al contenedor del gráfico */
+  width: 100%;
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 50px;
+  font-style: italic;
+  color: grey;
+}
