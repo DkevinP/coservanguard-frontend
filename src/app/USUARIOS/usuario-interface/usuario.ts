@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearUsuario } from '../form-crear-usuario/form-crear-usuario';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,7 +17,7 @@ import { CargoService, Cargo } from '../../services/cargo';
   templateUrl: './usuario.html',
   styleUrl: './usuario.scss'
 })
-export class Usuarios implements OnInit{
+export class Usuarios implements OnInit, AfterViewInit{
 
   public usuarios: any;
   public usuariosDataSource: any;
@@ -80,6 +80,28 @@ ngOnInit(): void {
       }
     });
   }
+
+  ngAfterViewInit() {
+    // Enlaza los componentes a la fuente de datos
+    this.usuariosDataSource.paginator = this.paginator;
+    this.usuariosDataSource.sort = this.sort;
+
+    this.setInitialSort();
+  }
+
+  /**
+   * Establece el ordenamiento por defecto de la tabla.
+   * Ordena por la columna 'id' en modo descendente.
+   */
+  setInitialSort() {
+    const sortState: Sort = {active: 'id', direction: 'desc'};
+
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+
+    this.sort.sortChange.emit(sortState);
+  }
+
   
   //registro de nueva usuario
   openCreateusuario(): void {

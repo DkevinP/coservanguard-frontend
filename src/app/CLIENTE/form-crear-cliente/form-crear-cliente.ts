@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog'; // Importa MatDialog
+import { MensajeDialogComponent } from '../../GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
 
 @Component({
   selector: 'app-form-crear-cliente',
@@ -16,13 +17,16 @@ export class FormCrearCliente implements OnInit{
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    public dialogRef: MatDialogRef<FormCrearCliente>
+    public dialogRef: MatDialogRef<FormCrearCliente>,
+    private dialog: MatDialog // Inyecta MatDialog para abrir el nuevo diálogo
   ) {
-    // Inicializamos el formulario con sus campos y validaciones
+    // Inicializamos el formulario con validaciones más estrictas
     this.clienteForm = this.fb.group({
       nombre: ['', Validators.required],
-      nit: ['', Validators.required],
-      telefono: ['', Validators.required],
+      // Valida que sean exactamente 7 dígitos numéricos
+      nit: ['', [Validators.required, Validators.pattern('^[0-9]{7}$')]],
+      // Valida que sean exactamente 10 dígitos numéricos
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       email: ['', [Validators.required, Validators.email]]
     });
   }
@@ -33,25 +37,38 @@ export class FormCrearCliente implements OnInit{
     this.dialogRef.close();
   }
 
-    onSubmit(): void {
-    // Verificamos si el formulario es válido
+  onSubmit(): void {
     if (this.clienteForm.valid) {
       const nuevoCliente = this.clienteForm.value;
       const apiUrl = 'http://localhost:8080/api/cliente/crear-cliente';
 
-      // Hacemos la petición POST al backend
       this.http.post(apiUrl, nuevoCliente).subscribe({
         next: (response) => {
-          console.log('Cliente creado con éxito:', response);
-          // Cerramos el diálogo y pasamos el nuevo cliente como resultado
-          this.dialogRef.close(nuevoCliente); 
+          // Cierra el formulario actual
+          this.dialogRef.close(nuevoCliente);
+          // Abre el diálogo de éxito
+          this.abrirMensaje(true, 'Cliente creado con éxito.');
         },
         error: (error) => {
           console.error('Error al crear el cliente:', error);
-          // Opcional: Mostrar un mensaje de error al usuario
+          // MANTIENE el formulario abierto y muestra el diálogo de error
+          this.abrirMensaje(false, 'Error al crear el cliente. Verifique los datos o intente más tarde.');
         }
       });
+    } else {
+      console.warn("El formulario no es válido. Revise los campos.");
     }
   }
 
+  /**
+   * Abre el nuevo diálogo de confirmación/error.
+   * @param esExito true para éxito (verde), false para error (rojo)
+   * @param mensaje El mensaje a mostrar
+   */
+  abrirMensaje(esExito: boolean, mensaje: string): void {
+    this.dialog.open(MensajeDialogComponent, {
+      width: '350px',
+      data: { esExito, mensaje } // Pasa los datos al diálogo
+    });
+  }
 }

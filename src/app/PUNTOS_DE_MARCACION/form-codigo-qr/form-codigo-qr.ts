@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Puesto, PuestoService } from '../../services/puesto';
+import { MensajeDialogComponent } from '../../GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
 
 @Component({
   selector: 'app-form-crear-codigoQr',
@@ -19,7 +20,8 @@ export class FormCrearCodigoQr {
     private fb: FormBuilder,
     private http: HttpClient,
     public dialogRef: MatDialogRef<FormCrearCodigoQr>,
-    private puestoService: PuestoService
+    private puestoService: PuestoService,
+    private dialog: MatDialog
   ) {
     // Inicializamos el formulario con sus campos y validaciones
     this.codigoQrForm = this.fb.group({
@@ -56,14 +58,28 @@ export class FormCrearCodigoQr {
       // 2. Hacemos la petición POST enviando los 'params' y un 'null' en el body
       this.http.post(apiUrl, null, { params: params }).subscribe({
         next: (response) => {
-          console.log('codigoQr creado con éxito:', response);
           this.dialogRef.close(formValue); 
+
+          this.abrirMensaje(true, 'Codigo QR creado con éxito.');
+
         },
         error: (error) => {
-          console.error('Error al crear el codigoQr:', error);
+          this.abrirMensaje(false, 'Error al crear el codigo QR. Verifique los datos o intente más tarde.');
         }
       });
     }
   }
+
+  /**
+   * Abre el nuevo diálogo de confirmación/error.
+   * @param esExito true para éxito (verde), false para error (rojo)
+   * @param mensaje El mensaje a mostrar
+   */
+  abrirMensaje(esExito: boolean, mensaje: string): void {
+    this.dialog.open(MensajeDialogComponent, {
+      width: '350px',
+      data: { esExito, mensaje } // Pasa los datos al diálogo
+    });
+  }  
 
 }

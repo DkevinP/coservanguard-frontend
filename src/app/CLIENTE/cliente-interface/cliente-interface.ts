@@ -1,13 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core'; // 1. Importa AfterViewInit
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearCliente } from '../form-crear-cliente/form-crear-cliente';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
-//ayuda al uso de lectores de pantalla
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-
 
 @Component({
   selector: 'app-cliente-interface',
@@ -15,14 +13,14 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   templateUrl: './cliente-interface.html',
   styleUrls: ['./cliente-interface.scss'] 
 })
-export class ClienteInterface implements OnInit{
+// 2. Implementa AfterViewInit
+export class ClienteInterface implements OnInit, AfterViewInit {
+  
   public clientes: any;
-  public clientesDataSource: any;
+  // 3. Inicializa el DataSource aquí para evitar errores
+  public clientesDataSource = new MatTableDataSource<any>(); 
   displayedColumns: string[] = ['nombre', 'nit', 'telefono', 'email'];
 
-  /**
-   * Decorador que permite acceder a un componente del DOM
-   */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -32,25 +30,25 @@ export class ClienteInterface implements OnInit{
     private _liveAnnouncer: LiveAnnouncer
   ) {}
 
-  //Agregar datos a la tabla
+  // 4. ngOnInit ahora SOLO carga los datos
   ngOnInit(): void {
     this.http.get("http://localhost:8080/api/cliente/list-cliente").subscribe({
-      next: data =>{
+      next: data => {
         this.clientes = data;
-        this.clientesDataSource = new MatTableDataSource(this.clientes);
-        this.clientesDataSource.paginator = this.paginator;
-        this.clientesDataSource.sort = this.sort;
+        // 5. Asigna la data al DataSource que ya existe
+        this.clientesDataSource.data = this.clientes;
+        
+        // (Quitamos las asignaciones de paginator y sort de aquí, 
+        // ya que @ViewChild aún no está listo en ngOnInit)
       },
       error: err => {
         console.log(err);
       }
-      
     });
   }
   
   //Llamar formulario y crear nuevo registro
   openCreateCliente(): void {
-    
     const dialogRef = this.dialog.open(FormCrearCliente, {
       width: '400px'
     });
@@ -59,18 +57,33 @@ export class ClienteInterface implements OnInit{
       console.log('El diálogo fue cerrado');
       if (result) {
         console.log('Datos recibidos:', result);
-        this.ngOnInit();
+        this.ngOnInit(); // Esto recargará los datos
       }
     });
+  }
+  
+  ngAfterViewInit() {
+    // Enlaza los componentes a la fuente de datos
+    this.clientesDataSource.paginator = this.paginator;
+    this.clientesDataSource.sort = this.sort;
 
+    this.setInitialSort();
+  }
+
+  /**
+   * Establece el ordenamiento por defecto de la tabla.
+   * Ordena por la columna 'id' en modo descendente.
+   */
+  setInitialSort() {
+    const sortState: Sort = {active: 'id', direction: 'desc'};
+
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+
+    this.sort.sortChange.emit(sortState);
   }
 
   //Acciones de la tabla
-
-  ngAfterViewInit() {
-    this.clientesDataSource.paginator = this.paginator;
-  }
-
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
     this.clientesDataSource.filter = filtro.trim().toLowerCase();
@@ -84,5 +97,4 @@ export class ClienteInterface implements OnInit{
       this._liveAnnouncer.announce('Ordenamiento restablecido');
     }
   }
-
 }

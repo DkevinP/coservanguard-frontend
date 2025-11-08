@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Usuario, UsuarioService } from '../../services/usuarios';
 import { Puesto, PuestoService } from '../../services/puesto';
+import { MensajeDialogComponent } from '../../GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
 
 @Component({
   selector: 'app-form-crear-turno',
@@ -22,7 +23,8 @@ export class FormCrearTurno {
     private http: HttpClient,
     public dialogRef: MatDialogRef<FormCrearTurno>,
     private usuarioService: UsuarioService,
-    private puestoService: PuestoService
+    private puestoService: PuestoService,
+    private dialog: MatDialog
   ) {
     // Inicializamos el formulario con sus campos y validaciones
     this.turnoForm = this.fb.group({
@@ -89,11 +91,11 @@ onSubmit(): void {
 
     this.http.post(apiUrl, turnoParaEnviar).subscribe({
       next: (response) => {
-        console.log('Turno creado con éxito:', response);
         this.dialogRef.close(response); 
+        this.abrirMensaje(true, 'Turno creado con éxito.');
       },
       error: (error) => {
-        console.error('Error al crear el turno:', error);
+          this.abrirMensaje(false, 'Error al crear el Turno. Verifique los datos o intente más tarde.');
       }
     });
   }
@@ -131,5 +133,18 @@ onSubmit(): void {
 
     return combinedDate;
   }
+
+  /**
+   * Abre el nuevo diálogo de confirmación/error.
+   * @param esExito true para éxito (verde), false para error (rojo)
+   * @param mensaje El mensaje a mostrar
+   */
+  abrirMensaje(esExito: boolean, mensaje: string): void {
+    this.dialog.open(MensajeDialogComponent, {
+      width: '350px',
+      data: { esExito, mensaje } // Pasa los datos al diálogo
+    });
+  }
+
 
 }

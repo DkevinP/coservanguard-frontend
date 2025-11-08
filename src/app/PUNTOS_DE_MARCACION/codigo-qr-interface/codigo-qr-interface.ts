@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearCodigoQr } from '../form-codigo-qr/form-codigo-qr';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,9 +19,9 @@ import { PuestoService, Puesto } from '../../services/puesto';
   styleUrl: './codigo-qr-interface.scss'
 })
 
-export class CodigoQrInterface implements OnInit{
+export class CodigoQrInterface implements OnInit, AfterViewInit{
   public codigoQrs: any;
-  public codigoQrDataSource: any;
+  public codigoQrDataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['puestoNombre', 'ver_qr'];
 
   /**
@@ -81,6 +81,28 @@ ngOnInit(): void {
       }
     });
   }
+
+  ngAfterViewInit() {
+    // Enlaza los componentes a la fuente de datos
+    this.codigoQrDataSource.paginator = this.paginator;
+    this.codigoQrDataSource.sort = this.sort;
+
+    this.setInitialSort();
+  }
+
+  /**
+   * Establece el ordenamiento por defecto de la tabla.
+   * Ordena por la columna 'id' en modo descendente.
+   */
+  setInitialSort() {
+    const sortState: Sort = {active: 'id', direction: 'desc'};
+
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+
+    this.sort.sortChange.emit(sortState);
+  }  
+
   
   
   //Llamar formulario y crear nuevo registro

@@ -1,0 +1,19 @@
+<div class="dialog-container" [ngClass]="data.esExito ? 'exito' : 'error'">
+  
+  <mat-icon *ngIf="data.esExito" class="dialog-icon">check_circle</mat-icon>
+  
+  <mat-icon *ngIf="!data.esExito" class="dialog-icon">error</mat-icon>
+  
+  <h2 mat-dialog-title>{{ data.esExito ? 'Éxito' : 'Error' }}</h2>
+  
+  <div mat-dialog-content>
+    <p>{{ data.mensaje }}</p>
+  </div>
+  
+  <div mat-dialog-actions align="center">
+    <button mat-flat-button (click)="onCerrar()" [color]="data.esExito ? 'primary' : 'warn'">
+      Cerrar
+    </button>
+  </div>
+
+</div>

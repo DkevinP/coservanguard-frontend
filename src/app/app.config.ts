@@ -55,7 +55,7 @@ import { GraficasMarcaciones } from './REPORTES/graficas-marcaciones/graficas-ma
 import { BaseChartDirective } from 'ng2-charts';
 
 import { SidenavMenu } from './GENERAL_COMPONENTS/sidenav-menu/sidenav-menu';
-import { Header } from './GENERAL_COMPONENTS/header/header';
+import { MensajeDialogComponent } from './GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
 
 
 @NgModule({
@@ -67,7 +67,6 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     FormCrearCliente,
     SidenavMenu,
     FormCrearSede,
-    Header,
     Usuarios,
     FormCrearUsuario,
     FormCrearTurno,
@@ -82,7 +81,8 @@ import { Header } from './GENERAL_COMPONENTS/header/header';
     asignacionInterface,
     FormCrearAsignacion,
     marcacionQrRealizadaInterface,
-    GraficasMarcaciones
+    GraficasMarcaciones,
+    MensajeDialogComponent
   ],
   imports: [
     // Aquí van TODOS los módulos

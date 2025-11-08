@@ -1,0 +1,26 @@
+.dialog-container {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.dialog-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  line-height: 64px;
+  margin-bottom: 16px;
+}
+
+/* Color verde para éxito */
+.exito .dialog-icon {
+  color: #4CAF50; 
+}
+
+/* Color rojo para error */
+.error .dialog-icon {
+  color: #f44336;
+}
+
+h2 {
+  font-weight: bold;
+}

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Header } from './header';
+import { MensajeDialog } from './mensaje-dialog';
 
-describe('Header', () => {
-  let component: Header;
-  let fixture: ComponentFixture<Header>;
+describe('MensajeDialog', () => {
+  let component: MensajeDialog;
+  let fixture: ComponentFixture<MensajeDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Header]
+      imports: [MensajeDialog]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Header);
+    fixture = TestBed.createComponent(MensajeDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

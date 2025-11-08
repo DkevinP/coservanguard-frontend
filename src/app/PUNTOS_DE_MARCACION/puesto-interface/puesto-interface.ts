@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearPuesto } from '../form-puesto/form-puesto';
 import { MatPaginator } from '@angular/material/paginator';
@@ -18,9 +18,9 @@ import { SedeClienteService, SedeCliente } from '../../services/sede-cliente'; /
   styleUrl: './puesto-interface.scss'
 })
 
-export class PuestoInterface implements OnInit{
+export class PuestoInterface implements OnInit, AfterViewInit{
   public puestos: any;
-  public puestosDataSource: any;
+  public puestosDataSource= new MatTableDataSource<any>();
   displayedColumns: string[] = ['puesto', 'id_sede'];
 
   /**
@@ -80,6 +80,28 @@ export class PuestoInterface implements OnInit{
       }
     });
   }
+
+  ngAfterViewInit() {
+    // Enlaza los componentes a la fuente de datos
+    this.puestosDataSource.paginator = this.paginator;
+    this.puestosDataSource.sort = this.sort;
+
+    this.setInitialSort();
+  }
+
+  /**
+   * Establece el ordenamiento por defecto de la tabla.
+   * Ordena por la columna 'id' en modo descendente.
+   */
+  setInitialSort() {
+    const sortState: Sort = {active: 'id', direction: 'desc'};
+
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+
+    this.sort.sortChange.emit(sortState);
+  }
+
   
   //Llamar formulario y crear nuevo registro
   openCreatepuesto(): void {

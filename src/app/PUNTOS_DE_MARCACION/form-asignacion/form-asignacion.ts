@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core'; // Añadido OnInit
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Usuario, UsuarioService } from '../../services/usuarios';
 import { Puesto, PuestoService } from '../../services/puesto';
+import { MensajeDialogComponent } from '../../GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
 
 @Component({
   selector: 'app-form-crear-asignacion',
@@ -23,7 +24,8 @@ export class FormCrearAsignacion implements OnInit {
     private http: HttpClient,
     public dialogRef: MatDialogRef<FormCrearAsignacion>,
     private usuarioService: UsuarioService,
-    private puestoService: PuestoService
+    private puestoService: PuestoService,
+    private dialog: MatDialog
   ) {
     // Inicializamos el formulario SOLO con los campos necesarios
     this.asignacionForm = this.fb.group({
@@ -66,11 +68,7 @@ onSubmit(): void {
 
     if (this.asignacionForm.valid) {
       
-      // --- ¡CORRECCIÓN! Envía el valor del formulario DIRECTAMENTE ---
       const datosParaEnviar = this.asignacionForm.value; 
-      // Ya no creamos 'asignacionParaEnviar' ni hacemos conversiones manuales.
-      // Los logs ya confirmaron que los tipos son 'number'.
-      // -----------------------------------------------------------
 
       console.log('Enviando al backend:', datosParaEnviar); 
 
@@ -79,15 +77,31 @@ onSubmit(): void {
       // --- Envía 'datosParaEnviar' (el valor directo del formulario) ---
       this.http.post(apiUrl, datosParaEnviar).subscribe({ 
         next: (response) => {
-          console.log('Asignación creada con éxito:', response);
           this.dialogRef.close(response); 
+          // Abre el diálogo de éxito
+          this.abrirMensaje(true, 'Puesto asignado correctamente.');          
+
         },
         error: (error) => {
-          console.error('Error al crear la asignación:', error);
+          this.abrirMensaje(false, 'Error al crear la nueva asignación.');
         }
       });
     } else {
       console.warn('Intento de envío con formulario inválido.'); 
     }
   }
+
+
+  /**
+   * Abre el nuevo diálogo de confirmación/error.
+   * @param esExito true para éxito (verde), false para error (rojo)
+   * @param mensaje El mensaje a mostrar
+   */
+  abrirMensaje(esExito: boolean, mensaje: string): void {
+    this.dialog.open(MensajeDialogComponent, {
+      width: '350px',
+      data: { esExito, mensaje } // Pasa los datos al diálogo
+    });
+  }
+
 }

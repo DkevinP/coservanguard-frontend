@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearAsignacion } from '../form-asignacion/form-asignacion';
 import { MatPaginator } from '@angular/material/paginator';
@@ -25,7 +25,7 @@ export interface AsignacionCombinada extends Asignacion { // Extiende la origina
   templateUrl: './asignacion-interface.html',
   styleUrl: './asignacion-interface.scss'
 })
-export class asignacionInterface implements OnInit{
+export class asignacionInterface implements OnInit, AfterViewInit{
   // Cambiamos el tipo y nombre del DataSource
   public asignacionCombinadaDataSource = new MatTableDataSource<AsignacionCombinada>();
   // Cambiamos los nombres de las columnas para que coincidan con el HTML modificado
@@ -100,6 +100,29 @@ export class asignacionInterface implements OnInit{
         // Puedes añadir aquí un mensaje para el usuario si lo deseas
       }
     });
+  }
+
+
+  ngAfterViewInit() {
+    // Enlaza los componentes a la fuente de datos
+    this.asignacionCombinadaDataSource.paginator = this.paginator;
+    this.asignacionCombinadaDataSource.sort = this.sort;
+
+    // 7. Llama a la nueva función para establecer el orden inicial
+    this.setInitialSort();
+  }
+
+  /**
+   * Establece el ordenamiento por defecto de la tabla.
+   * Ordena por la columna 'id' en modo descendente.
+   */
+  setInitialSort() {
+    const sortState: Sort = {active: 'id', direction: 'desc'};
+
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+
+    this.sort.sortChange.emit(sortState);
   }
 
   setupSorting(): void {

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { SedeCliente, SedeClienteService } from '../../services/sede-cliente';
+import { MensajeDialogComponent } from '../../GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
 
 @Component({
   selector: 'app-form-crear-puesto',
@@ -19,7 +20,8 @@ export class FormCrearPuesto {
     private fb: FormBuilder,
     private http: HttpClient,
     public dialogRef: MatDialogRef<FormCrearPuesto>,
-    private sedeService: SedeClienteService
+    private sedeService: SedeClienteService,
+    private dialog: MatDialog
   ) {
     // Inicializamos el formulario con sus campos y validaciones
     this.puestoForm = this.fb.group({
@@ -61,16 +63,32 @@ export class FormCrearPuesto {
       // Hacemos la petición POST al backend
       this.http.post(apiUrl, nuevapuesto).subscribe({
         next: (response) => {
-          console.log('puesto creado con éxito:', response);
-          // Cerramos el diálogo y pasamos el nuevo sede como resultado
+
           this.dialogRef.close(nuevapuesto); 
+
+          // Abre el diálogo de éxito
+          this.abrirMensaje(true, 'Puesto creado con éxito.');
+
         },
         error: (error) => {
-          console.error('Error al crear el sede:', error);
+          this.abrirMensaje(false, 'Error al crear el nuevo Puesto. Verifique los datos o intente más tarde.');
          
         }
       });
     }
   }
+
+  /**
+   * Abre el nuevo diálogo de confirmación/error.
+   * @param esExito true para éxito (verde), false para error (rojo)
+   * @param mensaje El mensaje a mostrar
+   */
+  abrirMensaje(esExito: boolean, mensaje: string): void {
+    this.dialog.open(MensajeDialogComponent, {
+      width: '350px',
+      data: { esExito, mensaje } // Pasa los datos al diálogo
+    });
+  }
+
 
 }

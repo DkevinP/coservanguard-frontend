@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearCargo } from '../form-crear-cargo/form-crear-cargo';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,9 +15,9 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   templateUrl: './cargo-interface.html',
   styleUrls: ['./cargo-interface.scss'] 
 })
-export class CargoInterface implements OnInit{
+export class CargoInterface implements OnInit, AfterViewInit{
   public cargos: any;
-  public cargosDataSource: any;
+  public cargosDataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['nombre_cargo'];
 
   /**
@@ -68,7 +68,24 @@ export class CargoInterface implements OnInit{
   //Acciones de la tabla
 
   ngAfterViewInit() {
+    // Enlaza los componentes a la fuente de datos
     this.cargosDataSource.paginator = this.paginator;
+    this.cargosDataSource.sort = this.sort;
+
+    this.setInitialSort();
+  }
+
+  /**
+   * Establece el ordenamiento por defecto de la tabla.
+   * Ordena por la columna 'id' en modo descendente.
+   */
+  setInitialSort() {
+    const sortState: Sort = {active: 'id', direction: 'desc'};
+
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+
+    this.sort.sortChange.emit(sortState);
   }
 
   filtrar(event: Event) {
