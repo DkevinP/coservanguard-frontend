@@ -1,19 +1,29 @@
-<div class="dialog-container" [ngClass]="data.esExito ? 'exito' : 'error'">
-  
-  <mat-icon *ngIf="data.esExito" class="dialog-icon">check_circle</mat-icon>
-  
-  <mat-icon *ngIf="!data.esExito" class="dialog-icon">error</mat-icon>
-  
-  <h2 mat-dialog-title>{{ data.esExito ? 'Éxito' : 'Error' }}</h2>
-  
-  <div mat-dialog-content>
-    <p>{{ data.mensaje }}</p>
-  </div>
-  
-  <div mat-dialog-actions align="center">
-    <button mat-flat-button (click)="onCerrar()" [color]="data.esExito ? 'primary' : 'warn'">
-      Cerrar
-    </button>
-  </div>
+<h2 mat-dialog-title>
+  {{ data.titulo }}
+</h2>
 
+<div class="icon-container">
+  <mat-icon *ngIf="data.esExito" class="icon-success">check_circle</mat-icon>
+
+  <mat-icon *ngIf="!data.esExito" class="icon-error">highlight_off</mat-icon>
+</div>
+
+<div mat-dialog-content>
+  <p>{{ data.mensaje }}</p>
+</div>
+
+<div mat-dialog-actions>
+
+  <button *ngIf="data.tipoBoton === 'unico'" mat-flat-button color="primary" [mat-dialog-close]="true">
+    {{ data.textoBotonConfirmar || 'Aceptar' }}
+  </button>
+
+  <ng-container *ngIf="data.tipoBoton === 'confirmacion'">
+      <button mat-button color="warn" [mat-dialog-close]="false">
+          {{ data.textoBotonCancelar || 'Cancelar' }}
+      </button>
+      <button mat-flat-button color="primary" [mat-dialog-close]="true">
+          {{ data.textoBotonConfirmar || 'Aceptar' }}
+      </button>
+  </ng-container>
 </div>

@@ -1,17 +1,18 @@
 <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
   <h1 mat-dialog-title>Crear Nuevo Cliente</h1>
+
   <div mat-dialog-content>
     <p>Ingrese los datos del nuevo cliente.</p>
-    
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre" required>
       <mat-error *ngIf="clienteForm.get('nombre')?.hasError('required')">
         El nombre es requerido.
       </mat-error>
     </mat-form-field>
-    
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>NIT</mat-label>
       <input matInput formControlName="nit" required maxlength="10" pattern="[0-9]{7}">
       <mat-error *ngIf="clienteForm.get('nit')?.hasError('required')">
@@ -21,8 +22,8 @@
         El NIT debe contener 7 dígitos numéricos.
       </mat-error>
     </mat-form-field>
-    
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Teléfono</mat-label>
       <input matInput formControlName="telefono" required maxlength="10" pattern="[0-9]{10}">
       <mat-error *ngIf="clienteForm.get('telefono')?.hasError('required')">
@@ -32,8 +33,8 @@
         El teléfono debe contener exactamente 10 dígitos numéricos.
       </mat-error>
     </mat-form-field>
-    
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Email</mat-label>
       <input matInput type="email" formControlName="email" required>
       <mat-error *ngIf="clienteForm.get('email')?.hasError('required')">
@@ -44,9 +45,9 @@
       </mat-error>
     </mat-form-field>
   </div>
-  
+
   <div mat-dialog-actions align="end">
-    <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="button" mat-button (click)="onCancel()" color="warn">Cancelar</button>
     <button type="submit" mat-flat-button color="primary" [disabled]="!clienteForm.valid">Crear</button>
   </div>
 </form>

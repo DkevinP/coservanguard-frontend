@@ -1,20 +1,48 @@
-.filter-controls {
+// Estilos específicos para la barra de filtros del reporte
+.report-filter-container {
   display: flex;
-  gap: 16px; /* Espacio entre los controles */
-  align-items: center;
-  margin-bottom: 24px;
-  flex-wrap: wrap; /* Para pantallas pequeñas */
+  gap: 16px;
+  align-items: flex-start; // Alineación superior para que coincidan inputs y botón
+  flex-wrap: wrap; // Permite que baje a otra línea en celulares
+  margin-bottom: 32px; // Espacio generoso antes del gráfico
+  background-color: #fff; // Opcional: fondo blanco para resaltar filtros
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+  // Hacemos que los selectores crezcan un poco
+  mat-form-field {
+    min-width: 200px;
+    flex: 1;
+  }
+
+  // El botón no debe estirarse demasiado
+  button {
+    height: 56px; // Altura estándar de un input outline de Material para alineación perfecta
+    margin-bottom: 2px; // Pequeño ajuste visual
+  }
 }
 
 .chart-container {
   position: relative;
-  min-height: 400px; /* Dale una altura mínima al contenedor del gráfico */
   width: 100%;
+  height: 60vh; // Usamos altura relativa a la pantalla (viewport height)
+  min-height: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.loading-indicator {
-  text-align: center;
-  padding: 50px;
+.loading-indicator, .no-data-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: var(--mdc-text-secondary-label-text-color, #666);
+  font-size: 1.1rem;
   font-style: italic;
-  color: grey;
+  text-align: center;
+  padding: 20px;
 }

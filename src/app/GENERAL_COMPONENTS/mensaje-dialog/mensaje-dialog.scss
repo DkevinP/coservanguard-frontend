@@ -1,26 +1,57 @@
-.dialog-container {
-  text-align: center;
-  padding: 10px 20px;
-}
+// Forzamos la sobrescritura de estilos globales
+:host ::ng-deep {
 
-.dialog-icon {
-  font-size: 64px;
-  width: 64px;
-  height: 64px;
-  line-height: 64px;
-  margin-bottom: 16px;
-}
+  // --- ESTILOS DE LOS ÍCONOS (NUEVO) ---
+  .icon-container {
+    text-align: center;
+    margin-bottom: 8px; // Espacio entre ícono y texto
+    margin-top: -10px;  // Pegarlo un poco más al título
+  }
 
-/* Color verde para éxito */
-.exito .dialog-icon {
-  color: #4CAF50; 
-}
+  .mat-icon {
+    font-size: 64px !important; // Ícono Grande
+    width: 64px !important;
+    height: 64px !important;
+  }
 
-/* Color rojo para error */
-.error .dialog-icon {
-  color: #f44336;
-}
+  .icon-success {
+    color: #4CAF50; // Verde Material Design
+  }
 
-h2 {
-  font-weight: bold;
+  .icon-error {
+    color: #F44336; // Rojo Material Design
+  }
+  // --------------------------------------
+
+  // Ajustes del Contenido (Manteniendo el fix del scroll)
+  .mat-mdc-dialog-content {
+    min-width: auto !important;
+    width: auto !important;
+    max-width: 350px !important;
+
+    overflow-x: hidden !important;
+    text-align: center;
+    padding-bottom: 24px !important;
+
+    // El texto del mensaje un poco más grande
+    p {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+  }
+
+  // Ajustes del Título
+  .mat-mdc-dialog-title {
+    text-align: center;
+    margin-bottom: 0px !important;
+    padding-top: 24px !important;
+    font-weight: 700;
+  }
+
+  // Ajustes de Botones
+  .mat-mdc-dialog-actions {
+    justify-content: center !important;
+    padding-bottom: 24px !important;
+    margin-bottom: 0 !important;
+  }
 }

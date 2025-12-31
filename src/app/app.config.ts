@@ -2,7 +2,7 @@
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -20,8 +20,9 @@ import { MatSidenavModule} from '@angular/material/sidenav';
 import { MatSortModule} from '@angular/material/sort';
 import { MatTableModule} from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatDatepickerModule } from '@angular/material/datepicker'; 
-import { MatNativeDateModule } from '@angular/material/core';      
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 // --- Tus Componentes ---
@@ -87,9 +88,9 @@ import { MensajeDialogComponent } from './GENERAL_COMPONENTS/mensaje-dialog/mens
   imports: [
     // Aquí van TODOS los módulos
     BrowserModule,
-    BrowserAnimationsModule, 
-    HttpClientModule,        
-    ReactiveFormsModule,     
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     AppRoutingModule,
 
     // Módulos de Angular Material
@@ -105,9 +106,10 @@ import { MensajeDialogComponent } from './GENERAL_COMPONENTS/mensaje-dialog/mens
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
-    MatDatepickerModule, 
+    MatDatepickerModule,
     MatNativeDateModule,
-    BaseChartDirective  
+    BaseChartDirective,
+    MatProgressSpinnerModule
   ],
   providers: [
     // El array de providers debe estar VACÍO

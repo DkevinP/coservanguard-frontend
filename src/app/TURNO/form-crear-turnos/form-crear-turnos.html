@@ -1,56 +1,54 @@
 <form [formGroup]="turnoForm" (ngSubmit)="onSubmit()">
-  <h1 mat-dialog-title>Crear Nueva Turno</h1> 
+  <h1 mat-dialog-title>Crear Nuevo Turno</h1>
+
   <div mat-dialog-content>
-    <p>Por favor, ingrese los datos del nuevo Turno.</p>
-    <!--Lista desplegable de usuarios-->
-    <mat-form-field appearance="outline">
-      <mat-label>Seleccione el cliente</mat-label>
+    <p>Por favor, ingrese los datos del nuevo turno.</p>
+
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Usuario</mat-label>
       <mat-select formControlName="id_cliente" required>
-        <mat-option *ngFor="let usuarios of usuarios" [value]="usuarios.id">
-          {{ usuarios.nombre }} {{ usuarios.apellido }}
+        <mat-option *ngFor="let usuario of usuarios" [value]="usuario.id">
+          {{ usuario.nombre }} {{ usuario.apellido }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Seleccione el puesto</mat-label>
-      <mat-select formControlName="id_cliente" required>
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Puesto</mat-label>
+      <mat-select formControlName="id_puesto" required>
         <mat-option *ngFor="let puesto of puestos" [value]="puesto.id">
           {{ puesto.puesto }}
         </mat-option>
       </mat-select>
-    </mat-form-field>    
+    </mat-form-field>
 
-    <!--Fecha y hora de inicio y fin-->
-
-    <h4>Selecciona el rango de fechas</h4>
-    <mat-form-field appearance="fill" style="width: 100%;">
-        <mat-label>Fecha de inicio - Fecha de fin</mat-label>
+    <h4>Rango de fechas</h4>
+    <mat-form-field appearance="outline" class="full-width-field">
+        <mat-label>Fecha inicio - Fecha fin</mat-label>
         <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate placeholder="Fecha de inicio" formControlName="startDate">
-        <input matEndDate placeholder="Fecha de fin" formControlName="endDate">
+            <input matStartDate placeholder="Inicio" formControlName="startDate">
+            <input matEndDate placeholder="Fin" formControlName="endDate">
         </mat-date-range-input>
-        <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
 
-    <h4>Selecciona las horas</h4>
-    <div style="display: flex; gap: 20px;">
-        <mat-form-field appearance="fill">
-        <mat-label>Hora de inicio</mat-label>
-        <input matInput type="time" formControlName="startTime">
+    <h4>Horario</h4>
+    <div style="display: flex; gap: 16px;">
+        <mat-form-field appearance="outline" style="flex: 1;">
+            <mat-label>Hora Inicio</mat-label>
+            <input matInput type="time" formControlName="startTime">
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-        <mat-label>Hora de fin</mat-label>
-        <input matInput type="time" formControlName="endTime">
+        <mat-form-field appearance="outline" style="flex: 1;">
+            <mat-label>Hora Fin</mat-label>
+            <input matInput type="time" formControlName="endTime">
         </mat-form-field>
     </div>
+  </div>
 
-    </div>
   <div mat-dialog-actions align="end">
-   <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="button" mat-button (click)="onCancel()" color="warn">Cancelar</button>
     <button type="submit" mat-flat-button color="primary" [disabled]="!turnoForm.valid">Crear</button>
   </div>
 </form>

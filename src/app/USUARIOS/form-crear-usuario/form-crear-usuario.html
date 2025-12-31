@@ -1,33 +1,35 @@
 <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
-  <h1 mat-dialog-title>Crear Nuevo Usuario</h1> 
+  <h1 mat-dialog-title>Crear Nuevo Usuario</h1>
+
   <div mat-dialog-content>
     <p>Por favor, ingrese los datos del nuevo usuario.</p>
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre" required>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Apellido</mat-label>
       <input matInput formControlName="apellido" required>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Cedula</mat-label>
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Cédula</mat-label>
       <input matInput formControlName="cedula" required>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Telefono</mat-label>
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Teléfono</mat-label>
       <input matInput formControlName="telefono" required>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Correo electronico</mat-label>
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Correo electrónico</mat-label>
       <input matInput formControlName="correo" required>
     </mat-form-field>
 
-    <!--Lista desplegable de cargos-->
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Cargo</mat-label>
       <mat-select formControlName="id_cargo" required>
         <mat-option *ngFor="let cargo of cargos" [value]="cargo.id">
@@ -36,15 +38,14 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Constraseña</mat-label>
-      <input matInput formControlName="contrasena" required>
-    </mat-form-field>  
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Contraseña</mat-label>
+      <input matInput formControlName="contrasena" type="password" required>
+    </mat-form-field>
+  </div>
 
-
-    </div>
   <div mat-dialog-actions align="end">
-   <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+   <button type="button" mat-button (click)="onCancel()" color="warn">Cancelar</button>
     <button type="submit" mat-flat-button color="primary" [disabled]="!usuarioForm.valid">Crear</button>
   </div>
 </form>

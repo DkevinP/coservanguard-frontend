@@ -1,18 +1,19 @@
 <form [formGroup]="sedeForm" (ngSubmit)="onSubmit()">
-  <h1 mat-dialog-title>Crear Nueva Sede</h1> 
+  <h1 mat-dialog-title>Crear Nueva Sede</h1>
+
   <div mat-dialog-content>
     <p>Por favor, ingrese los datos de la nueva sede.</p>
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Sede</mat-label>
       <input matInput formControlName="sede" required>
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Direccion</mat-label>
-      <input matInput formControlName="direccion" required>
+
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Dirección</mat-label> <input matInput formControlName="direccion" required>
     </mat-form-field>
 
-    <!--Lista desplegable de clientes-->
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="full-width-field">
       <mat-label>Cliente</mat-label>
       <mat-select formControlName="id_cliente" required>
         <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">
@@ -20,9 +21,10 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    </div>
+  </div>
+
   <div mat-dialog-actions align="end">
-   <button type="button" mat-button (click)="onCancel()">Cancelar</button>
+    <button type="button" mat-button (click)="onCancel()" color="warn">Cancelar</button>
     <button type="submit" mat-flat-button color="primary" [disabled]="!sedeForm.valid">Crear</button>
   </div>
 </form>

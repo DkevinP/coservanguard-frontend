@@ -2,7 +2,7 @@
 @use '@angular/material' as mat;
 
 // (Asegúrate de que la ruta sea correcta)
-@use './custom-theme-color' as custom-theme; 
+@use './custom-theme-color' as custom-theme;
 
 // 2. INCLUYE EL CORE
 @include mat.core();
@@ -31,7 +31,7 @@ html {
 html {
   // --- FONDO BLANCO / GRIS CLARO ---
   // Usamos un gris muy claro para el fondo y blanco para las superficies.
-  --mdc-theme-background: #f9f9f9; 
+  --mdc-theme-background: #f9f9f9;
   --mdc-theme-surface: #ffffff; // Fondo de diálogos, cards, filas de tabla
   --mat-sidenav-container-background-color: #f9f9f9;
 
@@ -42,13 +42,13 @@ html {
 
   // --- AJUSTES DE TEXTO PARA EL MENÚ AZUL ---
   // El texto y los íconos dentro del menú lateral deben ser blancos
-  --mat-list-item-label-text-color: #ffffff; 
-  --mat-list-item-leading-icon-color: #ffffff; 
+  --mat-list-item-label-text-color: #ffffff;
+  --mat-list-item-leading-icon-color: #ffffff;
   --mat-list-item-hover-state-layer-color: rgba(255, 255, 255, 0.08);
 
   // El ítem seleccionado usará el color Rojo (Primario)
-  --mat-list-item-selected-state-layer-color: rgba(200, 56, 50, 0.2); 
-  --mat-list-item-selected-label-text-color: #C83832; 
+  --mat-list-item-selected-state-layer-color: rgba(200, 56, 50, 0.2);
+  --mat-list-item-selected-label-text-color: #C83832;
   --mat-list-item-selected-leading-icon-color: #C83832;
 
   // --- AJUSTES DE TEXTO PARA LA CABECERA DE TABLA AZUL ---
@@ -63,18 +63,18 @@ html {
 }
 
 // 5. ESTILOS GLOBALES DE LA APP
-html, body { 
-  height: 100%; 
+html, body {
+  height: 100%;
 }
 
 body {
-  margin: 0; 
-  font-family: 'Inter, sans-serif'; 
+  margin: 0;
+  font-family: 'Inter, sans-serif';
 }
 
 .app-container {
-  height: 100%; 
-  display: flex; 
+  height: 100%;
+  display: flex;
 }
 
 .app-sidenav {
@@ -108,8 +108,8 @@ body {
 }
 
 .app-sidenav a.active {
-  background-color: rgba(200, 56, 50, 0.2) !important; 
-  
+  background-color: rgba(200, 56, 50, 0.2) !important;
+
   .mat-icon,
   [matListItemTitle] { /* Usamos el selector de atributo */
     color: #C83832 !important; /* Tu Rojo Corporativo */
@@ -122,7 +122,7 @@ body {
 }
 
 .mat-sidenav-content {
-  flex: 1; 
+  flex: 1;
   overflow: auto;
 }
 
@@ -130,12 +130,12 @@ body {
 
 // Cabecera de la tabla (para asegurar el color de texto)
 .mat-header-cell {
-  color: var(--mat-table-header-label-text-color) !important; 
+  color: var(--mat-table-header-label-text-color) !important;
 }
 
 // Filas de la tabla (fondo blanco y borde sutil)
 .mat-row, .mat-footer-row {
-  background-color: var(--mdc-theme-surface); 
+  background-color: var(--mdc-theme-surface);
   border-bottom-color: rgba(0, 0, 0, 0.05);
 }
 .mat-row:hover {
@@ -146,13 +146,13 @@ body {
 .mat-mdc-form-field {
   // Fondo del input
   .mat-mdc-form-field-flex {
-    background-color: #ffffff; 
+    background-color: #ffffff;
   }
   // Color del borde de los inputs (outline)
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
-    border-color: rgba(0, 0, 0, 0.2); 
+    border-color: rgba(0, 0, 0, 0.2);
   }
   &:hover {
     .mdc-notched-outline__leading,
@@ -161,4 +161,120 @@ body {
       border-color: rgba(0, 0, 0, 0.5); // Borde más oscuro al pasar el mouse
     }
   }
+}
+
+// =========================================================
+// 6. ESTILOS CENTRALIZADOS DE VISTAS (PÁGINAS)
+// =========================================================
+
+// Contenedor principal de cada vista (Clientes, Sedes, etc.)
+.page-container {
+  padding: 32px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// Cabecera donde va el Título y el Botón de Acción
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: 2.25rem; // Tamaño grande
+    font-weight: 700;   // Bold
+    margin: 0;
+    color: var(--mdc-table-header-container-color); // Usamos tu Azul Oscuro (#2E3A4B) para títulos
+    // O si prefieres negro: color: black;
+    text-transform: uppercase; // Opcional: Para que siempre esté en mayúsculas como en la imagen
+    letter-spacing: 1px;
+  }
+}
+
+// Barra de búsqueda estandarizada
+.page-search-bar {
+  width: 100%;
+  margin-bottom: 16px;
+
+  // Ajustes específicos para que se vea limpia sobre fondo claro
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none; // Oculta el espacio de error/hint si no lo usas para ganar espacio
+  }
+}
+
+// Tabla Estandarizada
+.app-table {
+  width: 100%;
+  background-color: white; // Fondo blanco para la tabla
+  border-radius: 8px;      // Bordes redondeados
+  overflow: hidden;        // Para que el borde redondeado corte el contenido
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); // Sombra sutil
+
+  // Cabecera de la tabla
+  th.mat-mdc-header-cell {
+    background-color: white;
+    color: var(--mdc-drawer-container-background-color); // Azul oscuro para texto de cabecera
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  // Celdas del cuerpo
+  td.mat-mdc-cell {
+    color: #333; // Texto gris oscuro legible
+    font-size: 0.95rem;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+  }
+
+  // Hover en filas
+  tr.mat-mdc-row:hover {
+    background-color: #f5f5f5;
+    cursor: default;
+  }
+}
+
+// Paginador
+.mat-mdc-paginator {
+  background-color: transparent; // Que se funda con el fondo
+}
+
+// =========================================================
+// 7. ESTILOS CENTRALIZADOS PARA DIÁLOGOS (FORMULARIOS)
+// =========================================================
+
+// Estilo para el Título del Diálogo (Consistencia con las Vistas)
+.mat-mdc-dialog-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--mdc-drawer-container-background-color); // Azul Oscuro
+  margin-bottom: 8px !important; // Un poco de aire antes del contenido
+}
+
+// Clase UTILITARIA para inputs de formulario
+// Úsala en <mat-form-field class="full-width-field">
+.full-width-field {
+  width: 100%;
+  margin-bottom: 8px; // Espaciado vertical constante
+  display: block; // Asegura que se comporte como bloque
+}
+
+// Ajuste para el contenido del diálogo (scroll y padding)
+.mat-mdc-dialog-content {
+  min-width: 400px; // Evita que el modal sea muy angosto
+  // En móviles esto se ajusta solo, pero en desktop da buena presencia
+  @media (max-width: 600px) {
+    min-width: auto;
+  }
+}
+
+// Botones de acción (Alineación y espaciado)
+.mat-mdc-dialog-actions {
+  padding-bottom: 24px !important; // Un poco más de aire abajo
+  padding-right: 24px !important;
 }
