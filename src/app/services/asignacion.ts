@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Asignacion {
-  id: number; 
+  id: number;
   id_user: string;
   id_puesto: number;
 }
@@ -13,12 +13,12 @@ export interface Asignacion {
 })
 export class AsignacionService {
 
-    private apiUrl = 'http://localhost:8080/api/asignacion/list-asignacion'; 
+    private apiUrl = 'http://localhost:8080/api/asignacion/list-asignacion';
 
   constructor(private http: HttpClient) { }
 
   getAsignacion(): Observable<Asignacion[]> {
     return this.http.get<Asignacion[]>(this.apiUrl);
   }
-  
+
 }

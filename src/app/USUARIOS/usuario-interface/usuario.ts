@@ -2,14 +2,14 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearUsuario } from '../form-crear-usuario/form-crear-usuario';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import { HttpClient } from '@angular/common/http';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-//ayuda al uso de lectores de pantalla
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-
 import { forkJoin } from 'rxjs';
-import { CargoService, Cargo } from '../../services/cargo';
+
+// 1. IMPORTAR SERVICIOS
+import { CargoService } from '../../services/cargo';
+import { UsuarioService, Usuario } from '../../services/usuarios';
 
 @Component({
   selector: 'app-usuario-interface',
@@ -17,124 +17,116 @@ import { CargoService, Cargo } from '../../services/cargo';
   templateUrl: './usuario.html',
   styleUrl: './usuario.scss'
 })
-export class Usuarios implements OnInit, AfterViewInit{
+export class Usuarios implements OnInit, AfterViewInit {
 
-  public usuarios: any;
-  public usuariosDataSource: any;
-  displayedColumns: string[] = ['nombre', 'apellido', 'cedula', 'correo', 'telefono','id_cargo'];
+  // 2. TIPADO FUERTE
+  public usuarios: Usuario[] = [];
+  public usuariosDataSource = new MatTableDataSource<Usuario>();
 
- /**
-   * Decorador que permite acceder a un componente del DOM
-   */
+  // Asegúrate de que estos nombres coincidan con las columnas en tu HTML
+  displayedColumns: string[] = ['nombre', 'apellido', 'cedula', 'correo', 'telefono', 'id_cargo'];
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private http: HttpClient, 
     public dialog: MatDialog,
     private _liveAnnouncer: LiveAnnouncer,
-    private cargoService: CargoService
+    // 3. INYECTAR SERVICIOS (Adiós HttpClient)
+    private cargoService: CargoService,
+    private usuarioService: UsuarioService
   ) {}
 
-  //creacion del dataset
-ngOnInit(): void {
+  ngOnInit(): void {
+    this.cargarDatos();
+  }
 
-    const usuarios$ = this.http.get<any[]>("http://localhost:8080/api/usuario/list-usuario");
-    const cargos$ = this.cargoService.getCargo(); 
+  cargarDatos() {
+    // 4. USAR SERVICIOS
+    const usuarios$ = this.usuarioService.getUsuarios();
+    const cargos$ = this.cargoService.getCargo();
+
     forkJoin({
       usuarios: usuarios$,
       cargos: cargos$
     }).subscribe({
       next: (data) => {
-       
+        // Crear mapa de Cargos
         const cargosMap = new Map<number, string>();
-  
-        data.cargos.forEach((cargo: Cargo) => {
-          cargosMap.set(cargo.id, cargo.nombre_cargo); 
+        data.cargos.forEach(cargo => {
+          cargosMap.set(cargo.id, cargo.nombre_cargo);
         });
 
-
+        // Cruzar información (Usuario + Nombre de Cargo)
         this.usuarios = data.usuarios.map(usuario => {
           return {
             ...usuario,
-            cargoNombre: cargosMap.get(usuario.id_cargo) || 'Cargo no asignado'
+            // Buscamos el nombre del cargo usando el ID
+            cargoNombre: cargosMap.get(Number(usuario.id_cargo)) || 'Cargo no asignado'
           };
         });
 
+        this.usuariosDataSource.data = this.usuarios;
 
-        this.usuariosDataSource = new MatTableDataSource(this.usuarios);
-        this.usuariosDataSource.paginator = this.paginator;
-        this.usuariosDataSource.sort = this.sort;
-
-
-        this.usuariosDataSource.sortingDataAccessor = (item: any, property: string) => {
-          switch(property) {
-
-            case 'id_cargo': return item.cargoNombre;
-            default: return item[property];
-          }
-        };
+        // Configurar el ordenamiento personalizado
+        this.setupSorting();
       },
-      error: err => {
-        console.error('Error al cargar datos combinados:', err);
+      error: (err) => {
+        console.error('Error al cargar usuarios y cargos:', err);
       }
     });
   }
 
   ngAfterViewInit() {
-    // Enlaza los componentes a la fuente de datos
     this.usuariosDataSource.paginator = this.paginator;
     this.usuariosDataSource.sort = this.sort;
-
     this.setInitialSort();
   }
 
-  /**
+/**
    * Establece el ordenamiento por defecto de la tabla.
-   * Ordena por la columna 'id' en modo descendente.
    */
   setInitialSort() {
-    const sortState: Sort = {active: 'id', direction: 'desc'};
-
-    this.sort.active = sortState.active;
-    this.sort.direction = sortState.direction;
-
-    this.sort.sortChange.emit(sortState);
+    // AGREGAMOS ESTE setTimeout
+    setTimeout(() => {
+      const sortState: Sort = {active: 'id_cargo', direction: 'asc'};
+      this.sort.active = sortState.active;
+      this.sort.direction = sortState.direction;
+      this.sort.sortChange.emit(sortState);
+    }); // El tiempo vacío por defecto es 0ms, suficiente para "pasar al siguiente ciclo"
   }
 
-  
-  //registro de nueva usuario
+  setupSorting() {
+    this.usuariosDataSource.sortingDataAccessor = (item: Usuario, property: string) => {
+      switch(property) {
+        case 'id_cargo': return item.cargoNombre || ''; // Ordenar por nombre del cargo
+        default: return (item as any)[property];
+      }
+    };
+  }
+
   openCreateusuario(): void {
-    
     const dialogRef = this.dialog.open(FormCrearUsuario, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El diálogo fue cerrado');
       if (result) {
-        console.log('Datos recibidos:', result);
-        this.ngOnInit();
+        this.cargarDatos(); // Recargar datos al crear
       }
     });
-
   }
-
-  //Acciones de la tabla
 
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
     this.usuariosDataSource.filter = filtro.trim().toLowerCase();
   }
 
-
   orderByAscOrDesc(sortState: Sort) {
     if (sortState.direction) {
-      const mensaje = `Ordenado de forma ${sortState.direction === 'asc' ? 'ascendente' : 'descendente'}`;
-      this._liveAnnouncer.announce(mensaje);
+      this._liveAnnouncer.announce(`Ordenado por ${sortState.active} ${sortState.direction === 'asc' ? 'ascendente' : 'descendente'}`);
     } else {
       this._liveAnnouncer.announce('Ordenamiento restablecido');
     }
   }
-
 }

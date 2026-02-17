@@ -8,10 +8,9 @@ import { BaseChartDirective } from 'ng2-charts';
 // Importa TODOS los servicios y sus interfaces
 import { ClienteService, Cliente } from '../../services/cliente';
 import { SedeClienteService, SedeCliente } from '../../services/sede-cliente';
-import { CodigoQrService, MarcacionQrDone } from '../../services/marcacion-qr-done';
+import { MarcacionQrDoneService, MarcacionQrDone } from '../../services/marcacion-qr-done';
 import { AsignacionService, Asignacion } from '../../services/asignacion';
 import { PuestoService, Puesto } from '../../services/puesto';
-
 
 @Component({
   selector: 'app-graficas-marcaciones',
@@ -64,10 +63,10 @@ export class GraficasMarcaciones implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
+    private http: HttpClient, // Nota: Probablemente no lo necesites aquí si usas servicios, pero lo dejé por si acaso
     private clienteService: ClienteService,
     private sedeService: SedeClienteService,
-    private marcacionService: CodigoQrService,
+    private marcacionService: MarcacionQrDoneService,
     private asignacionService: AsignacionService,
     private puestoService: PuestoService
   ) {
@@ -94,7 +93,7 @@ export class GraficasMarcaciones implements OnInit, OnDestroy {
     this.dataSubscription = forkJoin({
       clientes: this.clienteService.getClientes(),
       sedes: this.sedeService.getSedeClientes(),
-      marcaciones: this.marcacionService.getCodigoQr(),
+      marcaciones: this.marcacionService.getMarcaciones(),
       asignaciones: this.asignacionService.getAsignacion(),
       puestos: this.puestoService.getPuesto()
     }).subscribe({
@@ -107,9 +106,9 @@ export class GraficasMarcaciones implements OnInit, OnDestroy {
 
         console.log("Creando mapas...");
         // Asegúrate que los IDs usados como clave sean del tipo correcto
-        this.asignaciones.forEach(a => this.asignacionesMap.set(a.id, a)); // Clave: Asignacion.id (number)
-        this.puestos.forEach(p => this.puestosMap.set(p.id, p));       // Clave: Puesto.id (number)
-        this.sedes.forEach(s => this.sedesMap.set(s.id, s));           // Clave: SedeCliente.id (number)
+        this.asignaciones.forEach(a => this.asignacionesMap.set(a.id, a));
+        this.puestos.forEach(p => this.puestosMap.set(p.id, p));
+        this.sedes.forEach(s => this.sedesMap.set(s.id, s));
         console.log(`Mapas creados: ${this.asignacionesMap.size} asignaciones, ${this.puestosMap.size} puestos, ${this.sedesMap.size} sedes.`);
 
         this.isLoading = false;
@@ -178,13 +177,15 @@ export class GraficasMarcaciones implements OnInit, OnDestroy {
     // --- LÓGICA DE FILTRADO Y AGRUPACIÓN ---
     console.log("Iniciando filtrado de marcaciones...");
     const filteredMarcaciones = this.marcaciones.filter(m => {
+      // CORRECCIÓN 1: Eliminado parseInt porque m.id_asignacion ya es número
       // Verifica tipos y enlaza: Marcacion -> Asignacion -> Puesto -> Sede
-      const asignacionId = parseInt(m.id_asignacion, 10);
-      if (isNaN(asignacionId)) return false;
-      const asignacion = this.asignacionesMap.get(asignacionId);
+
+      const asignacion = this.asignacionesMap.get(m.id_asignacion);
       if (!asignacion) return false;
+
       const puesto = this.puestosMap.get(asignacion.id_puesto);
       if (!puesto) return false;
+
       const sede = this.sedesMap.get(puesto.id_sede);
       if (!sede) return false;
 
@@ -236,11 +237,11 @@ export class GraficasMarcaciones implements OnInit, OnDestroy {
       console.log("Agrupando para gráfico de barras...");
 
       filteredMarcaciones.forEach(m => {
-        const asignacionId = parseInt(m.id_asignacion, 10);
-        if (isNaN(asignacionId)) return;
-        const asignacion = this.asignacionesMap.get(asignacionId);
+        // CORRECCIÓN 2: Eliminado parseInt aquí también
+        const asignacion = this.asignacionesMap.get(m.id_asignacion);
         const puesto = asignacion ? this.puestosMap.get(asignacion.id_puesto) : undefined;
         const sede = puesto ? this.sedesMap.get(puesto.id_sede) : undefined;
+
         if (sede) {
           marcacionesPorSede.set(sede.id, (marcacionesPorSede.get(sede.id) || 0) + 1);
         }

@@ -2,90 +2,86 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearCargo } from '../form-crear-cargo/form-crear-cargo';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import { HttpClient } from '@angular/common/http';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-//ayuda al uso de lectores de pantalla
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
+// 1. IMPORTAR SERVICIO E INTERFAZ
+import { CargoService, Cargo } from '../../services/cargo';
 
 @Component({
   selector: 'app-cargo-interface',
   standalone: false,
   templateUrl: './cargo-interface.html',
-  styleUrls: ['./cargo-interface.scss'] 
+  styleUrls: ['./cargo-interface.scss']
 })
-export class CargoInterface implements OnInit, AfterViewInit{
-  public cargos: any;
-  public cargosDataSource = new MatTableDataSource<any>();
+export class CargoInterface implements OnInit, AfterViewInit {
+
+  // 2. TIPADO FUERTE
+  public cargos: Cargo[] = [];
+  public cargosDataSource = new MatTableDataSource<Cargo>();
   displayedColumns: string[] = ['nombre_cargo'];
 
-  /**
-   * Decorador que permite acceder a un componente del DOM
-   */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private http: HttpClient, 
     public dialog: MatDialog,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    // 3. INYECTAR SERVICIO (Adiós HttpClient)
+    private cargoService: CargoService
   ) {}
 
-  //Agregar datos a la tabla
   ngOnInit(): void {
-    this.http.get("http://localhost:8080/api/cargo/list-cargo").subscribe({
-      next: data =>{
+    this.cargarCargos();
+  }
+
+  cargarCargos() {
+    this.cargoService.getCargo().subscribe({
+      next: (data) => {
         this.cargos = data;
-        this.cargosDataSource = new MatTableDataSource(this.cargos);
-        this.cargosDataSource.paginator = this.paginator;
-        this.cargosDataSource.sort = this.sort;
+        this.cargosDataSource.data = this.cargos;
+        // Nota: Paginator y Sort se vinculan en ngAfterViewInit
       },
-      error: err => {
-        console.log(err);
+      error: (err) => {
+        console.error('Error al cargar cargos:', err);
       }
-      
     });
   }
-  
-  //Llamar formulario y crear nuevo registro
+
+  ngAfterViewInit() {
+    this.cargosDataSource.paginator = this.paginator;
+    this.cargosDataSource.sort = this.sort;
+    this.setInitialSort();
+  }
+
+/**
+   * Establece el ordenamiento por defecto de la tabla.
+   * Ordena por la columna 'id' en modo descendente.
+   */
+  setInitialSort() {
+    // AGREGAMOS ESTE setTimeout
+    setTimeout(() => {
+      const sortState: Sort = {active: 'id', direction: 'desc'};
+
+      this.sort.active = sortState.active;
+      this.sort.direction = sortState.direction;
+
+      this.sort.sortChange.emit(sortState);
+    });
+  }
+
   openCreatecargo(): void {
-    
     const dialogRef = this.dialog.open(FormCrearCargo, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El diálogo fue cerrado');
       if (result) {
-        console.log('Datos recibidos:', result);
-        this.ngOnInit();
+        // Recargar datos usando el servicio
+        this.cargarCargos();
       }
     });
-
-  }
-
-  //Acciones de la tabla
-
-  ngAfterViewInit() {
-    // Enlaza los componentes a la fuente de datos
-    this.cargosDataSource.paginator = this.paginator;
-    this.cargosDataSource.sort = this.sort;
-
-    this.setInitialSort();
-  }
-
-  /**
-   * Establece el ordenamiento por defecto de la tabla.
-   * Ordena por la columna 'id' en modo descendente.
-   */
-  setInitialSort() {
-    const sortState: Sort = {active: 'id', direction: 'desc'};
-
-    this.sort.active = sortState.active;
-    this.sort.direction = sortState.direction;
-
-    this.sort.sortChange.emit(sortState);
   }
 
   filtrar(event: Event) {
@@ -95,11 +91,9 @@ export class CargoInterface implements OnInit, AfterViewInit{
 
   orderByAscOrDesc(sortState: Sort) {
     if (sortState.direction) {
-      const mensaje = `Ordenado de forma ${sortState.direction === 'asc' ? 'ascendente' : 'descendente'}`;
-      this._liveAnnouncer.announce(mensaje);
+      this._liveAnnouncer.announce(`Ordenado por ${sortState.active} ${sortState.direction === 'asc' ? 'ascendente' : 'descendente'}`);
     } else {
       this._liveAnnouncer.announce('Ordenamiento restablecido');
     }
   }
-
 }

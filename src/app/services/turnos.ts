@@ -2,26 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface TurnoCliente {
-  id_Turno: string; 
-  id_cc: number;
-  id_puesto : number;
-  hora_inicio: Date;
-  hora_fi: Date;
-
+export interface Turno {
+  id: number;
+  id_cc: number;      // ID del usuario (Cédula o ID interno)
+  id_puesto: number;  // ID del puesto
+  hora_inicio: string;
+  hora_fin: string;
+  // Campos opcionales para la vista
+  usuarioNombre?: string;
+  puestoNombre?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class TurnoClienteService {
+export class TurnoService {
 
-    private apiUrl = 'http://localhost:8080/api/turno/list-turnos'; 
+  private apiUrl = 'http://localhost:8080/api/turno/list-turno';
 
   constructor(private http: HttpClient) { }
 
-  getTurnos(): Observable<TurnoCliente[]> {
-    return this.http.get<TurnoCliente[]>(this.apiUrl);
+  getTurnos(): Observable<Turno[]> {
+    return this.http.get<Turno[]>(this.apiUrl);
   }
-  
 }

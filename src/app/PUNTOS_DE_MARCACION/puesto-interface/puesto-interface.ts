@@ -2,14 +2,19 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearPuesto } from '../form-puesto/form-puesto';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import { HttpClient } from '@angular/common/http';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-//ayuda al uso de lectores de pantalla
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-
 import { forkJoin } from 'rxjs';
-import { SedeClienteService, SedeCliente } from '../../services/sede-cliente'; // Ajusta la ruta si es necesario
+
+// 1. IMPORTAR LOS SERVICIOS
+import { SedeClienteService, SedeCliente } from '../../services/sede-cliente';
+import { PuestoService, Puesto } from '../../services/puesto';
+
+// Extendemos la interfaz para la vista (tabla)
+export interface PuestoConSede extends Puesto {
+  sedeNombre?: string;
+}
 
 @Component({
   selector: 'app-puestos',
@@ -17,110 +22,100 @@ import { SedeClienteService, SedeCliente } from '../../services/sede-cliente'; /
   templateUrl: './puesto-interface.html',
   styleUrl: './puesto-interface.scss'
 })
+export class PuestoInterface implements OnInit, AfterViewInit {
 
-export class PuestoInterface implements OnInit, AfterViewInit{
-  public puestos: any;
-  public puestosDataSource= new MatTableDataSource<any>();
+  // Usamos la interfaz extendida
+  public puestosDataSource = new MatTableDataSource<PuestoConSede>();
   displayedColumns: string[] = ['puesto', 'id_sede'];
 
-  /**
-   * Decorador que permite acceder a un componente del DOM
-   */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private http: HttpClient, 
     public dialog: MatDialog,
     private _liveAnnouncer: LiveAnnouncer,
-    private sedeService: SedeClienteService
+    // 2. INYECTAR SERVICIOS (Adiós HttpClient)
+    private sedeService: SedeClienteService,
+    private puestoService: PuestoService
   ) {}
 
-  //Agregar datos a la tabla
   ngOnInit(): void {
-   
-    const puestos$ = this.http.get<any[]>("http://localhost:8080/api/puesto/list-puesto");
+    this.cargarDatos();
+  }
+
+  cargarDatos() {
+    // 3. Obtener Observables de los servicios
+    const puestos$ = this.puestoService.getPuesto();
     const sedes$ = this.sedeService.getSedeClientes();
 
-
+    // 4. Usar forkJoin para peticiones paralelas
     forkJoin({
       puestos: puestos$,
       sedes: sedes$
     }).subscribe({
       next: (data) => {
-    
+        // Crear mapa de Sedes para búsqueda rápida por ID
         const sedesMap = new Map<number, string>();
-        data.sedes.forEach((sede: SedeCliente) => {
+        data.sedes.forEach((sede) => {
           sedesMap.set(sede.id, sede.sede);
         });
 
-        
-        this.puestos = data.puestos.map(puesto => {
+        // Cruzar información: Agregar nombre de sede a cada puesto
+        const puestosConNombre: PuestoConSede[] = data.puestos.map(puesto => {
           return {
-            ...puesto, 
+            ...puesto,
             sedeNombre: sedesMap.get(puesto.id_sede) || 'Sede no encontrada'
           };
         });
 
+        // Asignar a la tabla
+        this.puestosDataSource.data = puestosConNombre;
 
-        this.puestosDataSource = new MatTableDataSource(this.puestos);
-        this.puestosDataSource.paginator = this.paginator;
-        this.puestosDataSource.sort = this.sort;
-
-
-        this.puestosDataSource.sortingDataAccessor = (item: any, property: string) => {
-          switch(property) {
-            case 'id_sede': return item.sedeNombre; 
-            default: return item[property];
-          }
-        };
+        // Configurar ordenamiento personalizado
+        this.setupSorting();
       },
-      error: err => {
-        console.error('Error al cargar datos combinados:', err);
+      error: (err) => {
+        console.error('Error al cargar puestos y sedes:', err);
       }
     });
   }
 
   ngAfterViewInit() {
-    // Enlaza los componentes a la fuente de datos
     this.puestosDataSource.paginator = this.paginator;
     this.puestosDataSource.sort = this.sort;
-
     this.setInitialSort();
   }
 
-  /**
-   * Establece el ordenamiento por defecto de la tabla.
-   * Ordena por la columna 'id' en modo descendente.
-   */
   setInitialSort() {
-    const sortState: Sort = {active: 'id', direction: 'desc'};
-
-    this.sort.active = sortState.active;
-    this.sort.direction = sortState.direction;
-
-    this.sort.sortChange.emit(sortState);
+    setTimeout(() => {
+      const sortState: Sort = {active: 'id', direction: 'desc'}; // Asumiendo que Puesto tiene 'id'
+      this.sort.active = sortState.active;
+      this.sort.direction = sortState.direction;
+      this.sort.sortChange.emit(sortState);
+    });
   }
 
-  
-  //Llamar formulario y crear nuevo registro
+  setupSorting() {
+    this.puestosDataSource.sortingDataAccessor = (item: PuestoConSede, property: string) => {
+      switch(property) {
+        case 'id_sede': return item.sedeNombre || ''; // Ordenar por nombre de sede
+        default: return (item as any)[property];
+      }
+    };
+  }
+
   openCreatepuesto(): void {
-    
     const dialogRef = this.dialog.open(FormCrearPuesto, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El diálogo fue cerrado');
       if (result) {
-        console.log('Datos recibidos:', result);
-        this.ngOnInit();
+        // Recargar datos usando el servicio
+        this.cargarDatos();
       }
     });
-
   }
-
-  //Acciones de la tabla
 
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
@@ -129,11 +124,9 @@ export class PuestoInterface implements OnInit, AfterViewInit{
 
   orderByAscOrDesc(sortState: Sort) {
     if (sortState.direction) {
-      const mensaje = `Ordenado de forma ${sortState.direction === 'asc' ? 'ascendente' : 'descendente'}`;
-      this._liveAnnouncer.announce(mensaje);
+      this._liveAnnouncer.announce(`Ordenado por ${sortState.active} ${sortState.direction === 'asc' ? 'ascendente' : 'descendente'}`);
     } else {
       this._liveAnnouncer.announce('Ordenamiento restablecido');
     }
   }
-
 }

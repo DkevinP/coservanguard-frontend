@@ -2,15 +2,15 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearCodigoQr } from '../form-codigo-qr/form-codigo-qr';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import { HttpClient } from '@angular/common/http';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { CodigoQr } from '../codigo-qr/codigo-qr';
-
+import { CodigoQr } from '../codigo-qr/codigo-qr'; // Componente Dialog para ver el QR
 import { forkJoin } from 'rxjs';
+
+// --- IMPORTS DE SERVICIOS ---
 import { PuestoService, Puesto } from '../../services/puesto';
+import { CodigoQrService, CodigoQR } from '../../services/codigosqr'; // Ajusta la ruta
 
 @Component({
   selector: 'app-codigoQrs',
@@ -18,123 +18,109 @@ import { PuestoService, Puesto } from '../../services/puesto';
   templateUrl: './codigo-qr-interface.html',
   styleUrl: './codigo-qr-interface.scss'
 })
+export class CodigoQrInterface implements OnInit, AfterViewInit {
 
-export class CodigoQrInterface implements OnInit, AfterViewInit{
-  public codigoQrs: any;
-  public codigoQrDataSource = new MatTableDataSource<any>();
+  // Usamos tipado fuerte (CodigoQR[])
+  public codigoQrs: CodigoQR[] = [];
+  public codigoQrDataSource = new MatTableDataSource<CodigoQR>();
   displayedColumns: string[] = ['puestoNombre', 'ver_qr'];
 
-  /**
-   * Decorador que permite acceder a un componente del DOM
-   */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private http: HttpClient, 
     public dialog: MatDialog,
     private _liveAnnouncer: LiveAnnouncer,
-    private puestoService: PuestoService
+    // INYECTAMOS SERVICIOS (Adiós HttpClient)
+    private puestoService: PuestoService,
+    private codigoQrService: CodigoQrService
   ) {}
 
-  //Agregar datos a la tabla
-ngOnInit(): void {
-    // 1. Preparamos ambas peticiones
-    const codigoQrs$ = this.http.get<any[]>("http://localhost:8080/api/codigoqr/listar-codigo-img");
+  ngOnInit(): void {
+    this.cargarDatos();
+  }
+
+  cargarDatos() {
+    // 1. Llamamos a los servicios
+    const codigoQrs$ = this.codigoQrService.getCodigoQr();
     const puestos$ = this.puestoService.getPuesto();
 
-    // 2. Usamos forkJoin
+    // 2. forkJoin para ejecutar en paralelo
     forkJoin({
       codigoQrs: codigoQrs$,
       puestos: puestos$
     }).subscribe({
       next: (data) => {
-        // 3. Creamos un Mapa para buscar puestos por ID
+        // 3. Mapa de puestos para búsqueda rápida
         const puestosMap = new Map<number, string>();
         data.puestos.forEach((puesto: Puesto) => {
           puestosMap.set(puesto.id, puesto.puesto);
         });
 
-        // 4. Transformamos los datos de los QRs
+        // 4. Cruzamos la información
         this.codigoQrs = data.codigoQrs.map(codigoQr => {
           return {
-            ...codigoQr, // Datos originales del QR
+            ...codigoQr,
+            // Obtenemos el nombre del puesto usando el ID
             puestoNombre: puestosMap.get(codigoQr.id_puesto) || 'Puesto no encontrado'
           };
         });
 
-        // 5. Creamos la fuente de datos
-        this.codigoQrDataSource = new MatTableDataSource(this.codigoQrs);
-        this.codigoQrDataSource.paginator = this.paginator;
-        this.codigoQrDataSource.sort = this.sort;
+        // 5. Asignamos a la tabla
+        this.codigoQrDataSource.data = this.codigoQrs;
 
-        // 6. (IMPORTANTE) Añadimos el accesor de ordenamiento
-        this.codigoQrDataSource.sortingDataAccessor = (item: any, property: string) => {
-          switch(property) {
-            case 'id_puesto': return item.puestoNombre; // Ordena por nombre
-            default: return item[property];
-          }
-        };
+        // Configuración de ordenamiento
+        this.setupSorting();
       },
-      error: err => {
-        console.error('Error al cargar datos combinados:', err);
+      error: (err) => {
+        console.error('Error al cargar datos de códigos QR:', err);
       }
     });
   }
 
   ngAfterViewInit() {
-    // Enlaza los componentes a la fuente de datos
     this.codigoQrDataSource.paginator = this.paginator;
     this.codigoQrDataSource.sort = this.sort;
-
     this.setInitialSort();
   }
 
-  /**
-   * Establece el ordenamiento por defecto de la tabla.
-   * Ordena por la columna 'id' en modo descendente.
-   */
   setInitialSort() {
-    const sortState: Sort = {active: 'id', direction: 'desc'};
+    setTimeout(() => {
+      const sortState: Sort = {active: 'id', direction: 'desc'};
+      this.sort.active = sortState.active;
+      this.sort.direction = sortState.direction;
+      this.sort.sortChange.emit(sortState);
+    });
+  }
 
-    this.sort.active = sortState.active;
-    this.sort.direction = sortState.direction;
+  setupSorting() {
+    this.codigoQrDataSource.sortingDataAccessor = (item: any, property: string) => {
+      switch(property) {
+        case 'puestoNombre': return item.puestoNombre;
+        default: return item[property];
+      }
+    };
+  }
 
-    this.sort.sortChange.emit(sortState);
-  }  
-
-  
-  
-  //Llamar formulario y crear nuevo registro
   openCreatecodigoQr(): void {
-    
     const dialogRef = this.dialog.open(FormCrearCodigoQr, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El diálogo fue cerrado');
       if (result) {
-        console.log('Datos recibidos:', result);
-        this.ngOnInit();
+        // Recargamos usando el servicio centralizado
+        this.cargarDatos();
       }
     });
-
   }
 
   openQrDialog(codigoQr: any): void {
-    const dialogRef = this.dialog.open(CodigoQr, { 
+    this.dialog.open(CodigoQr, {
       width: '400px',
-      data: codigoQr 
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('El diálogo de QR fue cerrado');
-      
+      data: codigoQr
     });
   }
-
-  //Acciones de la tabla
 
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
@@ -149,5 +135,4 @@ ngOnInit(): void {
       this._liveAnnouncer.announce('Ordenamiento restablecido');
     }
   }
-
 }

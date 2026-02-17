@@ -3,11 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface CodigoQR {
-  id: number; 
-  qr: string;
+  // Campos conocidos que usamos para la lógica
+  id: number;
+  // Quitamos 'qr: string;' porque no estamos seguros del nombre exacto del campo de imagen.
   latitude: number;
   longitude: number;
   id_puesto: number;
+  puestoNombre?: string;
+
+  // --- SOLUCIÓN ---
+  // Esta línea mágica permite que el objeto tenga cualquier otra propiedad
+  // adicional que venga del backend (como la imagen en base64),
+  // sin importar cómo se llame el campo.
+  [key: string]: any;
 }
 
 @Injectable({
@@ -15,12 +23,12 @@ export interface CodigoQR {
 })
 export class CodigoQrService {
 
-    private apiUrl = 'http://localhost:8080/api/codigoqr/listar-codigo'; 
+  // URL correcta que trae las imágenes
+  private apiUrl = 'http://localhost:8080/api/codigoqr/listar-codigo-img';
 
   constructor(private http: HttpClient) { }
 
   getCodigoQr(): Observable<CodigoQR[]> {
     return this.http.get<CodigoQR[]>(this.apiUrl);
   }
-  
 }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core'; // Añadido OnInit
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Usuario, UsuarioService } from '../../services/usuarios';
 import { Puesto, PuestoService } from '../../services/puesto';
 import { MensajeDialogComponent } from '../../GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
+// Importamos el nuevo servicio
+import { FormHttpAsignacionService } from '../../services/form-http-asignacion';
 
 @Component({
   selector: 'app-form-crear-asignacion',
@@ -12,47 +13,36 @@ import { MensajeDialogComponent } from '../../GENERAL_COMPONENTS/mensaje-dialog/
   templateUrl: './form-asignacion.html',
   styleUrl: './form-asignacion.scss'
 })
-// --- Añade OnInit a la clase ---
 export class FormCrearAsignacion implements OnInit {
 
-   public asignacionForm: FormGroup;
-   public usuarios: Usuario[] = [];
-   public puestos: Puesto[] = [];
+  public asignacionForm: FormGroup;
+  public usuarios: Usuario[] = [];
+  public puestos: Puesto[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     public dialogRef: MatDialogRef<FormCrearAsignacion>,
     private usuarioService: UsuarioService,
     private puestoService: PuestoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    // Inyectamos el servicio
+    private formService: FormHttpAsignacionService
   ) {
-    // Inicializamos el formulario SOLO con los campos necesarios
     this.asignacionForm = this.fb.group({
-      id_user: [null, Validators.required],     
-      id_puesto: [null, Validators.required]  
+      id_user: [null, Validators.required],
+      id_puesto: [null, Validators.required]
     });
   }
 
- ngOnInit(): void { 
-    // Carga la lista de usuarios
+  ngOnInit(): void {
     this.usuarioService.getUsuarios().subscribe({
-      next: (data) => {
-        this.usuarios = data;
-      },
-      error: (error) => {
-        console.error('Error al cargar la lista de usuarios:', error);
-      }
+      next: (data) => this.usuarios = data,
+      error: (error) => console.error('Error al cargar la lista de usuarios:', error)
     });
 
-    // Carga la lista de puestos
     this.puestoService.getPuesto().subscribe({
-      next: (data) => {
-        this.puestos = data;
-      },
-      error: (error) => {
-        console.error('Error al cargar la lista de puestos:', error);
-      }
+      next: (data) => this.puestos = data,
+      error: (error) => console.error('Error al cargar la lista de puestos:', error)
     });
   }
 
@@ -60,48 +50,29 @@ export class FormCrearAsignacion implements OnInit {
     this.dialogRef.close();
   }
 
-onSubmit(): void {
-    console.log('Formulario válido:', this.asignacionForm.valid); 
-    console.log('Valores del formulario:', this.asignacionForm.value); 
-    console.log('Tipo de id_cc:', typeof this.asignacionForm.value.id_cc);
-    console.log('Tipo de id_puesto:', typeof this.asignacionForm.value.id_puesto);
-
+  onSubmit(): void {
     if (this.asignacionForm.valid) {
-      
-      const datosParaEnviar = this.asignacionForm.value; 
+      const datosParaEnviar = this.asignacionForm.value;
 
-      console.log('Enviando al backend:', datosParaEnviar); 
-
-      const apiUrl = 'http://localhost:8080/api/asignacion/crear-asignacion';
-
-      // --- Envía 'datosParaEnviar' (el valor directo del formulario) ---
-      this.http.post(apiUrl, datosParaEnviar).subscribe({ 
+      // Usamos el servicio
+      this.formService.crearAsignacion(datosParaEnviar).subscribe({
         next: (response) => {
-          this.dialogRef.close(response); 
-          // Abre el diálogo de éxito
-          this.abrirMensaje(true, 'Puesto asignado correctamente.');          
-
+          this.dialogRef.close(response);
+          this.abrirMensaje(true, 'Puesto asignado correctamente.');
         },
         error: (error) => {
           this.abrirMensaje(false, 'Error al crear la nueva asignación.');
         }
       });
     } else {
-      console.warn('Intento de envío con formulario inválido.'); 
+      console.warn('Intento de envío con formulario inválido.');
     }
   }
 
-
-  /**
-   * Abre el nuevo diálogo de confirmación/error.
-   * @param esExito true para éxito (verde), false para error (rojo)
-   * @param mensaje El mensaje a mostrar
-   */
   abrirMensaje(esExito: boolean, mensaje: string): void {
     this.dialog.open(MensajeDialogComponent, {
       width: '350px',
-      data: { esExito, mensaje } // Pasa los datos al diálogo
+      data: { esExito, mensaje }
     });
   }
-
 }

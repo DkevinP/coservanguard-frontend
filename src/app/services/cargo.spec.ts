@@ -1,16 +1,31 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { CargoService, Cargo } from './cargo';
 
-import { Cargo } from './cargo';
-
-describe('Cargo', () => {
-  let service: Cargo;
+describe('CargoService (HTTP)', () => {
+  let service: CargoService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Cargo);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [CargoService]
+    });
+    service = TestBed.inject(CargoService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => { httpMock.verify(); });
+
+  it('debería obtener la lista de cargos', () => {
+    const mockData: Cargo[] = [{ id: 1, nombre_cargo: 'Jefe' }];
+
+    service.getCargo().subscribe(data => {
+      expect(data).toEqual(mockData);
+    });
+
+    const req = httpMock.expectOne('http://localhost:8080/api/cargo/list-cargo');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockData);
   });
 });

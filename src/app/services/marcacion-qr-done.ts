@@ -3,36 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface MarcacionQrDone {
-    id: number,
-
-    id_asignacion: string,
-
-    id_codigo: number,
-
-    fecha: Date,
-
-
-    latitude: number,
-
-
-    longitude: number,
-
-    IdistanciaM: number,
-
-    Bes_cercano: Boolean,
+    id: number;
+    id_asignacion: number; // Asegúrate que sea number
+    id_codigo: number;
+    fecha: Date;
+    latitude: number;
+    longitude: number;
+    IdistanciaM: number;
+    Bes_cercano: boolean;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class CodigoQrService {
+// CAMBIO AQUÍ: Antes decía "export class CodigoQrService"
+export class MarcacionQrDoneService {
 
-    private apiUrl = 'http://localhost:8080/api/marcacionqr/list-marcacion'; 
+  private apiUrl = 'http://localhost:8080/api/marcacionqr/list-marcacion';
 
   constructor(private http: HttpClient) { }
 
-  getCodigoQr(): Observable<MarcacionQrDone[]> {
+  getMarcaciones(): Observable<MarcacionQrDone[]> {
     return this.http.get<MarcacionQrDone[]>(this.apiUrl);
   }
-  
 }
