@@ -1,0 +1,32 @@
+name: Deploy Angular Frontend Coservanguard
+on:
+  push:
+    branches: [ "main" ] # Assumed branch is 'main', change if it is 'master'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18' # Puedes cambiarlo a 20 si usas una versión más reciente
+
+    - name: Instalar dependencias (npm install)
+      run: npm install
+
+    - name: Compilar Angular para producción (ng build)
+      run: npm run build -- --configuration production
+
+    - name: Copiar archivos al servidor web Nginx en Azure
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        # THE CRITICAL PART: CHANGE THIS to your project folder name
+        source: "dist/nombre-de-tu-proyecto-angular/*"
+        target: "/var/www/html/"
+        strip_components: 2
