@@ -26,7 +26,6 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        # THE CRITICAL PART: CHANGE THIS to your project folder name
-        source: "dist/nombre-de-tu-proyecto-angular/*"
+        source: "dist/coservanguard_web/*"
         target: "/var/www/html/"
         strip_components: 2
