@@ -15,7 +15,7 @@ jobs:
         node-version: '18' # Puedes cambiarlo a 20 si usas una versión más reciente
 
     - name: Instalar dependencias (npm install)
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Compilar Angular para producción (ng build)
       run: npm run build -- --configuration production
