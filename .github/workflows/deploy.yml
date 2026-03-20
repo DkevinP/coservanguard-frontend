@@ -26,6 +26,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        source: "dist/coservanguard_web/*"
+        # Usamos el path relativo que confirmó tu build local
+        source: "dist/coservanguard_web/**"
         target: "/var/www/html/"
         strip_components: 2
