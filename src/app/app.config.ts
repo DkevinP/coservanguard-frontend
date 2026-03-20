@@ -1,11 +1,9 @@
-// Reemplaza todo tu archivo app.module.ts (o app.config.ts) con esto:
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+// Importamos el HttpClientModule y el token para interceptores
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-
 
 // --- Módulos de Angular Material ---
 import { MatButtonModule} from '@angular/material/button';
@@ -23,10 +21,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 
+// --- Importación de tu Interceptor ---
+import { AuthInterceptor } from '../interceptors/auth.interceptor'; // <-- Verifica que esta ruta sea correcta
 
 // --- Tus Componentes ---
-import { AppRoutingModule } from './app.routes'; // Asumo que se llama app.routes.ts
+import { AppRoutingModule } from './app.routes';
 import { App } from './app';
 
 import { SedeInterface } from './SEDES/sede-interface/sede-interface';
@@ -51,6 +54,7 @@ import { FormCrearPuesto } from './PUNTOS_DE_MARCACION/form-puesto/form-puesto';
 import { asignacionInterface } from './PUNTOS_DE_MARCACION/asignacion-interface/asignacion-interface';
 import { FormCrearAsignacion } from './PUNTOS_DE_MARCACION/form-asignacion/form-asignacion';
 import { marcacionQrRealizadaInterface } from './PUNTOS_DE_MARCACION/marcaciones-qr-realizadas/marcaciones-qr-realizadas';
+import { MapaPuntosComponent } from './PUNTOS_DE_MARCACION/mapa-puntos/mapa-puntos';
 
 import { GraficasMarcaciones } from './REPORTES/graficas-marcaciones/graficas-marcaciones';
 import { BaseChartDirective } from 'ng2-charts';
@@ -58,10 +62,11 @@ import { BaseChartDirective } from 'ng2-charts';
 import { SidenavMenu } from './GENERAL_COMPONENTS/sidenav-menu/sidenav-menu';
 import { MensajeDialogComponent } from './GENERAL_COMPONENTS/mensaje-dialog/mensaje-dialog';
 
+import { LoginComponent } from './AUTH/login/login';
+import { InicioComponent } from './HOME/inicio/inicio';
 
 @NgModule({
   declarations: [
-    // Aquí van TODOS tus componentes
     App,
     SedeInterface,
     ClienteInterface,
@@ -83,10 +88,12 @@ import { MensajeDialogComponent } from './GENERAL_COMPONENTS/mensaje-dialog/mens
     FormCrearAsignacion,
     marcacionQrRealizadaInterface,
     GraficasMarcaciones,
-    MensajeDialogComponent
+    MensajeDialogComponent,
+    LoginComponent,
+    InicioComponent,
+    MapaPuntosComponent
   ],
   imports: [
-    // Aquí van TODOS los módulos
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -109,10 +116,18 @@ import { MensajeDialogComponent } from './GENERAL_COMPONENTS/mensaje-dialog/mens
     MatDatepickerModule,
     MatNativeDateModule,
     BaseChartDirective,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatMenuModule,
+    MatDividerModule
   ],
   providers: [
-    // El array de providers debe estar VACÍO
+    // AQUÍ REGISTRAMOS EL INTERCEPTOR
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [App]
 })

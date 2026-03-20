@@ -1,0 +1,164 @@
+@use "sass:color";
+/* Variables Corporativas */
+$color-blue: #1769dd;
+$color-red: #C83832;
+$color-gray: #8d8e92;
+$color-dark: #2c2c2c;
+$bg-light: #f4f6f9;
+
+.dashboard-container {
+  padding: 32px;
+  background-color: transparent;
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 2rem;
+    color: $color-dark;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    color: $color-gray;
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+/* --- GRID DE TARJETAS --- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.nav-card {
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  }
+
+  mat-card-content {
+    display: flex;
+    align-items: center;
+    padding: 24px !important;
+  }
+
+  .card-icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+  }
+
+  .card-text {
+    h3 { margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 600; color: $color-dark; }
+    p { margin: 0; font-size: 0.85rem; color: $color-gray; }
+  }
+
+  /* Colores temáticos por tarjeta */
+/* Colores temáticos por tarjeta */
+  &.action-blue .card-icon-container { background: linear-gradient(135deg, color.adjust($color-blue, $lightness: 10%), $color-blue); }
+  &.action-red .card-icon-container { background: linear-gradient(135deg, color.adjust($color-red, $lightness: 10%), $color-red); }
+  &.action-dark .card-icon-container { background: linear-gradient(135deg, color.adjust($color-dark, $lightness: 20%), $color-dark); }
+  &.action-gray .card-icon-container { background: linear-gradient(135deg, color.adjust($color-gray, $lightness: 10%), $color-gray); }
+}
+
+/* --- SECCIÓN DE LA TABLA --- */
+.table-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  mat-card-header {
+    margin-bottom: 20px;
+
+    .header-icon {
+      background-color: rgba($color-blue, 0.1);
+      color: $color-blue;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .top-table {
+    width: 100%;
+    box-shadow: none;
+
+    .mat-mdc-header-cell {
+      color: $color-gray;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      border-bottom: 2px solid #eee;
+    }
+
+    .table-row-hover:hover {
+      background-color: rgba($color-blue, 0.02);
+    }
+
+    /* Estilos de las celdas */
+    .sede-name-cell {
+      font-weight: 500;
+      color: $color-dark;
+    }
+
+    .text-right { text-align: right; }
+    .bold-text { font-weight: 700; color: $color-blue; font-size: 1.1rem; }
+
+    /* Medallas para los rangos */
+    .rank-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      background-color: #eee;
+      color: $color-gray;
+
+      &.rank-1 { background-color: rgba(#FFD700, 0.2); color: #B8860B; } /* Oro */
+      &.rank-2 { background-color: rgba(#C0C0C0, 0.2); color: #708090; } /* Plata */
+      &.rank-3 { background-color: rgba(#CD7F32, 0.2); color: #8B4513; } /* Bronce */
+    }
+  }
+
+  .loading-state, .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+    color: $color-gray;
+
+    mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.5; }
+    p { margin-top: 16px; font-size: 1.1rem; }
+  }
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+  .dashboard-container { padding: 16px; }
+  .cards-grid { grid-template-columns: 1fr; }
+}

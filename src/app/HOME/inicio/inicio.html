@@ -1,0 +1,113 @@
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+    <div class="header-text">
+      <h1>Panel de Control Principal</h1>
+      <p>Bienvenido al sistema integrado de gestión Coservanguard.</p>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+
+    <mat-card class="nav-card action-blue" (click)="navegarA('/clientes')" matRipple>
+      <mat-card-content>
+        <div class="card-icon-container">
+          <mat-icon>business</mat-icon>
+        </div>
+        <div class="card-text">
+          <h3>Gestión de Clientes</h3>
+          <p>Administre el portafolio corporativo</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="nav-card action-red" (click)="navegarA('/codigoQr')" matRipple>
+      <mat-card-content>
+        <div class="card-icon-container">
+          <mat-icon>qr_code_scanner</mat-icon>
+        </div>
+        <div class="card-text">
+          <h3>Códigos QR</h3>
+          <p>Generación y control de puntos</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="nav-card action-dark" (click)="navegarA('/marcacionQrRealizadas')" matRipple>
+      <mat-card-content>
+        <div class="card-icon-container">
+          <mat-icon>checklist_rtl</mat-icon>
+        </div>
+        <div class="card-text">
+          <h3>Marcaciones Realizadas</h3>
+          <p>Supervisión de rondas en tiempo real</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="nav-card action-gray" (click)="navegarA('/graficaMarcacionQRDone')" matRipple>
+      <mat-card-content>
+        <div class="card-icon-container">
+          <mat-icon>bar_chart</mat-icon>
+        </div>
+        <div class="card-text">
+          <h3>Reportes y Gráficas</h3>
+          <p>Análisis estadístico de actividad</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <div class="top-sedes-section">
+    <mat-card class="table-card">
+      <mat-card-header>
+        <div mat-card-avatar class="header-icon">
+          <mat-icon>leaderboard</mat-icon>
+        </div>
+        <mat-card-title>Top 5 Sedes con Mayor Actividad</mat-card-title>
+        <mat-card-subtitle>Volumen histórico de marcaciones QR</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <div *ngIf="isLoading" class="loading-state">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Calculando estadísticas...</p>
+        </div>
+
+        <div *ngIf="!isLoading && topSedes.length === 0" class="empty-state">
+          <mat-icon>info_outline</mat-icon>
+          <p>Aún no hay marcaciones registradas en el sistema.</p>
+        </div>
+
+        <table *ngIf="!isLoading && topSedes.length > 0" mat-table [dataSource]="topSedes" class="top-table">
+
+          <ng-container matColumnDef="posicion">
+            <th mat-header-cell *matHeaderCellDef> Rango </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="rank-badge" [ngClass]="'rank-' + element.posicion">
+                #{{element.posicion}}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre de la Sede </th>
+            <td mat-cell *matCellDef="let element" class="sede-name-cell"> {{element.nombre}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef class="text-right"> N° Marcaciones </th>
+            <td mat-cell *matCellDef="let element" class="text-right bold-text"> {{element.cantidad}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row-hover"></tr>
+        </table>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>

@@ -10,8 +10,15 @@ import { CodigoQrInterface } from './PUNTOS_DE_MARCACION/codigo-qr-interface/cod
 import { asignacionInterface } from './PUNTOS_DE_MARCACION/asignacion-interface/asignacion-interface';
 import { marcacionQrRealizadaInterface } from './PUNTOS_DE_MARCACION/marcaciones-qr-realizadas/marcaciones-qr-realizadas';
 import { GraficasMarcaciones } from './REPORTES/graficas-marcaciones/graficas-marcaciones';
+import { LoginComponent } from './AUTH/login/login';
+import { InicioComponent } from './HOME/inicio/inicio';
+import { MapaPuntosComponent } from './PUNTOS_DE_MARCACION/mapa-puntos/mapa-puntos';
+
 
 const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'inicio', component: InicioComponent },
   {path: 'clientes', component: ClienteInterface},
   {path: 'sedes', component: SedeInterface},
   {path: 'usuarios', component: Usuarios},
@@ -21,7 +28,8 @@ const routes: Routes = [
   {path: 'codigoQr', component: CodigoQrInterface},
   {path: 'asignacion', component: asignacionInterface},
   {path: 'marcacionQrRealizadas', component: marcacionQrRealizadaInterface},
-  {path: 'graficaMarcacionQRDone', component: GraficasMarcaciones}
+  {path: 'graficaMarcacionQRDone', component: GraficasMarcaciones},
+  {path: 'mapaPuntos', component: MapaPuntosComponent}
 ];
 
 @NgModule({

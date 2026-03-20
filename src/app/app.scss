@@ -1,18 +1,149 @@
-/**
-// Contenedor principal que ocupa toda la pantalla
+/* =======================================================
+   ESTILOS PRINCIPALES DE LAYOUT (COSERVANGUARD)
+   ======================================================= */
+
+/* Color de fondo general de la app (gris muy claro) */
 .app-container {
+  height: 100vh !important;
+  background-color: #f4f6f9;
+}
+
+/* Evitamos scroll doble en la página principal */
+.app-content-wrapper {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+  overflow: hidden;
 }
 
-// Estilo para el menú lateral (ZONA AZUL)
-.app-sidenav {
-  width: 260px;
-  background-color: #1769dd; // Tu Azul Oscuro
-  border-right: none; // Sin borde para un look más limpio
+/* --- ESTILOS DE LA BARRA SUPERIOR (TOOLBAR) --- */
+.top-toolbar {
+  background-color: #ffffff;
+  color: #2c2c2c;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  z-index: 10;
+  height: 64px;
+  display: flex;
+  justify-content: space-between; /* Empuja izquierda y derecha a los bordes */
+  align-items: center;
+  padding: 0 16px;
+  position: relative; /* CRUCIAL para centrar el título */
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Título centrado absolutamente */
+  .brand-toolbar {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Lo centra perfectamente sin importar qué haya a los lados */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1769dd; /* Azul */
+
+    .brand-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand-icon {
+      color: #C83832; /* Rojo */
+    }
+  }
+
+  .user-profile-btn {
+    color: #1769dd;
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+    &:hover {
+      background-color: rgba(23, 105, 221, 0.05);
+    }
+  }
 }
 
-// Contenedor del contenido principal
-.mat-sidenav-content {
-  background-color: #8d8e92; // Tu Gris de Fondo
+  /* Nuevo estilo del botón de perfil en la barra */
+  .user-profile-btn {
+    color: #1769dd; /* Azul corporativo */
+    mat-icon {
+      font-size: 32px; /* Un poco más grande para que destaque */
+      width: 32px;
+      height: 32px;
+    }
+
+    &:hover {
+      background-color: rgba(23, 105, 221, 0.05); /* #1769dd transparente */
+    }
+  }
+
+
+/* --- ESTILOS DEL MENÚ DESPLEGABLE DE USUARIO (PANEL) --- */
+::ng-deep .coservanguard-user-menu.mat-mdc-menu-panel {
+  min-width: 220px; /* Un poco más estrecho ya que no hay imagen */
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 1px solid #eee;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
+
+  .user-menu-header {
+    padding: 20px 24px;
+    background-color: rgba(244, 246, 249, 0.5);
+
+    .user-info-details {
+      display: flex;
+      flex-direction: column;
+
+      .user-full-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2c2c2c;
+        margin-bottom: 2px;
+      }
+
+      .user-email {
+        font-size: 0.85rem;
+        color: #8d8e92;
+        margin-bottom: 12px; /* Separación con el cargo */
+      }
+
+      /* Etiquetas de cargo con colores corporativos */
+      .user-cargo-tag {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        width: fit-content;
+
+        &.cargo-administrador { background-color: rgba(200, 56, 50, 0.1); color: #C83832; } /* Rojo */
+        &.cargo-coordinador { background-color: rgba(23, 105, 221, 0.1); color: #1769dd; }   /* Azul */
+        &.cargo-supervisor { background-color: rgba(44, 44, 44, 0.1); color: #2c2c2c; }    /* Negro */
+      }
+    }
+  }
+
+  /* Estilo del botón de cerrar sesión */
+  .logout-item {
+    height: 48px;
+
+    &:hover {
+      background-color: rgba(200, 56, 50, 0.03);
+    }
+
+    mat-icon {
+      margin-right: 12px;
+    }
+
+    span {
+      color: #C83832;
+      font-weight: 600;
+    }
+  }
 }
-  **/

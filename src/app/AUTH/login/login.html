@@ -1,0 +1,53 @@
+<div class="login-wrapper">
+
+  <div class="brand-section">
+    <div class="scanner-line"></div> <div class="brand-content">
+      <img src="../../../assets/logo_nuevo.png" alt="Águila Coservanguard" class="eagle-logo">
+      <h1 class="company-name">COSERVANGUARD LTDA.</h1>
+      <p class="slogan">Vigilancia con precisión inquebrantable.</p>
+    </div>
+    <div class="overlay-pattern"></div>
+  </div>
+
+  <div class="form-section">
+    <div class="glass-card">
+      <div class="form-header">
+        <h2>PORTAL DE ACCESO</h2>
+        <p>Ingrese sus credenciales corporativas</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Número de Cédula</mat-label>
+          <input matInput formControlName="cedula" placeholder="Ej. 1012345678">
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-error *ngIf="loginForm.get('cedula')?.hasError('required')">
+            La cédula es obligatoria
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" color="warn" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <mat-icon matPrefix>vpn_key</mat-icon>
+          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Ocultar contraseña'">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">La contraseña es requerida</mat-error>
+        </mat-form-field>
+
+        <button mat-flat-button class="submit-btn" type="submit" [disabled]="isLoading">
+          <span *ngIf="!isLoading">INGRESAR AL SISTEMA</span>
+          <mat-spinner *ngIf="isLoading" diameter="24" color="accent"></mat-spinner>
+        </button>
+
+      </form>
+
+      <div class="footer-links">
+        <a href="#">¿Problemas con su acceso de seguridad?</a>
+      </div>
+    </div>
+  </div>
+
+</div>

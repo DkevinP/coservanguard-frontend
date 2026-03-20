@@ -7,6 +7,8 @@
 // 2. INCLUYE EL CORE
 @include mat.core();
 
+@import '../node_modules/leaflet/dist/leaflet.css';
+
 // 3. APLICA EL TEMA DIRECTAMENTE (Método M3+ TEMA CLARO)
 html {
   // Ya NO usamos 'dark: true', esto crea un tema claro por defecto.
@@ -277,4 +279,52 @@ body {
 .mat-mdc-dialog-actions {
   padding-bottom: 24px !important; // Un poco más de aire abajo
   padding-right: 24px !important;
+}
+
+
+/* --- SOLUCIÓN GLOBAL DE RESPONSIVIDAD PARA ANGULAR --- */
+
+/* 1. Forzamos a que el modelo de caja sea predecible en toda la app */
+* {
+  box-sizing: border-box;
+}
+
+/* 2. El HTML y el Body deben ocupar siempre el 100% de la ventana real */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Evita que la página se mueva hacia los lados por error */
+}
+
+/* 3. Tu contenedor principal (el mat-sidenav-container de tu app.html) */
+.app-container {
+  height: 100vh !important; /* Ocupa exactamente toda la ventana de borde a borde */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 4. Hacemos que el espacio donde se cargan tus componentes se estire al máximo */
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* Permite scroll vertical solo en el contenido si es muy largo */
+  overflow-x: hidden;
+}
+
+/* Clase global para los contenedores de páginas (tablas, gráficas, etc.) */
+.page-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Reducimos el padding en celulares para aprovechar la pantalla */
+@media (max-width: 600px) {
+  .page-container {
+    padding: 12px;
+  }
 }

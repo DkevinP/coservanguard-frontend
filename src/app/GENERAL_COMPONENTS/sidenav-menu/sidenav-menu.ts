@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-sidenav-menu',
@@ -6,20 +6,30 @@ import { Component } from '@angular/core';
   templateUrl: './sidenav-menu.html',
   styleUrl: './sidenav-menu.scss'
 })
-export class SidenavMenu {
+export class SidenavMenu implements OnInit {
 
   // Objeto para mantener el estado (abierto/cerrado) de cada menú
   public menuState: {[key: string]: boolean} = {
     usuarios: false,
+    turnos: false,
     puntos: false
-    // Puedes añadir más aquí si los necesitas en el futuro
   };
+
+  // Variable para almacenar el rol del usuario actual
+  public userRole: number = 0;
 
   constructor() { }
 
-  // Función para cambiar el estado de un menú
+  ngOnInit() {
+    // Leemos el rol guardado durante el login en el localStorage
+    const rolGuardado = localStorage.getItem('usuarioRol');
+
+    // Lo convertimos a número. Si no existe, se asigna 0 por seguridad.
+    this.userRole = rolGuardado ? parseInt(rolGuardado, 10) : 0;
+  }
+
+  // Función para cambiar el estado de un menú (Acordeón)
   public toggleMenu(menuItem: string): void {
-    // Guarda el estado actual del menú que se clickeó (true si estaba abierto)
     const wasOpen = this.menuState[menuItem];
 
     // Cierra todos los menús
@@ -28,7 +38,6 @@ export class SidenavMenu {
     });
 
     // Si el menú NO estaba abierto, ábrelo.
-    // Si ya estaba abierto, el paso anterior ya lo cerró.
     if (!wasOpen) {
       this.menuState[menuItem] = true;
     }

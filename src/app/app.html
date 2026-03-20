@@ -1,9 +1,64 @@
-<mat-sidenav-container class="app-container">
-  <mat-sidenav mode="side" opened class="app-sidenav">
+<ng-container *ngIf="isLoginRoute()">
+  <router-outlet></router-outlet>
+</ng-container>
+
+<mat-sidenav-container class="app-container" *ngIf="!isLoginRoute()">
+
+  <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="app-sidenav">
     <app-sidenav-menu></app-sidenav-menu>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
+  <mat-sidenav-content class="app-content-wrapper">
+
+  <mat-toolbar class="top-toolbar">
+
+      <div class="toolbar-left">
+        <button mat-icon-button (click)="sidenav.toggle()" aria-label="Abrir o cerrar menú">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="brand-toolbar">
+        <span class="brand-name">COSERVANGUARD</span>
+        <mat-icon class="brand-icon">verified_user</mat-icon>
+      </div>
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-profile-btn" title="Ver perfil">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+<mat-menu #userMenu="matMenu" xPosition="before" class="coservanguard-user-menu">
+        <div class="user-menu-header">
+
+          <div class="user-info-details" *ngIf="usuarioActual; else cargandoDatos">
+            <span class="user-full-name">{{ usuarioActual.nombre }} {{ usuarioActual.apellido }}</span>
+            <span class="user-email">{{ usuarioActual.correo }}</span>
+            <span class="user-cargo-tag" [ngClass]="'cargo-'+nombreCargo.toLowerCase()">
+              {{ nombreCargo }}
+            </span>
+          </div>
+
+          <ng-template #cargandoDatos>
+             <div class="user-info-details">
+                <span class="user-full-name" style="color: gray; font-size: 0.9em;">Cargando perfil...</span>
+             </div>
+          </ng-template>
+
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item (click)="cerrarSesion()" class="logout-item">
+          <mat-icon color="warn">logout</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+
+    </mat-toolbar>
+
+    <div class="router-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

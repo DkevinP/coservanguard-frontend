@@ -4,12 +4,12 @@
 
 <mat-nav-list class="sidenav-menu">
 
-  <a mat-list-item routerLink="/home" routerLinkActive="active">
+  <a mat-list-item routerLink="/inicio" routerLinkActive="active">
     <mat-icon matListItemIcon>home</mat-icon>
     <span matListItemTitle>INICIO</span>
   </a>
 
-  <div class="menu-group" [ngClass]="{'expanded': menuState['usuarios']}">
+  <div class="menu-group" [ngClass]="{'expanded': menuState['usuarios']}" *ngIf="userRole === 1 || userRole === 4">
     <a mat-list-item (click)="toggleMenu('usuarios')" class="menu-toggle">
       <mat-icon matListItemIcon>group</mat-icon>
       <span matListItemTitle>USUARIOS
@@ -30,12 +30,12 @@
     </div>
   </div>
 
-  <a mat-list-item routerLink="/clientes" routerLinkActive="active">
+  <a mat-list-item routerLink="/clientes" routerLinkActive="active" *ngIf="userRole === 1 || userRole === 4">
     <mat-icon matListItemIcon>business</mat-icon>
     <span matListItemTitle>CLIENTES</span>
   </a>
 
-  <a mat-list-item routerLink="/sedes" routerLinkActive="active">
+  <a mat-list-item routerLink="/sedes" routerLinkActive="active" *ngIf="userRole === 1 || userRole === 4">
     <mat-icon matListItemIcon>location_on</mat-icon>
     <span matListItemTitle>SEDES</span>
   </a>
@@ -85,6 +85,11 @@
       <a mat-list-item routerLink="/marcacionQrRealizadas" routerLinkActive="active">
         <mat-icon matListItemIcon>assignment_turned_in</mat-icon>
         <span matListItemTitle>HISTORIAL MARCACIONES</span>
+      </a>
+
+      <a mat-list-item routerLink="/mapaPuntos" routerLinkActive="active">
+        <mat-icon matListItemIcon>assignment_turned_in</mat-icon>
+        <span matListItemTitle>UBICACIÓN PUESTOS</span>
       </a>
     </div>
   </div>
