@@ -27,7 +27,7 @@ describe('CodigoQrService (HTTP)', () => {
       expect(data).toEqual(mockData);
     });
 
-    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/codigoqr/listar-codigo-img');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com/api/codigoqr/listar-codigo-img');
     expect(req.request.method).toBe('GET');
     req.flush(mockData);
   });

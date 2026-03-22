@@ -19,7 +19,7 @@ describe('FormHttpAsignacionService', () => {
 
     service.crearAsignacion(data).subscribe();
 
-    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/asignacion/crear-asignacion');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com/api/asignacion/crear-asignacion');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(data);
     req.flush({});

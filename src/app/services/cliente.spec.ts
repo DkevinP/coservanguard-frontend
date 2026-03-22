@@ -30,7 +30,7 @@ describe('ClienteService (HTTP)', () => {
     });
 
     // 1. Verificamos la URL y el método
-    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/cliente/list-cliente');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com/api/cliente/list-cliente');
     expect(req.request.method).toBe('GET');
 
     // 2. Simulamos la respuesta de la API Java

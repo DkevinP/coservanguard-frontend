@@ -29,7 +29,7 @@ describe('FormHttpTurnoService', () => {
       expect(respuesta).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/turno-cliente/crear-turno');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com/api/turno-cliente/crear-turno');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(nuevoTurno);
 

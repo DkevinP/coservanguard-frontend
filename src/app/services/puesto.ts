@@ -13,7 +13,7 @@ export interface Puesto {
 })
 export class PuestoService {
 
-    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/puesto/list-puesto';
+    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/puesto/list-puesto';
 
   constructor(private http: HttpClient) { }
 

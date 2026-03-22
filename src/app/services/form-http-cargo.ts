@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormHttpCargoService {
 
-  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/cargo/crear-cargo';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/cargo/crear-cargo';
 
   constructor(private http: HttpClient) { }
 

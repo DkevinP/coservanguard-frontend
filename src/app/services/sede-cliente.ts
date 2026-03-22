@@ -14,7 +14,7 @@ export interface SedeCliente {
 })
 export class SedeClienteService {
 
-    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/sede-cliente/list-sede';
+    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/sede-cliente/list-sede';
 
   constructor(private http: HttpClient) { }
 

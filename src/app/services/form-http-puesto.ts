@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormHttpPuestoService {
 
-  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/puesto/crear-puesto';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/puesto/crear-puesto';
 
   constructor(private http: HttpClient) { }
 

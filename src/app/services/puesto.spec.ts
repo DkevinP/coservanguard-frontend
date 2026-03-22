@@ -24,7 +24,7 @@ describe('PuestoService (HTTP)', () => {
       expect(data).toEqual(mockPuestos);
     });
 
-    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/puesto/list-puesto');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com/api/puesto/list-puesto');
     expect(req.request.method).toBe('GET');
     req.flush(mockPuestos);
   });

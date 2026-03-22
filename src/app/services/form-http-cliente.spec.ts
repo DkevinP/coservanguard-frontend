@@ -24,7 +24,7 @@ describe('FormHttpClienteService (Integration)', () => {
       expect(resp).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/cliente/crear-cliente');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com/api/cliente/crear-cliente');
     expect(req.request.method).toBe('POST');
     // Verificamos que el cuerpo de la petición sea exactamente lo que enviamos
     expect(req.request.body).toEqual(nuevoCliente);

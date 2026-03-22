@@ -12,7 +12,7 @@ export interface Cargo {
 })
 export class CargoService {
 
-    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/cargo/list-cargo';
+    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/cargo/list-cargo';
 
   constructor(private http: HttpClient) { }
 

@@ -24,7 +24,7 @@ export interface CodigoQR {
 export class CodigoQrService {
 
   // URL correcta que trae las imágenes
-  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/codigoqr/listar-codigo-img';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/codigoqr/listar-codigo-img';
 
   constructor(private http: HttpClient) { }
 

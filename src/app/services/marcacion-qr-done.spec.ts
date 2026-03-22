@@ -33,7 +33,7 @@ describe('MarcacionQrDoneService (HTTP)', () => {
       expect(data).toEqual(mockData);
     });
 
-    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/marcacionqr/list-marcacion');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com/api/marcacionqr/list-marcacion');
     expect(req.request.method).toBe('GET');
     req.flush(mockData);
   });

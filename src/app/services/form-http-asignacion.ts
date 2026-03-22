@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormHttpAsignacionService {
 
-  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/asignacion/crear-asignacion';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/asignacion/crear-asignacion';
 
   constructor(private http: HttpClient) { }
 

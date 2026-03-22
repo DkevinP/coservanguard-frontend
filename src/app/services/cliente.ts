@@ -15,7 +15,7 @@ export interface Cliente {
 })
 export class ClienteService {
 
-  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/cliente/list-cliente';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/cliente/list-cliente';
 
   constructor(private http: HttpClient) { }
 

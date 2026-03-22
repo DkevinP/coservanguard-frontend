@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormHttpClienteService {
 
-  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/cliente/crear-cliente';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/cliente/crear-cliente';
 
   constructor(private http: HttpClient) { }
 
