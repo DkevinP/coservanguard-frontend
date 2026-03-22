@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private loginSub: Subscription | null = null;
 
   // Endpoint definitivo de login
-  private readonly API_URL = 'http://localhost:8080/api/usuario/login';
+  private readonly API_URL = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/usuario/login';
 
   constructor(
     private fb: FormBuilder,
