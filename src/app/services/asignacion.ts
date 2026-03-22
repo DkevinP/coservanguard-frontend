@@ -13,7 +13,7 @@ export interface Asignacion {
 })
 export class AsignacionService {
 
-    private apiUrl = 'http://localhost:8080/api/asignacion/list-asignacion';
+    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/asignacion/list-asignacion';
 
   constructor(private http: HttpClient) { }
 

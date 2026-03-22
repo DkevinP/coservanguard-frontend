@@ -19,7 +19,7 @@ describe('FormHttpCargoService', () => {
 
     service.crearCargo(data).subscribe();
 
-    const req = httpMock.expectOne('http://localhost:8080/api/cargo/crear-cargo');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/cargo/crear-cargo');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(data);
     req.flush({});

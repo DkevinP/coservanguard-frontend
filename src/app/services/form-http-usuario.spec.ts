@@ -29,7 +29,7 @@ describe('FormHttpUsuarioService', () => {
       expect(respuesta).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/usuario/crear-usuario');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/usuario/crear-usuario');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(nuevoUsuario);
 

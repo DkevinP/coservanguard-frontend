@@ -18,7 +18,7 @@ export interface Turno {
 })
 export class TurnoService {
 
-  private apiUrl = 'http://localhost:8080/api/turno/list-turno';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/turno/list-turno';
 
   constructor(private http: HttpClient) { }
 

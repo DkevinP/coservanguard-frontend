@@ -19,7 +19,7 @@ export interface MarcacionQrDone {
 // CAMBIO AQUÍ: Antes decía "export class CodigoQrService"
 export class MarcacionQrDoneService {
 
-  private apiUrl = 'http://localhost:8080/api/marcacionqr/list-marcacion';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/marcacionqr/list-marcacion';
 
   constructor(private http: HttpClient) { }
 

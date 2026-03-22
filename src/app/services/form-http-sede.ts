@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormHttpSedeService {
 
-  private apiUrl = 'http://localhost:8080/api/sede-cliente/crear-sede';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/sede-cliente/crear-sede';
 
   constructor(private http: HttpClient) { }
 

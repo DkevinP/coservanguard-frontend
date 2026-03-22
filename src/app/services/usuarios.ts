@@ -19,7 +19,7 @@ export interface Usuario {
 })
 export class UsuarioService {
 
-  private apiUrl = 'http://localhost:8080/api/usuario/list-usuario';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/usuario/list-usuario';
 
   constructor(private http: HttpClient) { }
 

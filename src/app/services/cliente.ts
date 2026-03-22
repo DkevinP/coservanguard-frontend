@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Cliente {
-  id: number; 
+  id: number;
   nombre: string;
   nit: number;
   telefono: number;
@@ -15,7 +15,7 @@ export interface Cliente {
 })
 export class ClienteService {
 
-  private apiUrl = 'http://localhost:8080/api/cliente/list-cliente'; 
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/cliente/list-cliente';
 
   constructor(private http: HttpClient) { }
 

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Puesto {
-  id: number; 
+  id: number;
   puesto: string;
   id_sede: number;
 }
@@ -13,12 +13,12 @@ export interface Puesto {
 })
 export class PuestoService {
 
-    private apiUrl = 'http://localhost:8080/api/puesto/list-puesto'; 
+    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/puesto/list-puesto';
 
   constructor(private http: HttpClient) { }
 
   getPuesto(): Observable<Puesto[]> {
     return this.http.get<Puesto[]>(this.apiUrl);
   }
-  
+
 }

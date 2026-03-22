@@ -20,7 +20,7 @@ describe('FormHttpCodigoQrService', () => {
     service.crearCodigoQr(idPuesto).subscribe();
 
     // Verificamos la URL base
-    const req = httpMock.expectOne(req => req.url === 'http://localhost:8080/api/codigoqr/crear-codigoqr');
+    const req = httpMock.expectOne(req => req.url === 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/codigoqr/crear-codigoqr');
     expect(req.request.method).toBe('POST');
 
     // VERIFICACIÓN CLAVE: Que el parámetro viaje en la URL

@@ -26,7 +26,7 @@ describe('SedeClienteService (HTTP)', () => {
       expect(data).toEqual(mockSedes);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/sede-cliente/list-sede');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/sede-cliente/list-sede');
     expect(req.request.method).toBe('GET');
     req.flush(mockSedes);
   });

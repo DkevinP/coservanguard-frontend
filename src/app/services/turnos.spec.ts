@@ -30,7 +30,7 @@ describe('TurnoService (HTTP)', () => {
       expect(data).toEqual(mockTurnos);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/turno/list-turno');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/turno/list-turno');
     expect(req.request.method).toBe('GET');
     req.flush(mockTurnos);
   });

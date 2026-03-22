@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface SedeCliente {
-  id: number; 
+  id: number;
   sede: string;
   direccion: number;
   id_cliente: number;
@@ -14,12 +14,12 @@ export interface SedeCliente {
 })
 export class SedeClienteService {
 
-    private apiUrl = 'http://localhost:8080/api/sede-cliente/list-sede'; 
+    private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/sede-cliente/list-sede';
 
   constructor(private http: HttpClient) { }
 
   getSedeClientes(): Observable<SedeCliente[]> {
     return this.http.get<SedeCliente[]>(this.apiUrl);
   }
-  
+
 }

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormHttpCodigoQrService {
 
-  private apiUrl = 'http://localhost:8080/api/codigoqr/crear-codigoqr';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/codigoqr/crear-codigoqr';
 
   constructor(private http: HttpClient) { }
 

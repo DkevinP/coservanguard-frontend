@@ -24,7 +24,7 @@ describe('AsignacionService (HTTP)', () => {
       expect(data).toEqual(mockData);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/asignacion/list-asignacion');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/asignacion/list-asignacion');
     expect(req.request.method).toBe('GET');
     req.flush(mockData);
   });

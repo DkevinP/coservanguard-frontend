@@ -33,7 +33,7 @@ describe('UsuarioService (HTTP)', () => {
       expect(usuarios).toEqual(mockUsuarios);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/usuario/list-usuario');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/usuario/list-usuario');
     expect(req.request.method).toBe('GET');
     req.flush(mockUsuarios);
   });

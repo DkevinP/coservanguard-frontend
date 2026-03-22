@@ -18,7 +18,7 @@ describe('FormHttpPuestoService', () => {
     const data = { puesto: 'Puesto 1', id_sede: 10 };
     service.crearPuesto(data).subscribe();
 
-    const req = httpMock.expectOne('http://localhost:8080/api/puesto/crear-puesto');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/puesto/crear-puesto');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(data);
     req.flush({});

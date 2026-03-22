@@ -18,7 +18,7 @@ describe('FormHttpSedeService', () => {
     const data = { sede: 'Sede Central', direccion: 'Calle 10' };
     service.crearSede(data).subscribe();
 
-    const req = httpMock.expectOne('http://localhost:8080/api/sede-cliente/crear-sede');
+    const req = httpMock.expectOne('http://coservanguard.eastus.cloudapp.azure.com:8080/api/sede-cliente/crear-sede');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(data);
     req.flush({});
