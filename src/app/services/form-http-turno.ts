@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormHttpTurnoService {
 
-  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com:8080/api/turno-cliente/crear-turno';
+  private apiUrl = 'http://coservanguard.eastus.cloudapp.azure.com/api/turno-cliente/crear-turno';
 
   constructor(private http: HttpClient) { }
 
