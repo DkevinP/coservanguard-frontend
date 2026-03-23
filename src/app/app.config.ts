@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Importamos el HttpClientModule y el token para interceptores
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // --- Módulos de Angular Material ---
@@ -96,7 +96,7 @@ import { InicioComponent } from './HOME/inicio/inicio';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
+
     ReactiveFormsModule,
     AppRoutingModule,
 
@@ -122,13 +122,16 @@ import { InicioComponent } from './HOME/inicio/inicio';
     MatDividerModule
   ],
   providers: [
-    // AQUÍ REGISTRAMOS EL INTERCEPTOR
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }
-  ],
-  bootstrap: [App]
-})
+      // 1. LE DECIMOS A ANGULAR QUE USE EL CLIENTE HTTP MODERNO Y ESCUCHE A LOS INTERCEPTORES
+      provideHttpClient(withInterceptorsFromDi()),
+
+      // 2. MANTENEMOS TU INTERCEPTOR EXACTAMENTE COMO LO TENÍAS
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true
+      }
+    ],
+    bootstrap: [App]
+  })
 export class AppModule { }
