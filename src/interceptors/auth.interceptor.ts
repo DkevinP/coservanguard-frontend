@@ -13,6 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
+    console.log("🚀 El interceptor se disparó para la URL:", request.url);
+
     // 1. Buscamos el token en el localStorage (Asegúrate de que se llame igual que en tu login)
     const token = localStorage.getItem('token');
 
