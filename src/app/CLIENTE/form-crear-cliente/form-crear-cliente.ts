@@ -24,7 +24,7 @@ export class FormCrearCliente implements OnInit {
   ) {
     this.clienteForm = this.fb.group({
       nombre: ['', Validators.required],
-      nit: ['', [Validators.required, Validators.pattern('^[0-9]{7}$')]],
+      nit: ['', [Validators.required, Validators.pattern('^[0-9]{1,11}$')]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       email: ['', [Validators.required, Validators.email]]
     });
