@@ -26,7 +26,8 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        # Usamos el path relativo que confirmó tu build local
-        source: "dist/coservanguard_web/**"
+        # 1. Agregamos /browser/ a la ruta de origen
+        source: "dist/coservanguard_web/browser/**"
         target: "/var/www/html/"
-        strip_components: 2
+        # 2. Subimos a 3 para cortar dist/ + coservanguard_web/ + browser/
+        strip_components: 3
