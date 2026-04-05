@@ -26,7 +26,6 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        # SIN los /** al final, para que empiece desde la carpeta entera
-        source: "dist/coservanguard_web/browser"
+        source: "dist/coservanguard_web/**"
         target: "/var/www/html/"
-        strip_components: 3
+        strip_components: 2
