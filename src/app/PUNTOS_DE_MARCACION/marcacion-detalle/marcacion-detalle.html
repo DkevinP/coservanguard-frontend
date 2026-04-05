@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Detalle de Marcación</h2>
+
+<mat-dialog-content class="dialog-content-layout">
+  <div class="map-container" id="map-dialog"></div>
+
+  <div class="info-container">
+    <h3 class="info-title">Información del Registro</h3>
+
+    <div class="info-item">
+      <strong>Sede:</strong>
+      <span>{{ data.sede }}</span>
+    </div>
+
+    <div class="info-item">
+      <strong>Puesto:</strong>
+      <span>{{ data.puesto }}</span>
+    </div>
+
+    <div class="info-item">
+      <strong>Usuario:</strong>
+      <span>{{ data.usuario }}</span>
+    </div>
+
+    <div class="info-item">
+      <strong>Fecha:</strong>
+      <span>{{ data.fecha | date:'medium' }}</span>
+    </div>
+
+    <div class="info-item">
+      <strong>Coordenadas:</strong>
+      <span>{{ data.ubicacion }}</span>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="warn">Cerrar</button>
+</mat-dialog-actions>

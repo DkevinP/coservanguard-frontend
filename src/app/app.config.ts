@@ -55,6 +55,7 @@ import { asignacionInterface } from './PUNTOS_DE_MARCACION/asignacion-interface/
 import { FormCrearAsignacion } from './PUNTOS_DE_MARCACION/form-asignacion/form-asignacion';
 import { marcacionQrRealizadaInterface } from './PUNTOS_DE_MARCACION/marcaciones-qr-realizadas/marcaciones-qr-realizadas';
 import { MapaPuntosComponent } from './PUNTOS_DE_MARCACION/mapa-puntos/mapa-puntos';
+import { MarcacionDetalleDialogComponent } from './PUNTOS_DE_MARCACION/marcacion-detalle/marcacion-detalle';
 
 import { GraficasMarcaciones } from './REPORTES/graficas-marcaciones/graficas-marcaciones';
 import { BaseChartDirective } from 'ng2-charts';
@@ -91,7 +92,8 @@ import { InicioComponent } from './HOME/inicio/inicio';
     MensajeDialogComponent,
     LoginComponent,
     InicioComponent,
-    MapaPuntosComponent
+    MapaPuntosComponent,
+    MarcacionDetalleDialogComponent
   ],
   imports: [
     BrowserModule,

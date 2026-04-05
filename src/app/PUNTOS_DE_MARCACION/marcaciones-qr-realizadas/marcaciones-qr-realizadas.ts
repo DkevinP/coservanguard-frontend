@@ -12,7 +12,8 @@ import { AsignacionService, Asignacion } from '../../services/asignacion';
 import { PuestoService, Puesto } from '../../services/puesto';
 import { SedeClienteService, SedeCliente } from '../../services/sede-cliente';
 import { UsuarioService, Usuario } from '../../services/usuarios';
-import { MarcacionQrDoneService, MarcacionQrDone } from '../../services/marcacion-qr-done'; // Ajusta la ruta
+import { MarcacionQrDoneService, MarcacionQrDone } from '../../services/marcacion-qr-done';
+import { MarcacionDetalleDialogComponent } from '../marcacion-detalle/marcacion-detalle';
 
 // Interfaz para la tabla
 export interface MarcacionCombinada {
@@ -32,7 +33,7 @@ export interface MarcacionCombinada {
 export class marcacionQrRealizadaInterface implements OnInit, OnDestroy {
 
   public codigoQrDoneDataSource = new MatTableDataSource<MarcacionCombinada>();
-  displayedColumns: string[] = ['sede', 'puesto', 'usuario', 'fecha', 'ubicacion'];
+  displayedColumns: string[] = ['sede', 'puesto', 'usuario', 'fecha', 'ubicacion', 'acciones'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -152,4 +153,14 @@ export class marcacionQrRealizadaInterface implements OnInit, OnDestroy {
       this._liveAnnouncer.announce('Ordenamiento restablecido');
     }
   }
+
+  abrirDetalle(marcacion: MarcacionCombinada): void {
+    this.dialog.open(MarcacionDetalleDialogComponent, {
+      width: '850px', // Un buen tamaño para que el mapa y el texto se vean bien
+      data: marcacion // Pasamos la fila seleccionada
+    });
+  }
+
+
+
 }
