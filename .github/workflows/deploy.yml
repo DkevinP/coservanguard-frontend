@@ -20,6 +20,9 @@ jobs:
     - name: Compilar Angular para producción (ng build)
       run: npm run build -- --configuration production
 
+    - name: DEBUG - Ver estructura exacta de carpetas generadas
+      run: ls -R dist/
+
     - name: Copiar archivos al servidor web Nginx en Azure
       uses: appleboy/scp-action@master
       with:
