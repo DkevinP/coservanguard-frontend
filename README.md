@@ -8,7 +8,7 @@ Este aplicativo es el centro de control operativo, diseñado exclusivamente para
 
 ---
 
-## Ruta de Uso (Paso a Paso)
+## Ruta de Uso
 
 ### Paso 1: Autenticación en el Sistema (Login)
 El punto de partida. Por seguridad, todas las rutas están protegidas mediante tokens JWT.
