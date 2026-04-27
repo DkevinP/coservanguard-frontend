@@ -1,113 +1,140 @@
-/* 1. ESTILOS DEL :HOST */
+/* =======================================================
+   ESTILOS DEL COMPONENTE SIDENAV-MENU
+   ======================================================= */
 :host {
-  display: block; // Buena práctica
+  display: block;
 
+  /* ---------------------------------------------------
+     1. ESTILOS LOCALES (Cabecera, Logo, Botón)
+     --------------------------------------------------- */
   .sidenav-header {
-    padding: 24px 16px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px 16px 16px;
     box-sizing: border-box;
-    // Opcional: fondo ligeramente más oscuro para el header del logo
-    // background-color: rgba(0,0,0,0.1);
+
+    .header-actions {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start; /* Mantiene el botón siempre a la izquierda */
+      margin-bottom: 8px;
+    }
+
+    &.collapsed {
+      padding: 16px 8px;
+
+      .header-actions {
+        justify-content: center;
+        margin-bottom: 0;
+      }
+    }
   }
 
   .company-logo {
-    max-width: 160px; // Un poco más pequeño para que respire
+    max-width: 140px;
     height: auto;
     background-color: #ffffff;
     border: 3px solid #C83832;
     border-radius: 12px;
     box-sizing: border-box;
     padding: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); // Sombra para darle profundidad
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
-}
 
-/* 2. ESTILOS DE LAYOUT HIJOS (::ng-deep) */
-
-/* Cursor pointer para los padres que abren menú (que no tienen routerLink) */
-:host ::ng-deep .menu-toggle {
-  cursor: pointer !important;
-}
-
-/* Flexbox para items */
-:host ::ng-deep .mat-list-item-content, /* Para versiones viejas de Material */
-:host ::ng-deep .menu-group > a.mat-list-item {
-  display: flex !important;
-  align-items: center !important;
-}
-
-/* Indicador de expansión (Flecha) */
-:host ::ng-deep .expansion-indicator {
-  margin-left: auto;
-  font-size: 1.2rem;
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Animación más suave
-}
-:host ::ng-deep .menu-group.expanded .expansion-indicator {
-  transform: rotate(180deg);
-}
-
-/* 3. COLORES UNIFICADOS */
-
-/* --- A. ESTADO NORMAL (Inactivo) --- */
-:host ::ng-deep a.mat-list-item:not(.active) {
-  .mdc-list-item__primary-text,
-  .mdc-list-item__start,
-  .mat-icon, // Soporte extra
-  .expansion-indicator {
-    color: #ffffff !important;
+  .toggle-btn {
+    color: #ffffff;
   }
-}
 
-/* --- B. ESTADO ACTIVO (Rojo) --- */
-:host ::ng-deep a.mat-list-item.active {
-  background-color: rgba(200, 56, 50, 0.2) !important; // Fondo rojo transparente
-  border-left: 4px solid #C83832; // Línea roja a la izquierda para resaltar más
+  /* ---------------------------------------------------
+     2. ESTILOS PROFUNDOS (Override de Angular Material)
+     --------------------------------------------------- */
+  ::ng-deep {
 
-  .mdc-list-item__primary-text,
-  .mdc-list-item__start,
-  .mat-icon {
-    color: #C83832 !important; /* Rojo Corporativo */
-    font-weight: 500; // Un poco más grueso
+    .menu-toggle {
+      cursor: pointer !important;
+    }
+
+    .mat-list-item-content,
+    .menu-group > a.mat-list-item {
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .expansion-indicator {
+      margin-left: auto;
+      font-size: 1.2rem;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .menu-group.expanded .expansion-indicator {
+      transform: rotate(180deg);
+    }
+
+    /* --- COLORES UNIFICADOS --- */
+    a.mat-list-item:not(.active) {
+      .mdc-list-item__primary-text,
+      .mdc-list-item__start,
+      .mat-icon,
+      .expansion-indicator {
+        color: #ffffff !important;
+      }
+    }
+
+    a.mat-list-item.active {
+      background-color: rgba(200, 56, 50, 0.2) !important;
+      border-left: 4px solid #C83832;
+
+      .mdc-list-item__primary-text,
+      .mdc-list-item__start,
+      .mat-icon {
+        color: #C83832 !important;
+        font-weight: 500;
+      }
+    }
+
+    a.mat-list-item:not(.active):hover {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* --- ESTILOS DEL SUBMENÚ --- */
+    .submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out;
+      background-color: rgba(0, 0, 0, 0.2);
+
+      a[mat-list-item] {
+        padding-left: 48px !important;
+
+        .mdc-list-item__content {
+          padding-left: 0 !important;
+          margin-left: 0 !important;
+        }
+
+        .mat-icon {
+          transform: scale(0.9);
+          margin-right: 12px;
+        }
+
+        &.active {
+          background-color: rgba(200, 56, 50, 0.15) !important;
+          border-left-color: #C83832 !important;
+        }
+      }
+    }
+
+    .menu-group.expanded .submenu {
+      max-height: 600px;
+    }
+
+    /* --- SEGURIDAD PARA TEXTOS LARGOS --- */
+    .mat-mdc-list-item-title,
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
   }
-}
-
-/* --- C. ESTADO HOVER --- */
-:host ::ng-deep a.mat-list-item:not(.active):hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* 4. SUBMENÚ (CORREGIDO) */
-:host ::ng-deep .submenu {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-in-out;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-:host ::ng-deep .menu-group.expanded .submenu {
-  max-height: 600px;
-}
-
-/* CAMBIO CLAVE: Usamos a[mat-list-item] en vez de a.mat-list-item */
-:host ::ng-deep .submenu a[mat-list-item] {
-  /* Forzamos el padding en el contenedor principal */
-  padding-left: 48px !important;
-}
-
-/* Aseguramos que el contenido interno también respete ese espacio si es necesario */
-:host ::ng-deep .submenu a[mat-list-item] .mdc-list-item__content {
-  padding-left: 0 !important; /* Reseteamos internos para que mande el padre */
-  margin-left: 0 !important;
-}
-
-/* Ajuste de íconos en submenú */
-:host ::ng-deep .submenu a[mat-list-item] .mat-icon {
-  transform: scale(0.9);
-  margin-right: 12px;
-}
-
-/* Estado Activo en Submenú */
-:host ::ng-deep .submenu a[mat-list-item].active {
-  background-color: rgba(200, 56, 50, 0.15) !important;
-  border-left-color: #C83832 !important;
 }

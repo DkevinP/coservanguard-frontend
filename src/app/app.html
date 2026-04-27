@@ -2,17 +2,27 @@
   <router-outlet></router-outlet>
 </ng-container>
 
-<mat-sidenav-container class="app-container" *ngIf="!isLoginRoute()">
+<mat-sidenav-container class="app-container" autosize *ngIf="!isLoginRoute()">
 
-  <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="app-sidenav">
-    <app-sidenav-menu></app-sidenav-menu>
+  <mat-sidenav #sidenav
+               [mode]="isMobile ? 'over' : 'side'"
+               [opened]="!isMobile"
+               class="app-sidenav"
+               [class.is-expanded]="isExpanded">
+
+    <app-sidenav-menu
+      [isExpanded]="isExpanded"
+      (toggleExpanded)="isMobile ? sidenav.close() : toggleSidenav()"
+      (closeSidenav)="isMobile && sidenav.close()">
+    </app-sidenav-menu>
+
   </mat-sidenav>
 
   <mat-sidenav-content class="app-content-wrapper">
 
-  <mat-toolbar class="top-toolbar">
+    <mat-toolbar class="top-toolbar">
 
-      <div class="toolbar-left">
+      <div class="toolbar-left" *ngIf="isMobile">
         <button mat-icon-button (click)="sidenav.toggle()" aria-label="Abrir o cerrar menú">
           <mat-icon>menu</mat-icon>
         </button>
@@ -27,9 +37,8 @@
         <mat-icon>account_circle</mat-icon>
       </button>
 
-<mat-menu #userMenu="matMenu" xPosition="before" class="coservanguard-user-menu">
+      <mat-menu #userMenu="matMenu" xPosition="before" class="coservanguard-user-menu">
         <div class="user-menu-header">
-
           <div class="user-info-details" *ngIf="usuarioActual; else cargandoDatos">
             <span class="user-full-name">{{ usuarioActual.nombre }} {{ usuarioActual.apellido }}</span>
             <span class="user-email">{{ usuarioActual.correo }}</span>
@@ -37,17 +46,13 @@
               {{ nombreCargo }}
             </span>
           </div>
-
           <ng-template #cargandoDatos>
              <div class="user-info-details">
                 <span class="user-full-name" style="color: gray; font-size: 0.9em;">Cargando perfil...</span>
              </div>
           </ng-template>
-
         </div>
-
         <mat-divider></mat-divider>
-
         <button mat-menu-item (click)="cerrarSesion()" class="logout-item">
           <mat-icon color="warn">logout</mat-icon>
           <span>Cerrar Sesión</span>

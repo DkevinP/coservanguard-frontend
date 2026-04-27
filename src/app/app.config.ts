@@ -31,6 +31,7 @@ import { AuthInterceptor } from '../interceptors/auth.interceptor'; // <-- Verif
 // --- Tus Componentes ---
 import { AppRoutingModule } from './app.routes';
 import { App } from './app';
+import { LayoutModule } from '@angular/cdk/layout'; // ¡Esta es la clave para el BreakpointObserver!
 
 import { SedeInterface } from './SEDES/sede-interface/sede-interface';
 import { FormCrearSede } from './SEDES/form-crear-sede/form-crear-sede';
@@ -121,7 +122,8 @@ import { InicioComponent } from './HOME/inicio/inicio';
     MatProgressSpinnerModule,
     MatCardModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    LayoutModule
   ],
   providers: [
       // 1. LE DECIMOS A ANGULAR QUE USE EL CLIENTE HTTP MODERNO Y ESCUCHE A LOS INTERCEPTORES

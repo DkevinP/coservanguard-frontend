@@ -2,13 +2,11 @@
    ESTILOS PRINCIPALES DE LAYOUT (COSERVANGUARD)
    ======================================================= */
 
-/* Color de fondo general de la app (gris muy claro) */
 .app-container {
   height: 100vh !important;
   background-color: #f4f6f9;
 }
 
-/* Evitamos scroll doble en la página principal */
 .app-content-wrapper {
   display: flex;
   flex-direction: column;
@@ -16,7 +14,44 @@
   overflow: hidden;
 }
 
-/* --- ESTILOS DE LA BARRA SUPERIOR (TOOLBAR) --- */
+/* =======================================================
+   NUEVOS ESTILOS RESPONSIVE Y SCROLL (TABLAS)
+   ======================================================= */
+
+.router-wrapper {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.table-responsive-container {
+  width: 100%;
+  overflow-x: auto;
+  max-height: 65vh;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 900px) {
+  .router-wrapper {
+    padding: 16px;
+  }
+
+  .top-toolbar {
+    padding: 0 8px;
+
+    .brand-toolbar .brand-name {
+      font-size: 1rem;
+    }
+  }
+}
+
+/* =======================================================
+   ESTILOS DE LA BARRA SUPERIOR (TOOLBAR)
+   ======================================================= */
 .top-toolbar {
   background-color: #ffffff;
   color: #2c2c2c;
@@ -24,25 +59,24 @@
   z-index: 10;
   height: 64px;
   display: flex;
-  justify-content: space-between; /* Empuja izquierda y derecha a los bordes */
+  justify-content: space-between;
   align-items: center;
   padding: 0 16px;
-  position: relative; /* CRUCIAL para centrar el título */
+  position: relative;
 
   .toolbar-left {
     display: flex;
     align-items: center;
   }
 
-  /* Título centrado absolutamente */
   .brand-toolbar {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%); /* Lo centra perfectamente sin importar qué haya a los lados */
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #1769dd; /* Azul */
+    color: #1769dd;
 
     .brand-name {
       font-size: 1.1rem;
@@ -51,41 +85,30 @@
     }
 
     .brand-icon {
-      color: #C83832; /* Rojo */
+      color: #C83832;
     }
   }
 
   .user-profile-btn {
     color: #1769dd;
+    margin-left: auto;
     mat-icon {
       font-size: 32px;
       width: 32px;
       height: 32px;
     }
+
     &:hover {
       background-color: rgba(23, 105, 221, 0.05);
     }
   }
 }
 
-  /* Nuevo estilo del botón de perfil en la barra */
-  .user-profile-btn {
-    color: #1769dd; /* Azul corporativo */
-    mat-icon {
-      font-size: 32px; /* Un poco más grande para que destaque */
-      width: 32px;
-      height: 32px;
-    }
-
-    &:hover {
-      background-color: rgba(23, 105, 221, 0.05); /* #1769dd transparente */
-    }
-  }
-
-
-/* --- ESTILOS DEL MENÚ DESPLEGABLE DE USUARIO (PANEL) --- */
+/* =======================================================
+   ESTILOS DEL MENÚ DESPLEGABLE DE USUARIO (PANEL)
+   ======================================================= */
 ::ng-deep .coservanguard-user-menu.mat-mdc-menu-panel {
-  min-width: 220px; /* Un poco más estrecho ya que no hay imagen */
+  min-width: 220px;
   border-radius: 8px;
   margin-top: 10px;
   border: 1px solid #eee;
@@ -109,10 +132,9 @@
       .user-email {
         font-size: 0.85rem;
         color: #8d8e92;
-        margin-bottom: 12px; /* Separación con el cargo */
+        margin-bottom: 12px;
       }
 
-      /* Etiquetas de cargo con colores corporativos */
       .user-cargo-tag {
         display: inline-block;
         padding: 4px 10px;
@@ -122,14 +144,13 @@
         letter-spacing: 0.5px;
         width: fit-content;
 
-        &.cargo-administrador { background-color: rgba(200, 56, 50, 0.1); color: #C83832; } /* Rojo */
-        &.cargo-coordinador { background-color: rgba(23, 105, 221, 0.1); color: #1769dd; }   /* Azul */
-        &.cargo-supervisor { background-color: rgba(44, 44, 44, 0.1); color: #2c2c2c; }    /* Negro */
+        &.cargo-administrador { background-color: rgba(200, 56, 50, 0.1); color: #C83832; }
+        &.cargo-coordinador { background-color: rgba(23, 105, 221, 0.1); color: #1769dd; }
+        &.cargo-supervisor { background-color: rgba(44, 44, 44, 0.1); color: #2c2c2c; }
       }
     }
   }
 
-  /* Estilo del botón de cerrar sesión */
   .logout-item {
     height: 48px;
 
@@ -145,5 +166,42 @@
       color: #C83832;
       font-weight: 600;
     }
+  }
+}
+
+@media (max-width: 600px) {
+  .top-toolbar {
+    .brand-toolbar {
+      display: none !important;
+    }
+  }
+}
+
+/* =======================================================
+   ANIMACIÓN Y CONTROL DEL ANCHO DEL MENÚ LATERAL
+   ======================================================= */
+.app-sidenav {
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  width: 70px; /* Ancho cuando está contraído */
+  overflow-x: hidden;
+
+  &.is-expanded {
+    width: 310px; /* Aumentamos para que quepan textos largos */
+  }
+}
+
+/* =======================================================
+   NUEVO: Corrección para móviles (Siempre expandido al abrir)
+   ======================================================= */
+@media (max-width: 900px) {
+  .app-sidenav {
+    /* Ignora los 70px y fuerza un buen tamaño en celular */
+    width: 280px !important;
+  }
+
+  /* Ocultamos el botón interno de contraer en celulares,
+     ya que se cierra automáticamente al tocar el fondo oscuro o un link */
+  .app-sidenav .toggle-btn {
+    display: none !important;
   }
 }

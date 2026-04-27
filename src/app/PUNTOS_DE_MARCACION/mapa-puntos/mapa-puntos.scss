@@ -94,3 +94,57 @@ $color-dark: #2c2c2c;
     font-weight: bold;
   }
 }
+
+/* =======================================================
+   RESPONSIVIDAD PARA EL MAPA (Móviles y Tablets)
+   ======================================================= */
+@media (max-width: 900px) {
+
+  /* Cambiamos el contenedor de fila a columna */
+  .map-view-container {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 64px);
+    overflow-y: auto; /* Activamos el scroll vertical general */
+  }
+
+  /* El panel de filtros pasa arriba y ocupa todo el ancho */
+  .filter-panel {
+    width: 100%;
+    height: auto; /* Ya no ocupa el 100% de la altura */
+    border-right: none;
+    border-bottom: 2px solid #eee; /* La línea divisoria pasa abajo */
+
+    mat-card-header {
+      margin-bottom: 16px;
+      padding-bottom: 0;
+    }
+
+    mat-card-content {
+      overflow-y: visible; /* Quitamos el scroll interno de la tarjeta */
+      padding-bottom: 16px;
+    }
+
+    /* Hacemos que los filtros se pongan lado a lado si hay espacio */
+    .filter-form {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 16px;
+
+      .full-width {
+        flex: 1;
+        min-width: 250px;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  /* El mapa se ubica debajo y le damos una altura fija excelente para interactuar */
+  .map-section {
+    width: 100%;
+    flex: none; /* Evitamos que Flexbox lo estripe */
+    height: 65vh; /* El mapa ocupará el 65% de la pantalla del celular */
+    min-height: 400px;
+  }
+}
+

@@ -1,102 +1,89 @@
-<div class="sidenav-header">
-  <img src="../../../assets/logo_nuevo.png" alt="Coservipp Logo" class="company-logo">
+<div class="sidenav-header" [class.collapsed]="!isExpanded">
+
+  <div class="header-actions">
+    <button mat-icon-button (click)="toggleExpanded.emit()" class="toggle-btn" title="Menú">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+
+  <img src="../../../assets/logo_nuevo.png" alt="Coservipp Logo" class="company-logo" *ngIf="isExpanded">
+
 </div>
 
 <mat-nav-list class="sidenav-menu">
 
-  <a mat-list-item routerLink="/inicio" routerLinkActive="active">
+  <a mat-list-item routerLink="/inicio" routerLinkActive="active" (click)="onMenuClick()">
     <mat-icon matListItemIcon>home</mat-icon>
-    <span matListItemTitle>INICIO</span>
+    <span matListItemTitle *ngIf="isExpanded">INICIO</span>
   </a>
 
-  <div class="menu-group" [ngClass]="{'expanded': menuState['usuarios']}" *ngIf="userRole === 1 || userRole === 4">
+  <div class="menu-group" [ngClass]="{'expanded': menuState['usuarios'] && isExpanded}" *ngIf="userRole === 1 || userRole === 4">
     <a mat-list-item (click)="toggleMenu('usuarios')" class="menu-toggle">
       <mat-icon matListItemIcon>group</mat-icon>
-      <span matListItemTitle>USUARIOS
+      <span matListItemTitle *ngIf="isExpanded">USUARIOS
         <mat-icon class="expansion-indicator">
           {{ menuState['usuarios'] ? 'expand_less' : 'expand_more' }}
         </mat-icon>
       </span>
     </a>
-    <div class="submenu">
-      <a mat-list-item routerLink="/usuarios" routerLinkActive="active">
+    <div class="submenu" *ngIf="isExpanded">
+      <a mat-list-item routerLink="/usuarios" routerLinkActive="active" (click)="onMenuClick()">
         <mat-icon matListItemIcon>people_outline</mat-icon>
         <span matListItemTitle>LISTADO USUARIOS</span>
       </a>
-      <a mat-list-item routerLink="/cargos" routerLinkActive="active">
+      <a mat-list-item routerLink="/cargos" routerLinkActive="active" (click)="onMenuClick()">
         <mat-icon matListItemIcon>work_outline</mat-icon>
         <span matListItemTitle>CARGOS</span>
       </a>
     </div>
   </div>
 
-  <a mat-list-item routerLink="/clientes" routerLinkActive="active" *ngIf="userRole === 1 || userRole === 4">
+  <a mat-list-item routerLink="/clientes" routerLinkActive="active" *ngIf="userRole === 1 || userRole === 4" (click)="onMenuClick()">
     <mat-icon matListItemIcon>business</mat-icon>
-    <span matListItemTitle>CLIENTES</span>
+    <span matListItemTitle *ngIf="isExpanded">CLIENTES</span>
   </a>
 
-  <a mat-list-item routerLink="/sedes" routerLinkActive="active" *ngIf="userRole === 1 || userRole === 4">
+  <a mat-list-item routerLink="/sedes" routerLinkActive="active" *ngIf="userRole === 1 || userRole === 4" (click)="onMenuClick()">
     <mat-icon matListItemIcon>location_on</mat-icon>
-    <span matListItemTitle>SEDES</span>
+    <span matListItemTitle *ngIf="isExpanded">SEDES</span>
   </a>
-<!--
-  <div class="menu-group" [ngClass]="{'expanded': menuState['turnos']}">
-    <a mat-list-item (click)="toggleMenu('turnos')" class="menu-toggle">
-      <mat-icon matListItemIcon>schedule</mat-icon>
-      <span matListItemTitle>TURNOS
-        <mat-icon class="expansion-indicator">
-          {{ menuState['turnos'] ? 'expand_less' : 'expand_more' }}
-        </mat-icon>
-      </span>
-    </a>
-    <div class="submenu">
-      <a mat-list-item routerLink="/turnos" routerLinkActive="active">
-        <mat-icon matListItemIcon>calendar_month</mat-icon>
-        <span matListItemTitle>GESTIÓN DE TURNOS</span>
-      </a>
-    </div>
-  </div>
--->
-  <div class="menu-group" [ngClass]="{'expanded': menuState['puntos']}">
+
+  <div class="menu-group" [ngClass]="{'expanded': menuState['puntos'] && isExpanded}">
     <a mat-list-item (click)="toggleMenu('puntos')" class="menu-toggle">
       <mat-icon matListItemIcon>verified_user</mat-icon>
-      <span matListItemTitle>PUNTOS DE MARCACIÓN
+      <span matListItemTitle *ngIf="isExpanded">PUNTOS DE MARCACIÓN
         <mat-icon class="expansion-indicator">
           {{ menuState['puntos'] ? 'expand_less' : 'expand_more' }}
         </mat-icon>
       </span>
     </a>
-    <div class="submenu">
-      <a mat-list-item routerLink="/puestos" routerLinkActive="active">
+    <div class="submenu" *ngIf="isExpanded">
+      <a mat-list-item routerLink="/puestos" routerLinkActive="active" (click)="onMenuClick()">
         <mat-icon matListItemIcon>add_location</mat-icon>
         <span matListItemTitle>PUESTOS</span>
       </a>
-
-      <a mat-list-item routerLink="/codigoQr" routerLinkActive="active">
+      <a mat-list-item routerLink="/codigoQr" routerLinkActive="active" (click)="onMenuClick()">
         <mat-icon matListItemIcon>qr_code</mat-icon>
         <span matListItemTitle>CÓDIGO QR</span>
       </a>
-
-      <a mat-list-item routerLink="/asignacion" routerLinkActive="active">
+      <a mat-list-item routerLink="/asignacion" routerLinkActive="active" (click)="onMenuClick()">
         <mat-icon matListItemIcon>assignment_ind</mat-icon>
         <span matListItemTitle>ASIGNACIÓN</span>
       </a>
-
-      <a mat-list-item routerLink="/marcacionQrRealizadas" routerLinkActive="active">
+      <a mat-list-item routerLink="/marcacionQrRealizadas" routerLinkActive="active" (click)="onMenuClick()">
         <mat-icon matListItemIcon>assignment_turned_in</mat-icon>
         <span matListItemTitle>HISTORIAL MARCACIONES</span>
       </a>
-
-      <a mat-list-item routerLink="/mapaPuntos" routerLinkActive="active">
+      <a mat-list-item routerLink="/mapaPuntos" routerLinkActive="active" (click)="onMenuClick()">
         <mat-icon matListItemIcon>assignment_turned_in</mat-icon>
         <span matListItemTitle>UBICACIÓN PUESTOS</span>
       </a>
     </div>
   </div>
 
-  <a mat-list-item routerLink="/graficaMarcacionQRDone" routerLinkActive="active">
+  <a mat-list-item routerLink="/graficaMarcacionQRDone" routerLinkActive="active" (click)="onMenuClick()">
     <mat-icon matListItemIcon>bar_chart</mat-icon>
-    <span matListItemTitle>REPORTES</span>
+    <span matListItemTitle *ngIf="isExpanded">REPORTES</span>
   </a>
 
 </mat-nav-list>
