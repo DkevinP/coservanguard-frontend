@@ -26,8 +26,8 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        # 1. Agregamos /browser/ a la ruta de origen
-        source: "dist/coservanguard_web/browser/**"
+        # 1. Eliminamos "/browser" porque Angular no lo está generando
+        source: "dist/coservanguard_web/**"
         target: "/var/www/html/"
-        # 2. Subimos a 3 para cortar dist/ + coservanguard_web/ + browser/
-        strip_components: 3
+        # 2. Bajamos a 2 para cortar solo las carpetas "dist/" y "coservanguard_web/"
+        strip_components: 2
